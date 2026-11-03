@@ -3,38 +3,56 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Hamdan | Portfolio</title>
-<meta name="description" content="Lorem ipsum portfolio">
-<meta name="theme-color" content="#040807">
+<title>Muhammad Hamdan | Portfolio</title>
+<meta name="description" content="Muhammad Hamdan, Computer Science student at UOW Dubai. Events, web development and digital marketing.">
+<meta name="theme-color" content="#060509">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500&family=Manrope:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500&family=Manrope:wght@400;500;600&family=DM+Mono:wght@400;500&family=Great+Vibes&family=Gulzar&family=Amita:wght@700&family=Michroma&family=Montserrat:wght@400;500&display=swap">
 <style>
-:root{--accent:#5FD4BE;color-scheme:dark}
+:root{--accent:#8B6CFF;color-scheme:dark}
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{margin:0;background:#040807}
-a{color:#8FE3D1}a:hover{color:#FFFFFF}
-.glass{background:rgba(170,255,235,0.045);border:1px solid rgba(170,255,235,0.13);-webkit-backdrop-filter:blur(22px) saturate(160%);backdrop-filter:blur(22px) saturate(160%);box-shadow:inset 0 1px 0 rgba(200,255,240,0.14),0 20px 50px rgba(0,0,0,0.35)}
+body{margin:0;background:#060509}
+a{color:#B9A6FF}a:hover{color:#FFFFFF}
+.glass{background:rgba(205,190,255,0.045);border:1px solid rgba(205,190,255,0.13);-webkit-backdrop-filter:blur(22px) saturate(160%);backdrop-filter:blur(22px) saturate(160%);box-shadow:inset 0 1px 0 rgba(220,210,255,0.14),0 20px 50px rgba(0,0,0,0.35)}
 .ph{background:linear-gradient(135deg,rgba(255,255,255,0.07),rgba(255,255,255,0.02));border:1px dashed rgba(255,255,255,0.18)}
 .chip{padding:7px 13px;border-radius:999px;border:1px solid rgba(255,255,255,0.14);background:rgba(255,255,255,0.05);font-size:14px;color:#E6E8EE}
 .pcard{transition:transform .25s ease,border-color .25s ease}.pcard:hover{transform:translateY(-4px);border-color:rgba(255,255,255,0.28)}
 @media (prefers-reduced-motion:reduce){.pcard{transition:none}.pcard:hover{transform:none}}
+/* card flip */
+.flip{position:relative;height:240vh;margin-top:-96px}
+.flip-pin{position:sticky;top:0;height:100vh;display:flex;align-items:center;justify-content:center;padding:96px 16px 24px;perspective:2400px}
+.flip-box{width:min(94vw,1280px,calc((100vh - 140px) * 1.726));aspect-ratio:359/208;position:relative}
+.flip-card{position:absolute;left:0;top:0;width:359px;height:208px;transform-origin:0 0;transform:scale(var(--s,1))}
+.flip-inner{position:relative;width:100%;height:100%;transform-style:preserve-3d;transform:rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));will-change:transform}
+.face{position:absolute;inset:0;border-radius:6px;overflow:hidden;backface-visibility:hidden;-webkit-backface-visibility:hidden;box-shadow:0 40px 120px rgba(0,0,0,.7),0 0 120px rgba(120,70,240,.16)}
+.face.back{transform:rotateY(180deg)}
+.flip-hint{font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#9CA1AF;display:flex;align-items:center;gap:10px}
+.flip-hint i{display:block;width:40px;height:1px;background:#3a4a46;position:relative;overflow:hidden}
+.flip-hint i::after{content:"";position:absolute;inset:0;width:var(--p,0%);background:var(--accent)}
+@media (prefers-reduced-motion:reduce){.flip{height:auto;padding:80px 0}.flip-pin{position:static;height:auto}.flip-inner{transform:none!important}.flip-box{aspect-ratio:auto;display:flex;flex-direction:column;gap:20px;align-items:center}.flip-card{position:relative;transform:none;width:359px;height:auto;display:flex;flex-direction:column;gap:20px}.face{position:relative;height:208px}.face.back{transform:none}.flip-hint{display:none}}
+#contactCard{--mx:30%;--my:40%;--dx:0px;--dy:0px;--hue:0deg}
+.cc-spot,.cc-spot2{position:absolute;inset:0;pointer-events:none}
+.cc-spot{background:radial-gradient(520px circle at var(--mx) var(--my),rgba(139,108,255,.38),rgba(178,59,230,.14) 40%,transparent 70%)}
+.cc-spot2{background:radial-gradient(900px circle at calc(100% - var(--mx)) calc(100% - var(--my)),rgba(91,61,245,.16),transparent 60%)}
+.cc-arc{transform:translate(var(--dx),var(--dy));filter:hue-rotate(var(--hue))}
+.cc-arc{z-index:0}.cc-spot,.cc-spot2{z-index:1;mix-blend-mode:screen}#contactCard>p,#contactCard>h2,#contactCard>a{z-index:2}
 a:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
-@media (max-width:600px){section,header{padding-left:16px!important;padding-right:16px!important}}
+@media (max-width:600px){section,header{padding-left:16px!important;padding-right:16px!important}header{flex-wrap:nowrap!important}header nav a:not(:last-child){display:none}}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 </style>
 </head>
 <body>
-<div style="position: relative; overflow: clip; width: 100%; background: #040807; color: #F2F3F7; font-family: 'Manrope', system-ui, sans-serif; font-size: 16px; line-height: 1.6">
+<div style="position: relative; overflow: clip; width: 100%; background: #060509; color: #F2F3F7; font-family: 'Manrope', system-ui, sans-serif; font-size: 16px; line-height: 1.6">
 
 <!-- ambient glow behind the glass -->
 <div aria-hidden="true" style="position: absolute; inset: 0; pointer-events: none; z-index: 0">
-<div style="position: absolute; top: -160px; left: -120px; width: 620px; height: 620px; border-radius: 50%; background: var(--accent); opacity: 0.45; filter: blur(150px)"></div>
-<div style="position: absolute; top: 220px; right: -180px; width: 540px; height: 540px; border-radius: 50%; background: #1F8F7E; opacity: 0.35; filter: blur(150px)"></div>
-<div style="position: absolute; top: 1500px; left: 30%; width: 700px; height: 700px; border-radius: 50%; background: var(--accent); opacity: 0.30; filter: blur(170px)"></div>
-<div style="position: absolute; top: 2700px; right: -100px; width: 560px; height: 560px; border-radius: 50%; background: #8FF0DC; opacity: 0.22; filter: blur(160px)"></div>
-<div style="position: absolute; bottom: -200px; left: -100px; width: 640px; height: 640px; border-radius: 50%; background: #1F8F7E; opacity: 0.30; filter: blur(160px)"></div>
+<div style="position: absolute; top: -160px; left: -120px; width: 620px; height: 620px; border-radius: 50%; background: var(--accent); opacity: 0.25; filter: blur(150px)"></div>
+<div style="position: absolute; top: 220px; right: -180px; width: 540px; height: 540px; border-radius: 50%; background: #4B2A7A; opacity: 0.19; filter: blur(150px)"></div>
+<div style="position: absolute; top: 1500px; left: 30%; width: 700px; height: 700px; border-radius: 50%; background: var(--accent); opacity: 0.17; filter: blur(170px)"></div>
+<div style="position: absolute; top: 2700px; right: -100px; width: 560px; height: 560px; border-radius: 50%; background: #9B3BD6; opacity: 0.12; filter: blur(160px)"></div>
+<div style="position: absolute; bottom: -200px; left: -100px; width: 640px; height: 640px; border-radius: 50%; background: #4B2A7A; opacity: 0.17; filter: blur(160px)"></div>
 </div>
 
 <div style="position: relative; z-index: 1">
@@ -42,116 +60,101 @@ a:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 <!-- NAV -->
 <div style="position: sticky; top: 16px; z-index: 5; max-width: 1280px; margin: 0 auto; padding: 16px 32px 0; box-sizing: border-box">
 <header class="glass" style="padding: 10px 10px 10px 24px; border-radius: 999px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px">
-<a href="#top" style="font-family: 'Geist', 'Manrope', sans-serif; font-weight: 300; font-size: 22px; letter-spacing: -0.02em; color: #FFFFFF; text-decoration: none">HMD<span style="color: var(--accent)">.</span></a>
+<a href="#top" style="font-family: 'Geist', 'Manrope', sans-serif; font-weight: 300; font-size: 22px; letter-spacing: -0.02em; color: #FFFFFF; text-decoration: none">MH<span style="color: var(--accent)">.</span></a>
 <nav style="display: flex; flex-wrap: wrap; gap: 4px; font-family: 'DM Mono', monospace; font-size: 13px; text-transform: uppercase; letter-spacing: 0.08em">
-<a href="#work" style="padding: 12px 14px; color: #D4D7E0; text-decoration: none">Work</a>
 <a href="#about" style="padding: 12px 14px; color: #D4D7E0; text-decoration: none">About</a>
 <a href="#skills" style="padding: 12px 14px; color: #D4D7E0; text-decoration: none">Skills</a>
-<a href="#contact" style="padding: 12px 18px; color: #03110E; background: var(--accent); border-radius: 999px; text-decoration: none">Contact</a>
+<a href="#contact" style="padding: 12px 18px; color: #0B0614; background: var(--accent); border-radius: 999px; text-decoration: none">Contact</a>
 </nav>
 </header>
 </div>
 
+<!-- CARD FLIP -->
+<section class="flip" id="card" aria-label="Business card">
+<div class="flip-pin">
+<div class="flip-box" id="flipBox">
+<div class="flip-card" id="flipCard">
+<div class="flip-inner" id="flipInner">
+<div class="face front" style="background:#17161B;font-family:'Montserrat',sans-serif;color:#F1EEF7">
+<div aria-hidden="true" style="position:absolute;left:-90px;top:40px;width:260px;height:200px;border-radius:50%;background:#5B3DF5;opacity:.9;filter:blur(46px)"></div>
+<div aria-hidden="true" style="position:absolute;left:120px;top:120px;width:240px;height:150px;border-radius:50%;background:#B23BE6;opacity:.85;filter:blur(48px)"></div>
+<div aria-hidden="true" style="position:absolute;left:150px;top:-70px;width:220px;height:150px;border-radius:50%;background:#5A2E7A;opacity:.55;filter:blur(50px)"></div>
+<svg aria-hidden="true" width="359" height="208" style="position:absolute;inset:0;opacity:0.32;mix-blend-mode:overlay;pointer-events:none"><filter id="gf"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="3" stitchTiles="stitch"></feTurbulence><feColorMatrix type="saturate" values="0"></feColorMatrix></filter><rect width="359" height="208" filter="url(#gf)" fill="#FFFFFF"></rect></svg>
+<p style="position:absolute;left:22px;bottom:20px;margin:0;font-size:9px;letter-spacing:.06em">Crafting Dreams Into Reality</p>
+<div style="position:absolute;right:22px;bottom:18px;display:flex;flex-direction:column;align-items:flex-end;gap:6px"><span style="font-family:'Michroma',sans-serif;font-size:15px;letter-spacing:.08em;color:#FFFFFF">MH</span><span aria-hidden="true" style="width:34px;height:1px;background:#FFFFFF;opacity:.8"></span></div>
+</div>
+<div class="face back" style="background:#1B1B1E;font-family:'Montserrat',sans-serif;color:#ECEBF0;box-sizing:border-box;padding:22px;display:flex;justify-content:space-between;gap:16px">
+<svg aria-hidden="true" width="359" height="208" style="position:absolute;inset:0;opacity:0.18;mix-blend-mode:overlay;pointer-events:none"><filter id="gb"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="3" stitchTiles="stitch"></feTurbulence><feColorMatrix type="saturate" values="0"></feColorMatrix></filter><rect width="359" height="208" filter="url(#gb)" fill="#FFFFFF"></rect></svg>
+<div style="position:relative;display:flex;flex-direction:column;justify-content:center;gap:8px"><span style="font-family:'Michroma',sans-serif;font-size:15px;line-height:1.25;letter-spacing:.1em;color:#FFFFFF">MUHAMMAD<br>HAMDAN</span><span aria-hidden="true" style="width:46px;height:2px;border-radius:2px;background:linear-gradient(90deg,#5B3DF5,#B23BE6)"></span></div>
+<div style="position:relative;display:flex;flex-direction:column;justify-content:space-between;align-items:flex-start;font-size:9.5px;line-height:1.35">
+<span>hamdansameer2005@gmail.com</span>
+<span style="font-weight:500">Web Developer<br>Graphic Designer<br>Marketing</span>
+<span style="display:flex;flex-direction:column;gap:3px"><span>+971 55 800 5474</span><span style="display:inline-flex;align-items:center;gap:4px"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="17.5" cy="6.5" r="0.6" fill="currentColor"></circle></svg>@xvii.hamdan</span><span style="color:#B9B5C6">hamdanxo.github.io/Portfolio</span></span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+
 <!-- HERO -->
 <section id="top" style="max-width: 1280px; margin: 0 auto; padding: 88px 32px 80px; box-sizing: border-box; display: flex; flex-wrap: wrap; gap: 48px; align-items: flex-end">
 <div style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 28px">
-<span class="glass" style="align-self: flex-start; display: inline-flex; align-items: center; gap: 10px; padding: 8px 16px; border-radius: 999px; font-family: 'DM Mono', monospace; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: #D4D7E0"><span style="width: 8px; height: 8px; border-radius: 50%; background: #8FE3D1; box-shadow: 0 0 12px #8FE3D1"></span>Lorem ipsum / Dolor sit amet</span>
-<h1 style="margin: 0; font-family: 'Geist', 'Manrope', sans-serif; font-weight: 300; font-size: clamp(56px, 9vw, 148px); line-height: 0.9; letter-spacing: -0.05em; color: #FFFFFF; text-wrap: balance">Lorem<br>Ipsum<span style="color: var(--accent)">.</span></h1>
-<p style="margin: 0; max-width: 560px; font-size: 20px; line-height: 1.5; color: #B9BDC9">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+<span class="glass" style="align-self: flex-start; display: inline-flex; align-items: center; gap: 10px; padding: 8px 16px; border-radius: 999px; font-family: 'DM Mono', monospace; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: #D4D7E0"><span style="width: 8px; height: 8px; border-radius: 50%; background: #B9A6FF; box-shadow: 0 0 12px #B9A6FF"></span>Open to internships</span>
+<h1 style="margin: 0; font-family: 'Geist', 'Manrope', sans-serif; font-weight: 300; font-size: clamp(56px, 9vw, 148px); line-height: 0.9; letter-spacing: -0.05em; color: #FFFFFF; text-wrap: balance">Muhammad<br>Hamdan<span style="color: var(--accent)">.</span></h1>
+<p style="margin: 0; display: flex; flex-wrap: wrap; gap: 6px 14px; font-family: 'DM Mono', monospace; font-size: 14px; letter-spacing: 0.12em; text-transform: uppercase; color: #B9A6FF"><span>Web Developer</span><span style="color: var(--accent)" aria-hidden="true">/</span><span>Graphic Designer</span><span style="color: var(--accent)" aria-hidden="true">/</span><span>Marketing</span></p>
+<p style="margin: 0; max-width: 560px; font-size: 20px; line-height: 1.5; color: #B9BDC9">Computer Science student at the University of Wollongong in Dubai, studying Big Data and AI. I build websites, design graphics and run marketing and social media.</p>
 <div style="display: flex; flex-wrap: wrap; gap: 12px">
-<a href="#work" style="display: inline-flex; align-items: center; gap: 10px; padding: 16px 26px; min-height: 44px; box-sizing: border-box; background: #FFFFFF; color: #040807; border-radius: 999px; font-weight: 600; text-decoration: none">Lorem ipsum
+<a href="#about" style="display: inline-flex; align-items: center; gap: 10px; padding: 16px 26px; min-height: 44px; box-sizing: border-box; background: #FFFFFF; color: #060509; border-radius: 999px; font-weight: 600; text-decoration: none">About me
 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"></path><path d="M13 6l6 6-6 6"></path></svg></a>
-<a href="#contact" class="glass" style="display: inline-flex; align-items: center; padding: 16px 26px; min-height: 44px; box-sizing: border-box; color: #FFFFFF; border-radius: 999px; font-weight: 600; text-decoration: none">Dolor sit amet</a>
+<a href="#contact" class="glass" style="display: inline-flex; align-items: center; padding: 16px 26px; min-height: 44px; box-sizing: border-box; color: #FFFFFF; border-radius: 999px; font-weight: 600; text-decoration: none">Get in touch</a>
 </div>
 </div>
 <div class="glass" style="flex: 1 1 320px; min-width: 0; max-width: 420px; padding: 14px; border-radius: 32px; display: flex; flex-direction: column; gap: 14px">
-<div class="ph" style="position: relative; overflow: hidden; aspect-ratio: 4 / 5; max-width: 100%; border-radius: 22px; display: flex; align-items: center; justify-content: center; font-family: 'DM Mono', monospace; font-size: 13px; letter-spacing: 0.1em; color: #9CA1AF"><div aria-hidden="true" style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; pointer-events: none"><div style="position: absolute; width: 78%; aspect-ratio: 1; border-radius: 50%; border: 1px solid rgba(143,227,209,0.22)"></div><div style="position: absolute; width: 52%; aspect-ratio: 1; border-radius: 50%; border: 1px solid rgba(143,227,209,0.16)"></div><div style="position: absolute; width: 100%; height: 1px; background: linear-gradient(90deg, transparent, rgba(143,227,209,0.25), transparent)"></div><div style="position: absolute; height: 100%; width: 1px; background: linear-gradient(180deg, transparent, rgba(143,227,209,0.25), transparent)"></div><div style="position: absolute; top: 18%; right: 14%; width: 10px; height: 10px; border-radius: 50%; background: #E8FFF9; box-shadow: 0 0 14px #8FE3D1, 0 0 30px #5FD4BE"></div></div><span style="position: relative">[PORTRAIT PHOTO]</span></div>
-<div style="display: flex; justify-content: space-between; padding: 0 8px 4px; font-family: 'DM Mono', monospace; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: #9CA1AF"><span>Lorem, Ipsum</span><span>Dolor sit</span></div>
+<div class="ph" style="position: relative; overflow: hidden; aspect-ratio: 4 / 5; max-width: 100%; border-radius: 22px; display: flex; align-items: center; justify-content: center; font-family: 'DM Mono', monospace; font-size: 13px; letter-spacing: 0.1em; color: #9CA1AF"><div aria-hidden="true" style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; pointer-events: none"><div style="position: absolute; width: 78%; aspect-ratio: 1; border-radius: 50%; border: 1px solid rgba(185,166,255,0.22)"></div><div style="position: absolute; width: 52%; aspect-ratio: 1; border-radius: 50%; border: 1px solid rgba(185,166,255,0.16)"></div><div style="position: absolute; width: 100%; height: 1px; background: linear-gradient(90deg, transparent, rgba(185,166,255,0.25), transparent)"></div><div style="position: absolute; height: 100%; width: 1px; background: linear-gradient(180deg, transparent, rgba(185,166,255,0.25), transparent)"></div><div style="position: absolute; top: 18%; right: 14%; width: 10px; height: 10px; border-radius: 50%; background: #F3EEFF; box-shadow: 0 0 14px #B9A6FF, 0 0 30px #8B6CFF"></div></div><span style="position: relative">[PORTRAIT PHOTO]</span></div>
+<div style="display: flex; justify-content: space-between; padding: 0 8px 4px; font-family: 'DM Mono', monospace; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: #9CA1AF"><span>Dubai, UAE</span><span>Portfolio 2026</span></div>
 </div>
 </section>
 
 <!-- STRIP -->
 <div style="max-width: 1280px; margin: 0 auto; padding: 0 32px; box-sizing: border-box">
 <div class="glass" style="border-radius: 24px; padding: 22px 32px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 14px 32px; font-family: 'Geist', 'Manrope', sans-serif; font-weight: 400; font-size: 22px; letter-spacing: -0.01em; color: #FFFFFF">
-<span>Lorem</span><span style="color: var(--accent)">✳</span><span>Ipsum</span><span style="color: var(--accent)">✳</span><span>Dolor</span><span style="color: var(--accent)">✳</span><span>Sit amet</span><span style="color: var(--accent)">✳</span><span>Consectetur</span>
+<span>Web development</span><span style="color: var(--accent)">✳</span><span>Graphic design</span><span style="color: var(--accent)">✳</span><span>Digital marketing</span><span style="color: var(--accent)">✳</span><span>Social media</span><span style="color: var(--accent)">✳</span><span>Excel and data</span>
 </div>
 </div>
-
-<!-- WORK -->
-<section id="work" style="max-width: 1280px; margin: 0 auto; padding: 120px 32px 48px; box-sizing: border-box; display: flex; flex-direction: column; gap: 48px">
-<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 24px">
-<div style="display: flex; flex-direction: column; gap: 12px">
-<p style="margin: 0; font-family: 'DM Mono', monospace; font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; color: #8FE3D1">Selected work</p>
-<h2 style="margin: 0; font-family: 'Geist', 'Manrope', sans-serif; font-weight: 300; font-size: clamp(40px, 5vw, 72px); line-height: 1; letter-spacing: -0.03em; color: #FFFFFF">Lorem ipsum dolor</h2>
-</div>
-<p style="margin: 0; max-width: 380px; color: #9CA1AF">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut enim ad minim veniam, quis nostrud.</p>
-</div>
-
-<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px">
-<a href="#work" class="glass pcard" style="grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 32px; padding: 18px; border-radius: 30px; color: #FFFFFF; text-decoration: none">
-<div class="ph" style="flex: 999 1 520px; min-width: 0; aspect-ratio: 16 / 9; max-width: 100%; border-radius: 20px; display: flex; align-items: center; justify-content: center; font-family: 'DM Mono', monospace; font-size: 13px; letter-spacing: 0.1em; color: #9CA1AF">[FEATURED PROJECT IMAGE]</div>
-<div style="flex: 1 1 280px; min-width: 0; display: flex; flex-direction: column; justify-content: space-between; gap: 24px; padding: 12px 8px">
-<div style="display: flex; flex-direction: column; gap: 14px">
-<span style="font-family: 'DM Mono', monospace; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: #9CA1AF">01 / Featured</span>
-<h3 style="margin: 0; font-family: 'Geist', 'Manrope', sans-serif; font-weight: 400; font-size: 36px; line-height: 1.05; letter-spacing: -0.02em">Lorem ipsum dolor sit amet</h3>
-<p style="margin: 0; color: #B9BDC9">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore.</p>
-</div>
-<div style="display: flex; flex-wrap: wrap; gap: 8px"><span class="chip">Lorem</span><span class="chip">Ipsum</span><span class="chip">Dolor</span></div>
-</div>
-</a>
-
-<a href="#work" class="glass pcard" style="display: flex; flex-direction: column; gap: 16px; padding: 14px 14px 22px; border-radius: 26px; color: #FFFFFF; text-decoration: none">
-<div class="ph" style="aspect-ratio: 4 / 3; max-width: 100%; border-radius: 18px; display: flex; align-items: center; justify-content: center; font-family: 'DM Mono', monospace; font-size: 13px; letter-spacing: 0.1em; color: #9CA1AF">[PROJECT IMAGE]</div>
-<div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 0 8px"><h3 style="margin: 0; font-family: 'Geist', 'Manrope', sans-serif; font-weight: 400; font-size: 24px">Lorem ipsum</h3><span style="font-family: 'DM Mono', monospace; font-size: 12px; color: #9CA1AF">02</span></div>
-<p style="margin: 0; padding: 0 8px; color: #B9BDC9">Consectetur adipiscing elit, sed do eiusmod tempor.</p>
-</a>
-
-<a href="#work" class="glass pcard" style="display: flex; flex-direction: column; gap: 16px; padding: 14px 14px 22px; border-radius: 26px; color: #FFFFFF; text-decoration: none">
-<div class="ph" style="aspect-ratio: 4 / 3; max-width: 100%; border-radius: 18px; display: flex; align-items: center; justify-content: center; font-family: 'DM Mono', monospace; font-size: 13px; letter-spacing: 0.1em; color: #9CA1AF">[PROJECT IMAGE]</div>
-<div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 0 8px"><h3 style="margin: 0; font-family: 'Geist', 'Manrope', sans-serif; font-weight: 400; font-size: 24px">Dolor sit amet</h3><span style="font-family: 'DM Mono', monospace; font-size: 12px; color: #9CA1AF">03</span></div>
-<p style="margin: 0; padding: 0 8px; color: #B9BDC9">Ut labore et dolore magna aliqua enim minim.</p>
-</a>
-
-<a href="#work" class="glass pcard" style="display: flex; flex-direction: column; gap: 16px; padding: 14px 14px 22px; border-radius: 26px; color: #FFFFFF; text-decoration: none">
-<div class="ph" style="aspect-ratio: 4 / 3; max-width: 100%; border-radius: 18px; display: flex; align-items: center; justify-content: center; font-family: 'DM Mono', monospace; font-size: 13px; letter-spacing: 0.1em; color: #9CA1AF">[PROJECT IMAGE]</div>
-<div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 0 8px"><h3 style="margin: 0; font-family: 'Geist', 'Manrope', sans-serif; font-weight: 400; font-size: 24px">Consectetur</h3><span style="font-family: 'DM Mono', monospace; font-size: 12px; color: #9CA1AF">04</span></div>
-<p style="margin: 0; padding: 0 8px; color: #B9BDC9">Quis nostrud exercitation ullamco laboris nisi.</p>
-</a>
-
-<a href="#work" class="glass pcard" style="display: flex; flex-direction: column; gap: 16px; padding: 14px 14px 22px; border-radius: 26px; color: #FFFFFF; text-decoration: none">
-<div class="ph" style="aspect-ratio: 4 / 3; max-width: 100%; border-radius: 18px; display: flex; align-items: center; justify-content: center; font-family: 'DM Mono', monospace; font-size: 13px; letter-spacing: 0.1em; color: #9CA1AF">[PROJECT IMAGE]</div>
-<div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 0 8px"><h3 style="margin: 0; font-family: 'Geist', 'Manrope', sans-serif; font-weight: 400; font-size: 24px">Adipiscing elit</h3><span style="font-family: 'DM Mono', monospace; font-size: 12px; color: #9CA1AF">05</span></div>
-<p style="margin: 0; padding: 0 8px; color: #B9BDC9">Duis aute irure dolor in reprehenderit voluptate.</p>
-</a>
-
-<a href="#work" class="glass pcard" style="display: flex; flex-direction: column; gap: 16px; padding: 14px 14px 22px; border-radius: 26px; color: #FFFFFF; text-decoration: none">
-<div class="ph" style="aspect-ratio: 4 / 3; max-width: 100%; border-radius: 18px; display: flex; align-items: center; justify-content: center; font-family: 'DM Mono', monospace; font-size: 13px; letter-spacing: 0.1em; color: #9CA1AF">[PROJECT IMAGE]</div>
-<div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 0 8px"><h3 style="margin: 0; font-family: 'Geist', 'Manrope', sans-serif; font-weight: 400; font-size: 24px">Sed eiusmod</h3><span style="font-family: 'DM Mono', monospace; font-size: 12px; color: #9CA1AF">06</span></div>
-<p style="margin: 0; padding: 0 8px; color: #B9BDC9">Excepteur sint occaecat cupidatat non proident.</p>
-</a>
-</div>
-</section>
 
 <!-- ABOUT + EXPERIENCE -->
 <section id="about" style="max-width: 1280px; margin: 0 auto; padding: 96px 32px; box-sizing: border-box; display: flex; flex-wrap: wrap; gap: 32px">
 <div style="flex: 1 1 380px; min-width: 0; display: flex; flex-direction: column; gap: 20px; padding: 8px 0">
-<p style="margin: 0; font-family: 'DM Mono', monospace; font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; color: #8FE3D1">About</p>
-<h2 style="margin: 0; font-family: 'Geist', 'Manrope', sans-serif; font-weight: 300; font-size: clamp(36px, 4vw, 56px); line-height: 1.02; letter-spacing: -0.03em; color: #FFFFFF; text-wrap: balance">Lorem ipsum dolor sit amet consectetur.</h2>
-<p style="margin: 0; max-width: 520px; color: #B9BDC9">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-<p style="margin: 0; max-width: 520px; color: #B9BDC9">Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+<p style="margin: 0; font-family: 'DM Mono', monospace; font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; color: #B9A6FF">About</p>
+<h2 style="margin: 0; font-family: 'Geist', 'Manrope', sans-serif; font-weight: 300; font-size: clamp(36px, 4vw, 56px); line-height: 1.02; letter-spacing: -0.03em; color: #FFFFFF; text-wrap: balance">Developer, designer and marketer.</h2>
+<p style="margin: 0; max-width: 520px; color: #B9BDC9">I'm Muhammad Hamdan, a Computer Science student in Dubai looking for internships and volunteering opportunities. I'm great at working in a team, and I can work on my own just as well.</p>
+<p style="margin: 0; max-width: 520px; color: #B9BDC9">I currently handle graphic design and marketing at Lapiz Blue in Dubai. Before that I ran events for clients and built a full management system from the database up.</p>
 </div>
-<div class="glass" style="flex: 1.3 1 460px; min-width: 0; display: flex; flex-direction: column; padding: 8px 32px; border-radius: 30px">
-<div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; padding: 26px 0">
-<div style="display: flex; flex-direction: column; gap: 4px"><h3 style="margin: 0; font-family: 'Geist', 'Manrope', sans-serif; font-weight: 400; font-size: 22px; color: #FFFFFF">Lorem ipsum dolor</h3><span style="color: #9CA1AF">Consectetur Adipiscing</span></div>
-<span style="font-family: 'DM Mono', monospace; font-size: 13px; color: #8FE3D1; font-variant-numeric: tabular-nums">20XX to Present</span>
+<div class="glass" style="flex: 1.3 1 460px; min-width: 0; display: flex; flex-direction: column; padding: 8px 32px 12px; border-radius: 30px">
+<p style="margin: 20px 0 0; font-family: 'DM Mono', monospace; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: #B9A6FF">Experience</p>
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; padding: 24px 0;">
+<div style="display: flex; flex-direction: column; gap: 4px; min-width: 0"><h3 style="margin: 0; font-family: 'Geist', 'Manrope', sans-serif; font-weight: 400; font-size: 22px; color: #FFFFFF">Graphic Designer and Marketing</h3><span style="color: #9CA1AF">Lapiz Blue General Trading, Dubai</span></div>
+<span style="font-family: 'DM Mono', monospace; font-size: 13px; color: #B9A6FF; font-variant-numeric: tabular-nums">Present</span>
 </div>
-<div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; padding: 26px 0; border-top: 1px solid rgba(255,255,255,0.10)">
-<div style="display: flex; flex-direction: column; gap: 4px"><h3 style="margin: 0; font-family: 'Geist', 'Manrope', sans-serif; font-weight: 400; font-size: 22px; color: #FFFFFF">Sit amet elit</h3><span style="color: #9CA1AF">Tempor Incididunt</span></div>
-<span style="font-family: 'DM Mono', monospace; font-size: 13px; color: #9CA1AF; font-variant-numeric: tabular-nums">20XX to 20XX</span>
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; padding: 24px 0; border-top: 1px solid rgba(255,255,255,0.10);">
+<div style="display: flex; flex-direction: column; gap: 4px; min-width: 0"><h3 style="margin: 0; font-family: 'Geist', 'Manrope', sans-serif; font-weight: 400; font-size: 22px; color: #FFFFFF">Event Coordinator</h3><span style="color: #9CA1AF">Cheeky Monkeys</span></div>
+<span style="font-family: 'DM Mono', monospace; font-size: 13px; color: #9CA1AF; font-variant-numeric: tabular-nums">2023 to 2025</span>
 </div>
-<div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; padding: 26px 0; border-top: 1px solid rgba(255,255,255,0.10)">
-<div style="display: flex; flex-direction: column; gap: 4px"><h3 style="margin: 0; font-family: 'Geist', 'Manrope', sans-serif; font-weight: 400; font-size: 22px; color: #FFFFFF">Lorem University</h3><span style="color: #9CA1AF">Bachelor of Ipsum Dolor</span></div>
-<span style="font-family: 'DM Mono', monospace; font-size: 13px; color: #9CA1AF; font-variant-numeric: tabular-nums">20XX to 20XX</span>
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; padding: 24px 0; border-top: 1px solid rgba(255,255,255,0.10);">
+<div style="display: flex; flex-direction: column; gap: 4px; min-width: 0"><h3 style="margin: 0; font-family: 'Geist', 'Manrope', sans-serif; font-weight: 400; font-size: 22px; color: #FFFFFF">Spreadsheet Management</h3><span style="color: #9CA1AF">The Mosbach Group</span></div>
+<span style="font-family: 'DM Mono', monospace; font-size: 13px; color: #9CA1AF; font-variant-numeric: tabular-nums">2023</span>
+</div>
+<p style="margin: 20px 0 0; font-family: 'DM Mono', monospace; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: #B9A6FF">Education</p>
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; padding: 24px 0;">
+<div style="display: flex; flex-direction: column; gap: 4px; min-width: 0"><h3 style="margin: 0; font-family: 'Geist', 'Manrope', sans-serif; font-weight: 400; font-size: 22px; color: #FFFFFF">University of Wollongong in Dubai</h3><span style="color: #9CA1AF">Bachelor of Computer Science, Big Data and AI</span></div>
+<span style="font-family: 'DM Mono', monospace; font-size: 13px; color: #B9A6FF; font-variant-numeric: tabular-nums">2023 to now</span>
+</div>
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; padding: 24px 0; border-top: 1px solid rgba(255,255,255,0.10);">
+<div style="display: flex; flex-direction: column; gap: 4px; min-width: 0"><h3 style="margin: 0; font-family: 'Geist', 'Manrope', sans-serif; font-weight: 400; font-size: 22px; color: #FFFFFF">The Westminster School, Dubai</h3><span style="color: #9CA1AF">High School Diploma. O Levels in Travel and Tourism and Business. A Levels in Maths, Physics and English.</span></div>
+<span style="font-family: 'DM Mono', monospace; font-size: 13px; color: #9CA1AF; font-variant-numeric: tabular-nums">Completed</span>
 </div>
 </div>
 </section>
@@ -159,43 +162,93 @@ a:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 <!-- SKILLS -->
 <section id="skills" style="max-width: 1280px; margin: 0 auto; padding: 48px 32px 96px; box-sizing: border-box; display: flex; flex-direction: column; gap: 48px">
 <div style="display: flex; flex-direction: column; gap: 12px">
-<p style="margin: 0; font-family: 'DM Mono', monospace; font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; color: #8FE3D1">Skills and tools</p>
-<h2 style="margin: 0; font-family: 'Geist', 'Manrope', sans-serif; font-weight: 300; font-size: clamp(40px, 5vw, 72px); line-height: 1; letter-spacing: -0.03em; color: #FFFFFF">Lorem ipsum toolkit</h2>
+<p style="margin: 0; font-family: 'DM Mono', monospace; font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; color: #B9A6FF">Skills and tools</p>
+<h2 style="margin: 0; font-family: 'Geist', 'Manrope', sans-serif; font-weight: 300; font-size: clamp(40px, 5vw, 72px); line-height: 1; letter-spacing: -0.03em; color: #FFFFFF">What I bring</h2>
 </div>
 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px">
 <div class="glass" style="padding: 28px; border-radius: 24px; display: flex; flex-direction: column; gap: 18px">
-<h3 style="margin: 0; font-family: 'Geist', 'Manrope', sans-serif; font-weight: 400; font-size: 22px; color: #FFFFFF">Lorem</h3>
-<div style="display: flex; flex-wrap: wrap; gap: 8px"><span class="chip">Ipsum</span><span class="chip">Dolor</span><span class="chip">Sit amet</span><span class="chip">Elit</span></div>
+<h3 style="margin: 0; font-family: 'Geist', 'Manrope', sans-serif; font-weight: 400; font-size: 22px; color: #FFFFFF">Strengths</h3>
+<div style="display: flex; flex-direction: column; gap: 16px"><div style="display: flex; flex-direction: column; gap: 8px"><div style="display: flex; justify-content: space-between; font-size: 15px; color: #E6E8EE"><span>Team work</span><span style="font-family: 'DM Mono', monospace; font-size: 13px; color: #B9A6FF; font-variant-numeric: tabular-nums">95%</span></div><div style="height: 6px; border-radius: 999px; background: rgba(255,255,255,0.08); overflow: hidden"><div style="width: 95%; height: 100%; border-radius: 999px; background: var(--accent); box-shadow: 0 0 12px var(--accent)"></div></div></div><div style="display: flex; flex-direction: column; gap: 8px"><div style="display: flex; justify-content: space-between; font-size: 15px; color: #E6E8EE"><span>Event organising</span><span style="font-family: 'DM Mono', monospace; font-size: 13px; color: #B9A6FF; font-variant-numeric: tabular-nums">90%</span></div><div style="height: 6px; border-radius: 999px; background: rgba(255,255,255,0.08); overflow: hidden"><div style="width: 90%; height: 100%; border-radius: 999px; background: var(--accent); box-shadow: 0 0 12px var(--accent)"></div></div></div><div style="display: flex; flex-direction: column; gap: 8px"><div style="display: flex; justify-content: space-between; font-size: 15px; color: #E6E8EE"><span>Project management</span><span style="font-family: 'DM Mono', monospace; font-size: 13px; color: #B9A6FF; font-variant-numeric: tabular-nums">80%</span></div><div style="height: 6px; border-radius: 999px; background: rgba(255,255,255,0.08); overflow: hidden"><div style="width: 80%; height: 100%; border-radius: 999px; background: var(--accent); box-shadow: 0 0 12px var(--accent)"></div></div></div></div>
 </div>
 <div class="glass" style="padding: 28px; border-radius: 24px; display: flex; flex-direction: column; gap: 18px">
-<h3 style="margin: 0; font-family: 'Geist', 'Manrope', sans-serif; font-weight: 400; font-size: 22px; color: #FFFFFF">Ipsum</h3>
-<div style="display: flex; flex-wrap: wrap; gap: 8px"><span class="chip">Consectetur</span><span class="chip">Tempor</span><span class="chip">Magna</span></div>
+<h3 style="margin: 0; font-family: 'Geist', 'Manrope', sans-serif; font-weight: 400; font-size: 22px; color: #FFFFFF">Expertise</h3>
+<div style="display: flex; flex-wrap: wrap; gap: 8px"><span class="chip">Management</span><span class="chip">Creativity</span><span class="chip">Digital marketing</span><span class="chip">Negotiation</span><span class="chip">Critical thinking</span><span class="chip">Leadership</span></div>
 </div>
 <div class="glass" style="padding: 28px; border-radius: 24px; display: flex; flex-direction: column; gap: 18px">
-<h3 style="margin: 0; font-family: 'Geist', 'Manrope', sans-serif; font-weight: 400; font-size: 22px; color: #FFFFFF">Dolor</h3>
-<div style="display: flex; flex-wrap: wrap; gap: 8px"><span class="chip">Veniam</span><span class="chip">Nostrud</span><span class="chip">Laboris</span><span class="chip">Aliquip</span></div>
+<h3 style="margin: 0; font-family: 'Geist', 'Manrope', sans-serif; font-weight: 400; font-size: 22px; color: #FFFFFF">Tech and tools</h3>
+<div style="display: flex; flex-wrap: wrap; gap: 8px"><span class="chip">HTML</span><span class="chip">CSS</span><span class="chip">JavaScript</span><span class="chip">Node.js</span><span class="chip">MySQL</span><span class="chip">Excel</span></div>
 </div>
 </div>
 </section>
 
+<!-- LANGUAGES -->
+<section id="languages" style="max-width: 1280px; margin: 0 auto; padding: 0 32px 72px; box-sizing: border-box; display: flex; flex-direction: column; align-items: flex-start; gap: 14px">
+<p style="margin: 0; font-family: 'DM Mono', monospace; font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; color: #B9A6FF">Languages</p>
+<div style="display: flex; flex-wrap: wrap; gap: 10px"><span class="glass" style="position: relative; overflow: hidden; display: inline-flex; align-items: center; min-width: 116px; justify-content: center; padding: 14px 24px; border-radius: 999px; font-size: 17px; color: #FFFFFF"><span aria-hidden="true" lang="en" style="position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%) rotate(-6deg); white-space: nowrap; font-family: 'Great Vibes', cursive; font-size: 34px; line-height: 1; color: rgba(185,166,255,0.09); pointer-events: none">English</span><span style="position: relative">English</span></span><span class="glass" style="position: relative; overflow: hidden; display: inline-flex; align-items: center; min-width: 116px; justify-content: center; padding: 14px 24px; border-radius: 999px; font-size: 17px; color: #FFFFFF"><span aria-hidden="true" lang="ur" dir="rtl" style="position: absolute; left: 50%; top: 46%; transform: translate(-50%, -50%) rotate(-6deg); white-space: nowrap; font-family: 'Gulzar', serif; font-size: 44px; line-height: 1; color: rgba(185,166,255,0.09); pointer-events: none">اردو</span><span style="position: relative">Urdu</span></span><span class="glass" style="position: relative; overflow: hidden; display: inline-flex; align-items: center; min-width: 116px; justify-content: center; padding: 14px 24px; border-radius: 999px; font-size: 17px; color: #FFFFFF"><span aria-hidden="true" lang="hi" style="position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%) rotate(-6deg); white-space: nowrap; font-family: 'Amita', serif; font-size: 32px; line-height: 1; color: rgba(185,166,255,0.09); pointer-events: none">हिन्दी</span><span style="position: relative">Hindi</span></span></div>
+</section>
+
 <!-- CONTACT -->
 <section id="contact" style="max-width: 1280px; margin: 0 auto; padding: 48px 32px 40px; box-sizing: border-box; display: flex; flex-direction: column; gap: 40px">
-<div class="glass" style="position: relative; overflow: hidden; border-radius: 36px; padding: clamp(32px, 6vw, 72px); display: flex; flex-direction: column; gap: 24px"><div aria-hidden="true" style="position: absolute; right: -62%; top: -70%; width: 105%; aspect-ratio: 1; border-radius: 50%; background: #030605; box-shadow: -18px 0 50px rgba(143,227,209,0.55), -4px 0 8px rgba(232,255,249,0.6), inset 30px 0 60px rgba(95,212,190,0.18); pointer-events: none"></div>
-<p style="margin: 0; font-family: 'DM Mono', monospace; font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; color: #8FE3D1; position: relative">Contact</p>
-<h2 style="margin: 0; font-family: 'Geist', 'Manrope', sans-serif; font-weight: 300; font-size: clamp(44px, 8vw, 120px); line-height: 0.92; letter-spacing: -0.05em; color: #FFFFFF; text-wrap: balance; position: relative">Lorem ipsum<br>dolor sit<span style="color: var(--accent)">?</span></h2>
-<a href="#contact" style="align-self: flex-start; font-size: clamp(20px, 2.4vw, 32px); font-weight: 600; color: #FFFFFF; text-decoration: underline; text-underline-offset: 6px; text-decoration-color: var(--accent); position: relative">[YOUR EMAIL]</a>
+<div class="glass" id="contactCard" style="position: relative; overflow: hidden; border-radius: 36px; padding: clamp(32px, 6vw, 72px); display: flex; flex-direction: column; gap: 24px"><div aria-hidden="true" class="cc-spot"></div><div aria-hidden="true" class="cc-spot2"></div><div aria-hidden="true" class="cc-arc" style="position: absolute; right: -62%; top: -70%; width: 105%; aspect-ratio: 1; border-radius: 50%; background: #030605; box-shadow: -18px 0 50px rgba(185,166,255,0.55), -4px 0 8px rgba(243,238,255,0.6), inset 30px 0 60px rgba(139,108,255,0.18); pointer-events: none"></div>
+<p style="margin: 0; font-family: 'DM Mono', monospace; font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; color: #B9A6FF; position: relative">Contact</p>
+<h2 style="margin: 0; font-family: 'Geist', 'Manrope', sans-serif; font-weight: 300; font-size: clamp(44px, 8vw, 120px); line-height: 0.92; letter-spacing: -0.05em; color: #FFFFFF; text-wrap: balance; position: relative">Let's work<br>together<span style="color: var(--accent)">.</span></h2>
+<a href="mailto:hamdansameer2005@gmail.com" style="align-self: flex-start; overflow-wrap: anywhere; font-size: clamp(20px, 2.4vw, 32px); font-weight: 600; color: #FFFFFF; text-decoration: underline; text-underline-offset: 6px; text-decoration-color: var(--accent); position: relative">hamdansameer2005@gmail.com</a>
 </div>
 <footer style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px">
 <nav style="display: flex; flex-wrap: wrap; gap: 4px; font-family: 'DM Mono', monospace; font-size: 13px; text-transform: uppercase; letter-spacing: 0.08em">
 <a href="#contact" style="padding: 12px 14px; color: #D4D7E0; text-decoration: none">LinkedIn</a>
-<a href="#contact" style="padding: 12px 14px; color: #D4D7E0; text-decoration: none">Instagram</a>
+<a href="https://www.instagram.com/xvii.hamdan/" target="_blank" rel="noopener" style="padding: 12px 14px; color: #D4D7E0; text-decoration: none">Instagram</a>
 <a href="#contact" style="padding: 12px 14px; color: #D4D7E0; text-decoration: none">Behance</a>
 </nav>
-<span style="font-family: 'DM Mono', monospace; font-size: 12px; color: #9CA1AF">© 20XX Lorem Ipsum</span>
+<span style="font-family: 'DM Mono', monospace; font-size: 12px; color: #9CA1AF">© 2026 Muhammad Hamdan</span>
 </footer>
 </section>
 
 </div>
 </div>
+<script>
+(function(){
+  var sec=document.getElementById('card'),box=document.getElementById('flipBox'),card=document.getElementById('flipCard'),inner=document.getElementById('flipInner');
+  if(!sec)return;
+  var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function fit(){card.style.setProperty('--s',reduce?1:box.clientWidth/359);}
+  function ease(t){return t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;}
+  var ticking=false;
+  function update(){
+    ticking=false; if(reduce)return;
+    var r=sec.getBoundingClientRect(),span=r.height-window.innerHeight;
+    var p=Math.min(1,Math.max(0,-r.top/span));
+    var t=Math.min(1,Math.max(0,(p-.1)/.65));
+    var e=ease(t);
+    inner.style.setProperty('--ry',(e*180).toFixed(2)+'deg');
+    inner.style.setProperty('--rx',(Math.sin(e*Math.PI)*-10).toFixed(2)+'deg');
+  }
+  function onScroll(){if(!ticking){ticking=true;requestAnimationFrame(update);}}
+  window.addEventListener('scroll',onScroll,{passive:true});
+  window.addEventListener('resize',function(){fit();update();});
+  fit();update();
+})();
+</script>
+<script>
+(function(){
+  var el=document.getElementById('contactCard');if(!el)return;
+  var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var tx=.3,ty=.4,x=.3,y=.4,run=false;
+  function loop(){
+    x+=(tx-x)*.08;y+=(ty-y)*.08;
+    el.style.setProperty('--mx',(x*100).toFixed(2)+'%');
+    el.style.setProperty('--my',(y*100).toFixed(2)+'%');
+    if(!reduce){
+      el.style.setProperty('--dx',((x-.5)*-60).toFixed(1)+'px');
+      el.style.setProperty('--dy',((y-.5)*-40).toFixed(1)+'px');
+      el.style.setProperty('--hue',((x-.5)*50).toFixed(1)+'deg');
+    }
+    if(Math.abs(tx-x)>.001||Math.abs(ty-y)>.001){requestAnimationFrame(loop);}else{run=false;}
+  }
+  function kick(){if(!run){run=true;requestAnimationFrame(loop);}}
+  el.addEventListener('pointermove',function(e){var r=el.getBoundingClientRect();tx=(e.clientX-r.left)/r.width;ty=(e.clientY-r.top)/r.height;kick();});
+  el.addEventListener('pointerleave',function(){tx=.3;ty=.4;kick();});
+})();
+</script>
 </body>
 </html>

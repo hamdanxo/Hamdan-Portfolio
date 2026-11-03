@@ -24,14 +24,14 @@ a{color:#B9A6FF}a:hover{color:#FFFFFF}
 .flip{position:relative;height:240vh;margin-top:-96px}
 .flip-pin{position:sticky;top:0;height:100vh;display:flex;align-items:center;justify-content:center;padding:96px 16px 24px;perspective:2400px}
 .flip-box{width:min(94vw,1280px,calc((100vh - 140px) * 1.726));aspect-ratio:359/208;position:relative}
-.flip-card{position:absolute;left:0;top:0;width:359px;height:208px;transform-origin:0 0;transform:scale(var(--s,1))}
-.flip-inner{position:relative;width:100%;height:100%;transform-style:preserve-3d;transform:rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));will-change:transform}
-.face{position:absolute;inset:0;border-radius:6px;overflow:hidden;backface-visibility:hidden;-webkit-backface-visibility:hidden;box-shadow:0 40px 120px rgba(0,0,0,.7),0 0 120px rgba(120,70,240,.16)}
+.flip-card{position:absolute;inset:0;--k:1}
+.flip-inner{position:relative;width:100%;height:100%;transform-style:preserve-3d;transform:rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg))}
+.face{position:absolute;inset:0;border-radius:calc(6px * var(--k));overflow:hidden;backface-visibility:hidden;-webkit-backface-visibility:hidden;box-shadow:0 40px 120px rgba(0,0,0,.7),0 0 120px rgba(120,70,240,.16);-webkit-font-smoothing:antialiased}
 .face.back{transform:rotateY(180deg)}
 .flip-hint{font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#9CA1AF;display:flex;align-items:center;gap:10px}
 .flip-hint i{display:block;width:40px;height:1px;background:#3a4a46;position:relative;overflow:hidden}
 .flip-hint i::after{content:"";position:absolute;inset:0;width:var(--p,0%);background:var(--accent)}
-@media (prefers-reduced-motion:reduce){.flip{height:auto;padding:80px 0}.flip-pin{position:static;height:auto}.flip-inner{transform:none!important}.flip-box{aspect-ratio:auto;display:flex;flex-direction:column;gap:20px;align-items:center}.flip-card{position:relative;transform:none;width:359px;height:auto;display:flex;flex-direction:column;gap:20px}.face{position:relative;height:208px}.face.back{transform:none}.flip-hint{display:none}}
+@media (prefers-reduced-motion:reduce){.flip{height:auto;padding:80px 0}.flip-pin{position:static;height:auto}.flip-inner{transform:none!important}.flip-box{aspect-ratio:auto;display:flex;flex-direction:column;gap:20px;align-items:center}.flip-card{position:relative;width:359px;height:auto;display:flex;flex-direction:column;gap:20px}.face{position:relative;height:208px}.face.back{transform:none}.flip-hint{display:none}}
 #contactCard{--mx:30%;--my:40%;--dx:0px;--dy:0px;--hue:0deg}
 .cc-spot,.cc-spot2{position:absolute;inset:0;pointer-events:none}
 .cc-spot{background:radial-gradient(520px circle at var(--mx) var(--my),rgba(139,108,255,.38),rgba(178,59,230,.14) 40%,transparent 70%)}
@@ -76,20 +76,20 @@ a:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 <div class="flip-card" id="flipCard">
 <div class="flip-inner" id="flipInner">
 <div class="face front" style="background:#17161B;font-family:'Montserrat',sans-serif;color:#F1EEF7">
-<div aria-hidden="true" style="position:absolute;left:-90px;top:40px;width:260px;height:200px;border-radius:50%;background:#5B3DF5;opacity:.9;filter:blur(46px)"></div>
-<div aria-hidden="true" style="position:absolute;left:120px;top:120px;width:240px;height:150px;border-radius:50%;background:#B23BE6;opacity:.85;filter:blur(48px)"></div>
-<div aria-hidden="true" style="position:absolute;left:150px;top:-70px;width:220px;height:150px;border-radius:50%;background:#5A2E7A;opacity:.55;filter:blur(50px)"></div>
-<svg aria-hidden="true" width="359" height="208" style="position:absolute;inset:0;opacity:0.32;mix-blend-mode:overlay;pointer-events:none"><filter id="gf"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="3" stitchTiles="stitch"></feTurbulence><feColorMatrix type="saturate" values="0"></feColorMatrix></filter><rect width="359" height="208" filter="url(#gf)" fill="#FFFFFF"></rect></svg>
-<p style="position:absolute;left:22px;bottom:20px;margin:0;font-size:9px;letter-spacing:.06em">Crafting Dreams Into Reality</p>
-<div style="position:absolute;right:22px;bottom:18px;display:flex;flex-direction:column;align-items:flex-end;gap:6px"><span style="font-family:'Michroma',sans-serif;font-size:15px;letter-spacing:.08em;color:#FFFFFF">MH</span><span aria-hidden="true" style="width:34px;height:1px;background:#FFFFFF;opacity:.8"></span></div>
+<div aria-hidden="true" style="position:absolute;left:calc(-90px * var(--k));top:calc(40px * var(--k));width:calc(260px * var(--k));height:calc(200px * var(--k));border-radius:50%;background:#5B3DF5;opacity:.9;filter:blur(calc(46px * var(--k)))"></div>
+<div aria-hidden="true" style="position:absolute;left:calc(120px * var(--k));top:calc(120px * var(--k));width:calc(240px * var(--k));height:calc(150px * var(--k));border-radius:50%;background:#B23BE6;opacity:.85;filter:blur(calc(48px * var(--k)))"></div>
+<div aria-hidden="true" style="position:absolute;left:calc(150px * var(--k));top:calc(-70px * var(--k));width:calc(220px * var(--k));height:calc(150px * var(--k));border-radius:50%;background:#5A2E7A;opacity:.55;filter:blur(calc(50px * var(--k)))"></div>
+<svg aria-hidden="true" width="100%" height="100%" style="position:absolute;inset:0;opacity:0.32;mix-blend-mode:overlay;pointer-events:none"><filter id="gf"><feTurbulence type="fractalNoise" baseFrequency="0.75" numOctaves="3" stitchTiles="stitch"></feTurbulence><feColorMatrix type="saturate" values="0"></feColorMatrix></filter><rect width="100%" height="100%" filter="url(#gf)" fill="#FFFFFF"></rect></svg>
+<p style="position:absolute;left:calc(22px * var(--k));bottom:calc(20px * var(--k));margin:0;font-size:calc(9px * var(--k));letter-spacing:.06em">Crafting Dreams Into Reality</p>
+<div style="position:absolute;right:calc(22px * var(--k));bottom:calc(18px * var(--k));display:flex;flex-direction:column;align-items:flex-end;gap:calc(6px * var(--k))"><span style="font-family:'Michroma',sans-serif;font-size:calc(15px * var(--k));letter-spacing:.08em;color:#FFFFFF">MH</span><span aria-hidden="true" style="width:calc(34px * var(--k));height:calc(1px * var(--k));background:#FFFFFF;opacity:.8"></span></div>
 </div>
-<div class="face back" style="background:#1B1B1E;font-family:'Montserrat',sans-serif;color:#ECEBF0;box-sizing:border-box;padding:22px;display:flex;justify-content:space-between;gap:16px">
-<svg aria-hidden="true" width="359" height="208" style="position:absolute;inset:0;opacity:0.18;mix-blend-mode:overlay;pointer-events:none"><filter id="gb"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="3" stitchTiles="stitch"></feTurbulence><feColorMatrix type="saturate" values="0"></feColorMatrix></filter><rect width="359" height="208" filter="url(#gb)" fill="#FFFFFF"></rect></svg>
-<div style="position:relative;display:flex;flex-direction:column;justify-content:center;gap:8px"><span style="font-family:'Michroma',sans-serif;font-size:15px;line-height:1.25;letter-spacing:.1em;color:#FFFFFF">MUHAMMAD<br>HAMDAN</span><span aria-hidden="true" style="width:46px;height:2px;border-radius:2px;background:linear-gradient(90deg,#5B3DF5,#B23BE6)"></span></div>
-<div style="position:relative;display:flex;flex-direction:column;justify-content:space-between;align-items:flex-start;font-size:9.5px;line-height:1.35">
+<div class="face back" style="background:#1B1B1E;font-family:'Montserrat',sans-serif;color:#ECEBF0;box-sizing:border-box;padding:calc(22px * var(--k));display:flex;justify-content:space-between;gap:calc(16px * var(--k))">
+<svg aria-hidden="true" width="100%" height="100%" style="position:absolute;inset:0;opacity:0.18;mix-blend-mode:overlay;pointer-events:none"><filter id="gb"><feTurbulence type="fractalNoise" baseFrequency="0.75" numOctaves="3" stitchTiles="stitch"></feTurbulence><feColorMatrix type="saturate" values="0"></feColorMatrix></filter><rect width="100%" height="100%" filter="url(#gb)" fill="#FFFFFF"></rect></svg>
+<div style="position:relative;display:flex;flex-direction:column;justify-content:center;gap:calc(8px * var(--k))"><span style="font-family:'Michroma',sans-serif;font-size:calc(15px * var(--k));line-height:1.25;letter-spacing:.1em;color:#FFFFFF">MUHAMMAD<br>HAMDAN</span><span aria-hidden="true" style="width:calc(46px * var(--k));height:calc(2px * var(--k));border-radius:calc(2px * var(--k));background:linear-gradient(90deg,#5B3DF5,#B23BE6)"></span></div>
+<div style="position:relative;display:flex;flex-direction:column;justify-content:space-between;align-items:flex-start;font-size:calc(9.5px * var(--k));line-height:1.35">
 <span>hamdansameer2005@gmail.com</span>
 <span style="font-weight:500">Web Developer<br>Graphic Designer<br>Marketing</span>
-<span style="display:flex;flex-direction:column;gap:3px"><span>+971 55 800 5474</span><span style="display:inline-flex;align-items:center;gap:4px"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="17.5" cy="6.5" r="0.6" fill="currentColor"></circle></svg>@xvii.hamdan</span><span style="color:#B9B5C6">hamdanxo.github.io/Portfolio</span></span>
+<span style="display:flex;flex-direction:column;gap:calc(3px * var(--k))"><span>+971 55 800 5474</span><span style="display:inline-flex;align-items:center;gap:calc(4px * var(--k))"><svg style="width:calc(9px * var(--k));height:calc(9px * var(--k))" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="17.5" cy="6.5" r="0.6" fill="currentColor"></circle></svg>@xvii.hamdan</span><span style="color:#B9B5C6">hamdanxo.github.io/Portfolio</span></span>
 </div>
 </div>
 </div>
@@ -211,7 +211,7 @@ a:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
   var sec=document.getElementById('card'),box=document.getElementById('flipBox'),card=document.getElementById('flipCard'),inner=document.getElementById('flipInner');
   if(!sec)return;
   var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  function fit(){card.style.setProperty('--s',reduce?1:box.clientWidth/359);}
+  function fit(){card.style.setProperty('--k',reduce?1:(box.clientWidth/359).toFixed(4));}
   function ease(t){return t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;}
   var ticking=false;
   function update(){

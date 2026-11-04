@@ -150,3 +150,9 @@
 .dg-plane{opacity:0;transition:opacity .6s ease}
 .dg-plane.ready{opacity:1}
 .dg-tile .dg-art img{object-fit:cover}
+/* Design page: the gallery gets most of the screen */
+.design-page .wk-hero{padding-bottom:28px}
+.design-gallery{margin-bottom:120px}
+.design-page .dg-stage{height:min(calc(100svh - 150px),980px)}
+.design-page .wk-hero{padding-top:96px;gap:16px}
+.design-page .wk-title{font-size:clamp(48px,7.2vw,112px)!important}

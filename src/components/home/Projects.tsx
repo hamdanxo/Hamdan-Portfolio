@@ -16,9 +16,9 @@ export default function Projects() {
 <article className="pj s-c5cbe4">
 <div className="pj-head">
 <div className="pj-id"><span className="pj-num">01</span><div className="pj-meta"><span className="pj-client">Landing soon</span><h3 className="pj-title">Graphic Design</h3></div></div>
-<a className="pj-link" href="/work#graphic-design">View projects <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M7 17 17 7" /><path d="M8 7h9v9" /></svg></a>
+<a className="pj-link" href="/design">View projects <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M7 17 17 7" /><path d="M8 7h9v9" /></svg></a>
 </div>
-<a className="pj-grid" href="/work#graphic-design" aria-label="Open Graphic Design projects">
+<a className="pj-grid" href="/design" aria-label="Open Graphic Design projects">
 <div className="pj-img pj-big pj-soon">[DESIGN]</div>
 <div className="pj-img pj-soon">[DESIGN]</div>
 <div className="pj-img pj-soon">[DESIGN]</div>

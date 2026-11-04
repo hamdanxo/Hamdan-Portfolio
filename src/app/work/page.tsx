@@ -8,7 +8,6 @@ import WorkTabs from '@/components/effects/WorkTabs';
 import Glows from '@/components/layout/Glows';
 import SiteHeader from '@/components/layout/SiteHeader';
 import WorkIntro from '@/components/work/WorkIntro';
-import GraphicDesign from '@/components/work/GraphicDesign';
 import Websites from '@/components/work/Websites';
 import Automations from '@/components/work/Automations';
 import WorkCta from '@/components/work/WorkCta';
@@ -16,7 +15,7 @@ import '@/styles/work.css';
 
 export const metadata: Metadata = {
   title: 'Work',
-  description: 'Selected work by Muhammad Hamdan: graphic design, websites, automations and systems.',
+  description: 'Websites and automation systems built by Muhammad Hamdan.',
   alternates: { canonical: '/work' },
 };
 
@@ -29,7 +28,6 @@ export default function WorkPage() {
         <SiteHeader page="work" />
         <main id="work">
           <WorkIntro />
-          <GraphicDesign />
           <Websites />
           <Automations />
           <WorkCta />

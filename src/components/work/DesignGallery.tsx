@@ -96,7 +96,7 @@ export default function DesignGallery() {
     stage.querySelector('.dg-plane')?.classList.add('ready');
     const rm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const p = pos.current;
-    let down = false, lx = 0, ly = 0, moved = 0, hover = false, visible = true, raf = 0;
+    let down = false, lx = 0, ly = 0, moved = 0, visible = true, raf = 0;
 
     const pd = (e: PointerEvent) => { down = true; moved = 0; lx = e.clientX; ly = e.clientY; p.vx = p.vy = 0; stage.classList.add('drag'); stage.setPointerCapture(e.pointerId); };
     const pm = (e: PointerEvent) => {
@@ -107,8 +107,6 @@ export default function DesignGallery() {
     };
     const up = () => { if (!down) return; down = false; stage.classList.remove('drag'); if (rm) p.vx = p.vy = 0; };
     const click = (e: MouseEvent) => { if (moved > 6) { e.preventDefault(); e.stopPropagation(); } };
-    const enter = () => { hover = true; };
-    const leave = () => { hover = false; };
     const wheel = (e: WheelEvent) => { if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) { e.preventDefault(); p.ox -= e.deltaX; draw(); } };
     const key = (e: KeyboardEvent) => {
       const s = 60;
@@ -121,8 +119,6 @@ export default function DesignGallery() {
     stage.addEventListener('pointerup', up);
     stage.addEventListener('pointercancel', up);
     stage.addEventListener('click', click, true);
-    stage.addEventListener('pointerenter', enter);
-    stage.addEventListener('pointerleave', leave);
     stage.addEventListener('wheel', wheel, { passive: false });
     stage.addEventListener('keydown', key);
 
@@ -132,7 +128,7 @@ export default function DesignGallery() {
       raf = requestAnimationFrame(loop);
       if (!visible || document.hidden || down) return;
       if (Math.abs(p.vx) > 0.05 || Math.abs(p.vy) > 0.05) { p.ox += p.vx; p.oy += p.vy; p.vx *= 0.94; p.vy *= 0.94; draw(); }
-      else if (!rm && !hover) { p.ox -= 0.25; p.oy -= 0.12; draw(); }
+      else if (!rm) { p.ox -= 0.25; p.oy -= 0.12; draw(); }
     };
     raf = requestAnimationFrame(loop);
 
@@ -140,8 +136,7 @@ export default function DesignGallery() {
       cancelAnimationFrame(raf); io.disconnect();
       stage.removeEventListener('pointerdown', pd); stage.removeEventListener('pointermove', pm);
       stage.removeEventListener('pointerup', up); stage.removeEventListener('pointercancel', up);
-      stage.removeEventListener('click', click, true); stage.removeEventListener('pointerenter', enter);
-      stage.removeEventListener('pointerleave', leave); stage.removeEventListener('wheel', wheel);
+      stage.removeEventListener('click', click, true); stage.removeEventListener('wheel', wheel);
       stage.removeEventListener('keydown', key);
     };
   }, [dims, draw, view]);

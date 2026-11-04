@@ -205,3 +205,13 @@ button.dg-row:last-child{border-bottom:0}
 .bk-root.ready[data-at=back]{transform:translateX(25%)}
 .bk-touch{display:none}
 @media (pointer:coarse){.bk-fine{display:none}.bk-touch{display:inline}}
+
+/* ---------- set viewer (a stack of posts) ---------- */
+.st-host{position:relative;flex:1;min-height:0;width:100%;overflow:hidden;touch-action:pan-y;user-select:none;-webkit-user-select:none}
+.st-card{position:absolute;left:50%;top:50%;padding:0;border:0;border-radius:6px;overflow:hidden;background:#111;cursor:pointer;transition:transform .75s cubic-bezier(.2,.75,.2,1),opacity .5s;will-change:transform;box-shadow:0 30px 80px rgba(0,0,0,.55),0 0 0 1px rgba(255,255,255,.06)}
+.st-card.on{cursor:default;box-shadow:0 40px 110px rgba(0,0,0,.65),0 0 0 1px rgba(139,108,255,.35)}
+.st-card img{display:block;width:100%;height:100%;object-fit:cover;pointer-events:none}
+.st-dim{position:absolute;inset:0;background:#050608;transition:opacity .6s;pointer-events:none}
+.st-card:focus-visible{outline:2px solid #8B6CFF;outline-offset:4px}
+@media (prefers-reduced-motion:reduce){.st-card,.st-dim{transition:none}}
+@media (hover:hover){.st-card:not(.on):hover .st-dim{opacity:.08!important}}

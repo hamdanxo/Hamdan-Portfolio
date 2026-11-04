@@ -6,6 +6,14 @@ export type Book = {
   height: number;
 };
 
+export type ImageSet = {
+  /** Images in order; the first one is shown in front when the set opens. */
+  images: string[];
+  /** Pixel size of the images (all the same shape). */
+  width: number;
+  height: number;
+};
+
 export type Design = {
   client: string;
   title: string;
@@ -15,13 +23,41 @@ export type Design = {
   img: string | null;
   /** Multi-page work (company profiles, brochures): opens as a page-turning book. */
   book?: Book;
+  /** A series of posts or ads: opens as a stack you can flip through. */
+  set?: ImageSet;
 };
 
 const pages = (folder: string, count: number) =>
   Array.from({ length: count }, (_, i) => `/designs/${folder}/p${String(i + 1).padStart(2, '0')}.webp`);
+const shots = (folder: string, count: number) =>
+  Array.from({ length: count }, (_, i) => `/designs/${folder}/${String(i + 1).padStart(2, '0')}.webp`);
 
 /** Real work. Add new designs here (newest first). */
 export const work: Design[] = [
+  {
+    client: 'Lapiz Blue',
+    title: 'Company Profile 2026-27',
+    year: '2026',
+    tags: ['Print', 'Brand'],
+    img: '/designs/lapiz-blue-profile/cover.webp',
+    book: { pages: pages('lapiz-blue-profile', 28), width: 1000, height: 1352 },
+  },
+  {
+    client: 'Global Classic',
+    title: 'Stone Collections',
+    year: '2026',
+    tags: ['Social', 'Series'],
+    img: '/designs/stone-collections/cover.webp',
+    set: { images: shots('stone-collections', 7), width: 1200, height: 1200 },
+  },
+  {
+    client: 'Lapiz Blue',
+    title: 'Fuga-Shock Launch',
+    year: '2026',
+    tags: ['Social', 'Ad'],
+    img: '/designs/fuga-shock/cover.webp',
+    set: { images: shots('fuga-shock', 3), width: 1024, height: 1280 },
+  },
   {
     client: 'Global Classic',
     title: 'Company Profile 2026',

@@ -103,9 +103,14 @@ export async function loadImages(items: Design[]): Promise<(HTMLImageElement | n
  */
 export async function buildAtlas(items: Design[], images: (HTMLImageElement | null)[], size: TileSize, scale: number) {
   const { W, H } = size;
-  const cols = Math.min(items.length, 4);
-  const rows = Math.ceil(items.length / cols);
-  const cw = Math.round(W * scale), ch = Math.round(H * scale);
+  // Lay the cards out roughly square, then shrink the resolution only if the atlas would pass
+  // 4096px (the safe texture limit on phones). 20 designs stay full quality; 100 still look sharp.
+  const n = Math.max(items.length, 1);
+  const cols = Math.max(1, Math.min(n, Math.round(Math.sqrt((n * H) / W))));
+  const rows = Math.ceil(n / cols);
+  const MAX = 4096;
+  const s = Math.min(scale, MAX / (cols * W), MAX / (rows * H));
+  const cw = Math.floor(W * s), ch = Math.floor(H * s);
   const canvas = document.createElement('canvas');
   canvas.width = cw * cols;
   canvas.height = ch * rows;
@@ -122,7 +127,7 @@ export async function buildAtlas(items: Design[], images: (HTMLImageElement | nu
     const ox = (i % cols) * cw, oy = Math.floor(i / cols) * ch;
     ctx.save();
     ctx.translate(ox, oy);
-    ctx.scale(scale, scale);
+    ctx.scale(cw / W, ch / H);
 
     // card
     ctx.fillStyle = '#0A0B0C';

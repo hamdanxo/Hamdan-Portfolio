@@ -81,7 +81,7 @@ body::after{content:none}
 .wordmark{margin:56px 0 0;text-align:center;white-space:nowrap;font-family:var(--f-display);font-size:clamp(30px,8.1vw,116px);line-height:.85;letter-spacing:.02em;overflow:hidden;background:linear-gradient(180deg,rgba(193,252,250,.30),rgba(168,250,248,.04) 85%);-webkit-background-clip:text;background-clip:text;color:transparent;user-select:none}
 @media (pointer:fine) and (min-width:901px){#glows{will-change:transform}}
 @media (prefers-reduced-motion:reduce){.bar{transition:none}}
-.stack .hero-text{left:max(16px,5vw);right:max(16px,5vw);width:auto;bottom:auto;padding:112px 0 0;justify-content:flex-start;gap:14px}.stack .hero-text h1{font-size:clamp(40px,9vw,76px)!important}.stack.short .hero-intro{display:none}
+.hero-stack .hero-text{left:max(16px,5vw);right:max(16px,5vw);width:auto;bottom:auto;padding:112px 0 0;justify-content:flex-start;gap:14px}.hero-stack .hero-text h1{font-size:clamp(40px,9vw,76px)!important}.hero-stack.hero-short .hero-intro{display:none}
 :root{--noise-img:url("/images/noise.webp")}
 .grain{position:absolute;inset:0;pointer-events:none;background-image:var(--noise-img);background-size:calc(60px * var(--k));background-repeat:repeat}
 .sheen{mix-blend-mode:normal!important;opacity:.6}
@@ -168,3 +168,6 @@ a:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 #liquid.ready{opacity:.3!important}
 #glows{position:absolute;inset:0;pointer-events:none;z-index:0}
 #glows .glow{position:absolute;border-radius:50%;transform:scale(1.6)}
+
+/* Until the inline layout script has placed the hand + card, keep them hidden (no layout shift). */
+.hero-stack .flip-box:not([style]){visibility:hidden}

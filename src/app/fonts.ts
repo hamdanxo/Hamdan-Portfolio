@@ -22,7 +22,6 @@ export const dmMono = localFont({
   ],
   variable: '--font-dm-mono',
   display: 'swap',
-  preload: false,
 });
 
 export const cormorant = localFont({

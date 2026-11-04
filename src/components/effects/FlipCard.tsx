@@ -16,14 +16,13 @@ export default function FlipCard() {
     const card = document.getElementById('flipCard');
     const inner = document.getElementById('flipInner');
     const ht = document.getElementById('heroText');
-    const pin = sec?.querySelector<HTMLElement>('.flip-pin');
-    if (!sec || !box || !card || !inner || !ht || !pin) return;
+    if (!sec || !box || !card || !inner || !ht) return;
     const reduce = prefersReducedMotion();
 
     const layout = () => {
       const vw = window.innerWidth, vh = window.innerHeight, stack = vw <= 900 || vw / vh < 1.15;
-      pin.classList.toggle('stack', stack);
-      pin.classList.toggle('short', vh < 1000);
+      document.documentElement.classList.toggle('hero-stack', stack);
+      document.documentElement.classList.toggle('hero-short', vh < 1000);
       if (!stack) { box.removeAttribute('style'); return; }
       let tb = 0;
       for (const c of Array.from(ht.children) as HTMLElement[]) if (c.offsetHeight) tb = Math.max(tb, c.offsetTop + c.offsetHeight);

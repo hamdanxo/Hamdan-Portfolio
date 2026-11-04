@@ -6,7 +6,7 @@ export default function Hero() {
   return (
     <>
 <section className="flip" id="card" aria-label="Business card">
-<div className="flip-pin" suppressHydrationWarning>
+<div className="flip-pin">
 <div className="hero-text" id="heroText">
 <span className="glass mono s-23a2fd"><span className="s-63150a"></span>Open to internships</span>
 <h1 className="s-9eabf6"><span className="hl"><span>Muhammad</span></span><span className="hl"><span className="s-33dd4a"><em className="serif">Hamdan</em><span className="s-1b96e3">.</span></span></span></h1>

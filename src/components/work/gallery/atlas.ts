@@ -1,0 +1,190 @@
+import type { Design } from '@/data/designs';
+
+/** Size of one tile in CSS pixels, plus the gap between tiles. */
+export type TileSize = { W: number; H: number; G: number };
+
+/** Reads a next/font family list from its CSS variable, e.g. --font-geist. */
+function fontFamily(variable: string, fallback: string): string {
+  const v = getComputedStyle(document.documentElement).getPropertyValue(variable).trim();
+  return v || fallback;
+}
+
+function roundRect(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, r: number) {
+  ctx.beginPath();
+  ctx.roundRect(x, y, w, h, r);
+}
+
+/** Same colour at zero alpha, so gradients fade like CSS `transparent` instead of through black. */
+function transparent(hex: string): string {
+  const n = parseInt(hex.slice(1), 16);
+  return `rgba(${(n >> 16) & 255},${(n >> 8) & 255},${n & 255},0)`;
+}
+
+function radial(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, cx: number, cy: number, rx: number, ry: number, color: string, stop = 0.6) {
+  // Elliptical radial gradient (rx, ry are fractions of the box), like CSS radial-gradient(rx ry at cx cy, color, transparent stop).
+  ctx.save();
+  ctx.beginPath();
+  ctx.rect(x, y, w, h);
+  ctx.clip();
+  ctx.translate(x + cx * w, y + cy * h);
+  ctx.scale(1, (ry * h) / (rx * w));
+  const g = ctx.createRadialGradient(0, 0, 0, 0, 0, rx * w);
+  g.addColorStop(0, color);
+  g.addColorStop(stop, transparent(color));
+  ctx.fillStyle = g;
+  ctx.fillRect(-rx * w * 2, -rx * w * 2, rx * w * 4, rx * w * 4);
+  ctx.restore();
+}
+
+/** Placeholder art, matching the CSS .a1 to .a8 styles of the DOM gallery. */
+function drawArt(ctx: CanvasRenderingContext2D, i: number, x: number, y: number, w: number, h: number) {
+  const fill = (c: string) => { ctx.fillStyle = c; ctx.fillRect(x, y, w, h); };
+  switch (i % 8) {
+    case 0: fill('#17161B'); radial(ctx, x, y, w, h, 0.25, 0.3, 0.9, 0.7, '#7A55F0'); radial(ctx, x, y, w, h, 0.8, 0.8, 0.7, 0.7, '#B23BE6'); break;
+    case 1: fill('#06100F'); radial(ctx, x, y, w, h, 0.7, 0.25, 0.8, 0.8, '#64B6AC'); radial(ctx, x, y, w, h, 0.2, 0.85, 0.7, 0.6, '#5D737E', 0.65); break;
+    case 2: {
+      const g = ctx.createLinearGradient(x, y, x + w * 0.35, y + h);
+      g.addColorStop(0, '#DAFFEF'); g.addColorStop(0.45, '#C0FDFB'); g.addColorStop(1, '#64B6AC');
+      ctx.fillStyle = g; ctx.fillRect(x, y, w, h); break;
+    }
+    case 3: {
+      const g = ctx.createConicGradient((210 - 90) * (Math.PI / 180), x + w * 0.5, y + h * 0.6);
+      g.addColorStop(0, '#0B0614'); g.addColorStop(0.2, '#5B3DF5'); g.addColorStop(0.4, '#0B0614');
+      g.addColorStop(0.6, '#64B6AC'); g.addColorStop(0.8, '#0B0614'); g.addColorStop(1, '#0B0614');
+      ctx.fillStyle = g; ctx.fillRect(x, y, w, h); break;
+    }
+    case 4: fill('#5D737E'); radial(ctx, x, y, w, h, 0.5, 0.5, 0.6, 0.6, '#C0FDFB', 0.62); break;
+    case 5: {
+      // CSS linear-gradient(135deg, dark 50%, violet 50%): violet where (px + py) > (w + h) / 2
+      fill('#1B1B1E');
+      const s = (w + h) / 2, far = w + h;
+      ctx.save(); ctx.beginPath(); ctx.rect(x, y, w, h); ctx.clip();
+      ctx.fillStyle = '#8B6CFF';
+      ctx.beginPath();
+      ctx.moveTo(x + s, y); ctx.lineTo(x + s + far, y);
+      ctx.lineTo(x + s + far, y + far); ctx.lineTo(x + s - far, y + far);
+      ctx.closePath(); ctx.fill(); ctx.restore(); break;
+    }
+    case 6: fill('#0A0A0D'); radial(ctx, x, y, w, h, 0.3, 0.7, 0.7, 0.9, '#B23BE6'); radial(ctx, x, y, w, h, 0.75, 0.25, 0.7, 0.7, '#64B6AC'); break;
+    case 7: {
+      fill('#0E1214');
+      ctx.fillStyle = '#16201F';
+      for (let sx = 14; sx < w; sx += 28) ctx.fillRect(x + sx, y, Math.min(14, w - sx), h);
+      const r = Math.min(w, h) * 0.28, cx = x + w / 2, cy = y + h / 2;
+      const g = ctx.createRadialGradient(cx - r * 0.3, cy - r * 0.3, 0, cx, cy, r);
+      g.addColorStop(0, '#DAFFEF'); g.addColorStop(0.45, '#64B6AC'); g.addColorStop(1, '#1B3B37');
+      ctx.fillStyle = g; ctx.beginPath(); ctx.ellipse(cx, cy, w * 0.28, h * 0.28, 0, 0, Math.PI * 2); ctx.fill(); break;
+    }
+  }
+}
+
+function letterSpaced(ctx: CanvasRenderingContext2D, text: string, x: number, y: number, spacing: number, align: 'left' | 'right' | 'center') {
+  ctx.letterSpacing = `${spacing}px`;
+  ctx.textAlign = align;
+  ctx.fillText(text, x, y);
+  ctx.letterSpacing = '0px';
+}
+
+/** Loads design images (if any) so they can be drawn into the atlas. */
+export async function loadImages(items: Design[]): Promise<(HTMLImageElement | null)[]> {
+  return Promise.all(items.map((d) => new Promise<HTMLImageElement | null>((resolve) => {
+    if (!d.img) return resolve(null);
+    const im = new Image();
+    im.decoding = 'async';
+    im.onload = () => resolve(im);
+    im.onerror = () => resolve(null);
+    im.src = d.img;
+  })));
+}
+
+/**
+ * Draws every design card once into a single canvas (a texture atlas).
+ * The WebGL gallery then shows hundreds of tiles from this one texture.
+ */
+export async function buildAtlas(items: Design[], images: (HTMLImageElement | null)[], size: TileSize, scale: number) {
+  const { W, H } = size;
+  const cols = Math.min(items.length, 4);
+  const rows = Math.ceil(items.length / cols);
+  const cw = Math.round(W * scale), ch = Math.round(H * scale);
+  const canvas = document.createElement('canvas');
+  canvas.width = cw * cols;
+  canvas.height = ch * rows;
+  const ctx = canvas.getContext('2d');
+  if (!ctx) throw new Error('2d context unavailable');
+
+  const sans = fontFamily('--font-geist', 'system-ui, sans-serif');
+  const mono = fontFamily('--font-dm-mono', 'ui-monospace, monospace');
+
+  for (let i = 0; i < items.length; i++) {
+    const d = items[i];
+    // Give the browser a breath between cards, so building the atlas never blocks input.
+    if (i > 0) await new Promise((r) => setTimeout(r, 0));
+    const ox = (i % cols) * cw, oy = Math.floor(i / cols) * ch;
+    ctx.save();
+    ctx.translate(ox, oy);
+    ctx.scale(scale, scale);
+
+    // card
+    ctx.fillStyle = '#0A0B0C';
+    ctx.fillRect(0, 0, W, H);
+    ctx.strokeStyle = 'rgba(255,255,255,0.08)';
+    ctx.lineWidth = 1;
+    ctx.strokeRect(0.5, 0.5, W - 1, H - 1);
+
+    const pad = 14, small = W < 240;
+    // top row
+    ctx.textBaseline = 'middle';
+    ctx.fillStyle = '#FFFFFF';
+    ctx.font = `300 ${small ? 11 : 12}px ${sans}`;
+    letterSpaced(ctx, d.client, pad, pad + 7, 0.24, 'left');
+    ctx.fillStyle = '#C9D3D6';
+    ctx.font = `300 ${small ? 8.5 : 9.5}px ${mono}`;
+    letterSpaced(ctx, d.title.toUpperCase(), W - pad, pad + 7, 1.1, 'right');
+
+    // art
+    const top = pad + 14 + 10, bottom = H - pad - 20 - 10;
+    const ax = W * 0.08 + pad, aw = W - 2 * ax, ah = bottom - top;
+    ctx.save();
+    roundRect(ctx, ax, top, aw, ah, 3);
+    ctx.clip();
+    const img = images[i];
+    if (img) {
+      const s = Math.max(aw / img.naturalWidth, ah / img.naturalHeight);
+      const iw = img.naturalWidth * s, ih = img.naturalHeight * s;
+      ctx.drawImage(img, ax + (aw - iw) / 2, top + (ah - ih) / 2, iw, ih);
+    } else {
+      drawArt(ctx, i, ax, top, aw, ah);
+      ctx.fillStyle = i % 8 === 2 || i % 8 === 4 ? 'rgba(0,0,0,0.5)' : 'rgba(255,255,255,0.55)';
+      ctx.font = `300 10px ${mono}`;
+      ctx.textBaseline = 'middle';
+      letterSpaced(ctx, d.title.toUpperCase(), ax + aw / 2, top + ah / 2, 1.8, 'center');
+    }
+    ctx.restore();
+
+    // bottom row: tags + year
+    const by = H - pad - 10;
+    ctx.font = `300 ${small ? 8 : 8.5}px ${mono}`;
+    ctx.textBaseline = 'middle';
+    let tx = pad;
+    for (const t of d.tags) {
+      ctx.letterSpacing = '1px';
+      const tw = ctx.measureText(t).width + 14;
+      ctx.letterSpacing = '0px';
+      roundRect(ctx, tx, by - 9, tw, 18, 9);
+      ctx.fillStyle = 'rgba(255,255,255,0.07)';
+      ctx.fill();
+      ctx.strokeStyle = 'rgba(255,255,255,0.08)';
+      ctx.stroke();
+      ctx.fillStyle = '#B4C0C4';
+      letterSpaced(ctx, t, tx + 7, by + 0.5, 1, 'left');
+      tx += tw + 5;
+    }
+    ctx.fillStyle = '#C9D3D6';
+    ctx.font = `300 ${small ? 8.5 : 9.5}px ${mono}`;
+    letterSpaced(ctx, d.year, W - pad, by, 1.1, 'right');
+
+    ctx.restore();
+  }
+
+  return { canvas, cols, rows };
+}

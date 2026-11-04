@@ -3,13 +3,19 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Image from 'next/image';
 import { useIdleEffect } from '@/lib/useIdleEffect';
+import { webglInfo } from '@/lib/motion';
 import { designs, type Design } from '@/data/designs';
+import type { GalleryGL } from './gallery/glGallery';
+import type { TileSize } from './gallery/atlas';
 
-type Dims = { W: number; H: number; G: number; cols: number; rows: number };
+type Dims = TileSize & { cols: number; rows: number };
 
 const mod = (a: number, b: number) => ((a % b) + b) % b;
 const pad = (n: number) => (n < 10 ? `0${n}` : `${n}`);
+const tileSize = (stageWidth: number): TileSize =>
+  stageWidth < 700 ? { W: 190, H: 240, G: 10 } : { W: 290, H: 350, G: 14 };
 
+/** DOM tile, only used when WebGL is not available. */
 function Tile({ d, i, w, h, refCb }: { d: Design; i: number; w: number; h: number; refCb: (el: HTMLDivElement | null) => void }) {
   return (
     <div className="dg-tile" ref={refCb} style={{ width: w, height: h }}>
@@ -25,12 +31,18 @@ function Tile({ d, i, w, h, refCb }: { d: Design; i: number; w: number; h: numbe
   );
 }
 
-/** Phantom-style endless, curved, draggable gallery with a list view. */
+/**
+ * Phantom-style endless, curved, draggable gallery with a list view.
+ * Drawn with WebGL (Three.js) so it stays smooth on phones; falls back to DOM tiles without WebGL.
+ */
 export default function DesignGallery({ fullscreen = false }: { fullscreen?: boolean }) {
   const [view, setView] = useState<'grid' | 'list'>('grid');
+  const [mode, setMode] = useState<'pending' | 'gl' | 'dom'>('pending');
   const [dims, setDims] = useState<Dims | null>(null);
   const wrapRef = useRef<HTMLDivElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const glRef = useRef<GalleryGL | null>(null);
   const tilesRef = useRef<(HTMLDivElement | null)[]>([]);
   const pos = useRef({ ox: 0, oy: 0, vx: 0, vy: 0 });
   const real = designs.filter((d) => d.img).length;
@@ -41,12 +53,13 @@ export default function DesignGallery({ fullscreen = false }: { fullscreen?: boo
     return [...m.entries()].sort((a, b) => b[0].localeCompare(a[0]));
   }, []);
 
-  // Size the stage edge to edge on large screens and work out how many tiles cover it.
-  const measure = useCallback(() => {
+  /** Edge to edge on large screens (always, in full-screen mode). */
+  const bleed = useCallback(() => {
     const stage = stageRef.current, wrap = wrapRef.current;
     if (!stage || !wrap) return;
+    if (fullscreen) return; // handled in CSS (.dg-full), so nothing shifts after load
     const vw = document.documentElement.clientWidth;
-    if (fullscreen || vw > 900) {
+    if (vw > 900) {
       stage.classList.add('bleed');
       stage.style.width = `${vw}px`;
       stage.style.marginLeft = `${-wrap.getBoundingClientRect().left}px`;
@@ -55,22 +68,77 @@ export default function DesignGallery({ fullscreen = false }: { fullscreen?: boo
       stage.style.width = '';
       stage.style.marginLeft = '';
     }
-    const sw = stage.clientWidth, sh = stage.clientHeight, m = sw < 700;
-    const W = m ? 190 : 290, H = m ? 240 : 350, G = m ? 10 : 14;
-    setDims({ W, H, G, cols: Math.ceil(sw / (W + G)) + 6, rows: Math.ceil(sh / (H + G)) + 6 });
   }, [fullscreen]);
 
+  // ---------- set up the renderer (WebGL first, DOM tiles as fallback) ----------
+  useIdleEffect(() => {
+    if (view !== 'grid') return;
+    let cancelled = false;
+    const stage = stageRef.current, canvas = canvasRef.current;
+    if (!stage || !canvas) return;
+    bleed();
+
+    const setupDom = () => {
+      const sw = stage.clientWidth, sh = stage.clientHeight, t = tileSize(sw);
+      setDims({ ...t, cols: Math.ceil(sw / (t.W + t.G)) + 6, rows: Math.ceil(sh / (t.H + t.G)) + 6 });
+      setMode('dom');
+    };
+
+    (async () => {
+      // No GPU (WebGL missing or software-rendered): use the lighter DOM grid instead.
+      const info = webglInfo();
+      if (!info.ok || info.software) { setupDom(); return; }
+      try {
+        const [{ buildAtlas, loadImages }, { createGalleryGL }] = await Promise.all([
+          import('./gallery/atlas'),
+          import('./gallery/glGallery'),
+        ]);
+        await document.fonts?.ready;
+        const images = await loadImages(designs);
+        if (cancelled) return;
+        const size = tileSize(stage.clientWidth);
+        const atlas = await buildAtlas(designs, images, size, Math.min(window.devicePixelRatio || 1, 2));
+        if (cancelled) return;
+        await new Promise((r) => setTimeout(r, 0));
+        glRef.current = createGalleryGL(canvas, atlas, designs.length, size);
+        setMode('gl');
+      } catch {
+        if (!cancelled) setupDom();
+      }
+    })();
+
+    let t = 0;
+    const onResize = () => {
+      window.clearTimeout(t);
+      t = window.setTimeout(() => {
+        bleed();
+        const gl = glRef.current;
+        if (gl) { gl.resize(); gl.render(); } else if (stageRef.current) setupDom();
+      }, 150);
+    };
+    window.addEventListener('resize', onResize);
+    return () => {
+      cancelled = true;
+      window.clearTimeout(t);
+      window.removeEventListener('resize', onResize);
+      glRef.current?.dispose();
+      glRef.current = null;
+    };
+  }, [view, bleed]);
+
+  // ---------- draw one frame at the current offset ----------
   const draw = useCallback(() => {
+    const { ox, oy } = pos.current;
+    const gl = glRef.current;
+    if (gl) { gl.setOffset(ox, oy); gl.render(); return; }
     const stage = stageRef.current;
     if (!stage || !dims) return;
     const { W, H, G, cols, rows } = dims;
     const sw = stage.clientWidth, sh = stage.clientHeight, hw = sw / 2, hh = sh / 2;
     const TW = cols * (W + G), TH = rows * (H + G);
-    const { ox, oy } = pos.current;
     tilesRef.current.forEach((el, k) => {
       if (!el) return;
       const c = k % cols, r = Math.floor(k / cols);
-      // Centre the tile band on the stage so both edges always have spare tiles.
       const x = mod(c * (W + G) + ox, TW) - (TW - sw) / 2;
       const y = mod(r * (H + G) + oy, TH) - (TH - sh) / 2;
       const nx = (x + W / 2 - hw) / hw, ny = (y + H / 2 - hh) / hh;
@@ -79,57 +147,73 @@ export default function DesignGallery({ fullscreen = false }: { fullscreen?: boo
     });
   }, [dims]);
 
-  // Build the grid when the browser is idle, so it never slows down the first load.
-  useIdleEffect(() => {
-    if (view !== 'grid') return;
-    measure();
-    let t = 0;
-    const onResize = () => { window.clearTimeout(t); t = window.setTimeout(measure, 150); };
-    window.addEventListener('resize', onResize);
-    window.addEventListener('worktabs:change', measure);
-    return () => { window.removeEventListener('resize', onResize); window.removeEventListener('worktabs:change', measure); };
-  }, [view, measure]);
-
+  // ---------- drag, glide, drift, keys ----------
   useEffect(() => {
     const stage = stageRef.current;
-    if (!stage || !dims || view !== 'grid') return;
+    if (!stage || view !== 'grid' || mode === 'pending' || (mode === 'dom' && !dims)) return;
     draw();
     stage.querySelector('.dg-plane')?.classList.add('ready');
     const rm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const p = pos.current;
-    let down = false, lx = 0, ly = 0, moved = 0, visible = true, raf = 0;
+    let down = false, lx = 0, ly = 0, moved = 0, visible = true, raf = 0, dirty = true;
+    // Without a GPU (software WebGL) the idle drift is skipped; the grid still moves when dragged.
+    const software = glRef.current ? glRef.current.software : webglInfo().software;
 
     const pd = (e: PointerEvent) => { down = true; moved = 0; lx = e.clientX; ly = e.clientY; p.vx = p.vy = 0; stage.classList.add('drag'); stage.setPointerCapture(e.pointerId); };
     const pm = (e: PointerEvent) => {
+      if (e.pointerType === 'mouse' && glRef.current) {
+        const r = stage.getBoundingClientRect();
+        glRef.current.setMouse(e.clientX - r.left, e.clientY - r.top);
+        dirty = true;
+      }
       if (!down) return;
       const dx = e.clientX - lx, dy = e.clientY - ly;
       lx = e.clientX; ly = e.clientY; moved += Math.abs(dx) + Math.abs(dy);
-      p.ox += dx; p.oy += dy; p.vx = dx; p.vy = dy; draw();
+      p.ox += dx; p.oy += dy; p.vx = dx; p.vy = dy; dirty = true;
     };
     const up = () => { if (!down) return; down = false; stage.classList.remove('drag'); if (rm) p.vx = p.vy = 0; };
+    const leave = () => { glRef.current?.setMouse(null, null); dirty = true; };
     const click = (e: MouseEvent) => { if (moved > 6) { e.preventDefault(); e.stopPropagation(); } };
-    const wheel = (e: WheelEvent) => { if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) { e.preventDefault(); p.ox -= e.deltaX; draw(); } };
+    const wheel = (e: WheelEvent) => { if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) { e.preventDefault(); p.ox -= e.deltaX; dirty = true; } };
     const key = (e: KeyboardEvent) => {
       const s = 60;
       if (e.key === 'ArrowLeft') p.ox += s; else if (e.key === 'ArrowRight') p.ox -= s;
       else if (e.key === 'ArrowUp') p.oy += s; else if (e.key === 'ArrowDown') p.oy -= s; else return;
-      e.preventDefault(); draw();
+      e.preventDefault();
+      dirty = true;
     };
     stage.addEventListener('pointerdown', pd);
     stage.addEventListener('pointermove', pm);
     stage.addEventListener('pointerup', up);
     stage.addEventListener('pointercancel', up);
+    stage.addEventListener('pointerleave', leave);
     stage.addEventListener('click', click, true);
     stage.addEventListener('wheel', wheel, { passive: false });
     stage.addEventListener('keydown', key);
 
     const io = new IntersectionObserver((es) => { visible = es[0].isIntersecting; }, { rootMargin: '100px' });
     io.observe(stage);
-    const loop = () => {
+
+    // One frame loop: pointer moves only update numbers; drawing happens once per frame.
+    let last = performance.now();
+    const loop = (now: number) => {
       raf = requestAnimationFrame(loop);
-      if (!visible || document.hidden || down) return;
-      if (Math.abs(p.vx) > 0.05 || Math.abs(p.vy) > 0.05) { p.ox += p.vx; p.oy += p.vy; p.vx *= 0.94; p.vy *= 0.94; draw(); }
-      else if (!rm) { p.ox -= 0.25; p.oy -= 0.12; draw(); }
+      const dt = Math.min(3, (now - last) / 16.667);
+      last = now;
+      if (!visible || document.hidden) return;
+      if (!down) {
+        if (Math.abs(p.vx) > 0.05 || Math.abs(p.vy) > 0.05) {
+          p.ox += p.vx * dt; p.oy += p.vy * dt;
+          const f = Math.pow(0.94, dt);
+          p.vx *= f; p.vy *= f;
+        } else if (!rm && !software) {
+          p.ox -= 0.25 * dt; p.oy -= 0.12 * dt;
+        } else if (!dirty) {
+          return; // nothing moved: skip drawing
+        }
+      }
+      dirty = false;
+      draw();
     };
     raf = requestAnimationFrame(loop);
 
@@ -137,12 +221,13 @@ export default function DesignGallery({ fullscreen = false }: { fullscreen?: boo
       cancelAnimationFrame(raf); io.disconnect();
       stage.removeEventListener('pointerdown', pd); stage.removeEventListener('pointermove', pm);
       stage.removeEventListener('pointerup', up); stage.removeEventListener('pointercancel', up);
+      stage.removeEventListener('pointerleave', leave);
       stage.removeEventListener('click', click, true); stage.removeEventListener('wheel', wheel);
       stage.removeEventListener('keydown', key);
     };
-  }, [dims, draw, view]);
+  }, [dims, draw, view, mode]);
 
-  const count = dims ? dims.cols * dims.rows : 0;
+  const count = mode === 'dom' && dims ? dims.cols * dims.rows : 0;
 
   return (
     <div className="cat-list">
@@ -163,16 +248,24 @@ export default function DesignGallery({ fullscreen = false }: { fullscreen?: boo
           <span className="dg-hint" style={{ visibility: view === 'grid' ? 'visible' : 'hidden' }}><i aria-hidden="true" />Drag to explore</span>
         </div>
 
-        <div className="dg-stage" ref={stageRef} hidden={view !== 'grid'} tabIndex={0} role="region" aria-label="Design gallery. Drag or use the arrow keys to move around." data-lenis-prevent="">
-          <div className="dg-plane">
-            {Array.from({ length: count }, (_, k) => {
-              const cols = dims?.cols ?? 1;
-              const i = ((k % cols) + Math.floor(k / cols) * 3) % designs.length;
-              return <Tile key={k} d={designs[i]} i={i} w={dims?.W ?? 0} h={dims?.H ?? 0} refCb={(el) => { tilesRef.current[k] = el; }} />;
-            })}
+        {view === 'grid' && (
+          <div className={`dg-stage dg-${mode}`} ref={stageRef} tabIndex={0} role="region" aria-label="Design gallery. Drag or use the arrow keys to move around." data-lenis-prevent="">
+            <canvas ref={canvasRef} className="dg-canvas" aria-hidden="true" />
+            {mode === 'dom' && (
+              <div className="dg-plane">
+                {Array.from({ length: count }, (_, k) => {
+                  const cols = dims?.cols ?? 1;
+                  const i = ((k % cols) + Math.floor(k / cols) * 3) % designs.length;
+                  return <Tile key={k} d={designs[i]} i={i} w={dims?.W ?? 0} h={dims?.H ?? 0} refCb={(el) => { tilesRef.current[k] = el; }} />;
+                })}
+              </div>
+            )}
+            <div className="dg-vig" aria-hidden="true" />
+            <ul className="sr-only">
+              {designs.map((d) => <li key={d.title}>{d.title}, {d.client}, {d.year}</li>)}
+            </ul>
           </div>
-          <div className="dg-vig" aria-hidden="true" />
-        </div>
+        )}
 
         {view === 'list' && (
           <div className="dg-list">

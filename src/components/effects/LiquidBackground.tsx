@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import { prefersReducedMotion } from '@/lib/motion';
+import { hasWebGL, prefersReducedMotion } from '@/lib/motion';
 
 const WAKE_EVENTS = ['pointermove', 'pointerdown', 'scroll', 'wheel', 'touchstart', 'keydown'] as const;
 
@@ -9,7 +9,7 @@ const WAKE_EVENTS = ['pointermove', 'pointerdown', 'scroll', 'wheel', 'touchstar
  * Liquid-metal background rendered with Three.js.
  * Three.js is fetched only after the visitor first interacts with the page and the
  * browser is idle, so it never competes with the first paint (LCP) or delays input (INP).
- * Devices without a real GPU get a single still frame instead of an animation.
+ * Devices without a real GPU get a single still frame; touch devices get a still CSS version.
  */
 export default function LiquidBackground() {
   const ref = useRef<HTMLCanvasElement>(null);
@@ -17,6 +17,8 @@ export default function LiquidBackground() {
   useEffect(() => {
     const canvas = ref.current;
     if (!canvas) return;
+    // Phones and tablets get a still CSS version (see globals.css): no WebGL work competing with scrolling.
+    if (window.matchMedia('(pointer: coarse)').matches || !hasWebGL()) return;
     let disposed = false;
     let stop: (() => void) | undefined;
 
@@ -31,6 +33,7 @@ export default function LiquidBackground() {
         return; // No WebGL: the plain dark background stays.
       }
       const frameGap = 1000 / (small ? 24 : 30);
+
       const t0 = performance.now() - 20000;
       const gl = scene.renderer.getContext();
       const info = gl.getExtension('WEBGL_debug_renderer_info');

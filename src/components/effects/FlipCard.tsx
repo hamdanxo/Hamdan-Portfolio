@@ -42,6 +42,7 @@ export default function FlipCard() {
       return ease(Math.min(1, Math.max(0, (p - 0.05) / 0.8)));
     };
     const fine = window.matchMedia('(pointer: fine)').matches && window.innerWidth > 900;
+    const sheens = Array.from(inner.querySelectorAll<HTMLElement>('.sheen'));
     let cur = 0, last = -1, raf = 0;
     const loop = () => {
       raf = requestAnimationFrame(loop);
@@ -52,15 +53,27 @@ export default function FlipCard() {
       if (Math.abs(t - cur) < 0.0005) cur = t;
       if (!fine && cur === last) return;
       last = cur;
-      inner.style.setProperty('--ry', `${(cur * 540).toFixed(2)}deg`);
-      inner.style.setProperty('--sh', `${(100 - ((cur * 3) % 1) * 100).toFixed(1)}%`);
-      if (fine) inner.style.setProperty('--fy', `${(Math.sin(performance.now() / 1400) * 6).toFixed(2)}px`);
+      // One transform write per frame; no CSS variables, so the card's children never restyle.
+      const fy = fine ? Math.sin(performance.now() / 1400) * 6 : 0;
+      inner.style.transform = `translate3d(0,${fy.toFixed(2)}px,0) rotateZ(-9deg) rotateX(16deg) rotateY(${(cur * 540).toFixed(2)}deg)`;
+      if (fine) {
+        const sh = `${(100 - ((cur * 3) % 1) * 100).toFixed(1)}% 0`;
+        for (const el of sheens) el.style.backgroundPosition = sh;
+      }
     };
 
-    window.addEventListener('resize', fit);
+    // Phones fire resize while scrolling (the address bar shows and hides). Only re-layout when the width changes,
+    // so the hand and card never jump mid-scroll.
+    let lastW = window.innerWidth;
+    const onResize = () => {
+      if (window.innerWidth === lastW && window.matchMedia('(pointer: coarse)').matches) return;
+      lastW = window.innerWidth;
+      fit();
+    };
+    window.addEventListener('resize', onResize);
     fit();
     if (!reduce) { cur = target(); raf = requestAnimationFrame(loop); }
-    return () => { window.removeEventListener('resize', fit); cancelAnimationFrame(raf); };
+    return () => { window.removeEventListener('resize', onResize); cancelAnimationFrame(raf); };
   }, []);
 
   return null;

@@ -23,6 +23,7 @@ export default function Projects() {
 <div className="pj-img pj-soon">[DESIGN]</div>
 <div className="pj-img pj-soon">[DESIGN]</div>
 </a>
+<span className="pj-dim" aria-hidden="true" />
 </article>
 <article className="pj s-3ea882">
 <div className="pj-head">
@@ -34,6 +35,7 @@ export default function Projects() {
 <div className="pj-img pj-soon">Next site</div>
 <div className="pj-img pj-soon">Next site</div>
 </a>
+<span className="pj-dim" aria-hidden="true" />
 </article>
 <article className="pj s-b9d41c">
 <div className="pj-head">
@@ -68,6 +70,7 @@ export default function Projects() {
 <div className="pj-img pj-soon">Next system</div>
 <div className="pj-img pj-soon">Next system</div>
 </a>
+<span className="pj-dim" aria-hidden="true" />
 </article>
 </div>
 </section>

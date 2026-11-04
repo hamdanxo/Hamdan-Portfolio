@@ -67,7 +67,7 @@ body::after{content:none}
 .cur.on{opacity:1}.cur.big{width:72px;height:72px;margin:-36px 0 0 -36px;background:radial-gradient(circle,rgba(168,250,248,.32),transparent 70%)}
 @media (prefers-reduced-motion:reduce){.mq-track{animation:none;flex-wrap:wrap}.cur{display:none}}
 @media (pointer:coarse){.cur{display:none}}
-.flip-inner{transform:translateY(var(--fy,0px)) rotateZ(-9deg) rotateX(16deg) rotateY(var(--ry,0deg))!important}
+.flip-inner{transform:rotateZ(-9deg) rotateX(16deg) rotateY(0deg)}
 .sheen{position:absolute;inset:0;pointer-events:none;background:linear-gradient(105deg,transparent 38%,rgba(255,255,255,.16) 48%,rgba(255,255,255,.05) 52%,transparent 62%);background-size:300% 100%;background-position:var(--sh,100%) 0;mix-blend-mode:overlay}
 .h2l{display:block;overflow:hidden;padding-bottom:.1em;margin-bottom:-.1em}
 .h2l>span{display:inline-block}
@@ -116,7 +116,7 @@ body::after{display:none}
 :is(header,#heroText,#strip,#projects,#about,#education,#skills,#languages,#contact) .serif{font-family:var(--f-serif)!important;font-style:italic;font-weight:400!important;font-size:1.14em;letter-spacing:-.005em;line-height:.85;padding-right:.04em}
 .pj-stack{display:flex;flex-direction:column;gap:56px;padding-bottom:40px}
 .pj{position:sticky;top:calc(118px + var(--i) * 26px);border-radius:32px;padding:22px;background:linear-gradient(160deg,#182024 0%,#0D1214 55%,#131A1E 100%);border:1px solid rgba(193,252,250,.16);box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 -20px 60px rgba(0,0,0,.55);transform-origin:50% 0;transform:scale(var(--sc,1));will-change:transform}
-.pj::after{content:"";position:absolute;inset:0;border-radius:inherit;background:#050809;opacity:var(--dim,0);pointer-events:none}
+.pj-dim{position:absolute;inset:0;border-radius:inherit;background:#050809;opacity:0;pointer-events:none;will-change:opacity}
 .pj-head{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:4px 6px 20px}
 .pj-id{display:flex;align-items:center;gap:18px;min-width:0}
 .pj-num{font-family:var(--f-sans);font-size:clamp(40px,4.4vw,64px);line-height:1;letter-spacing:-.04em;color:#FFFFFF}
@@ -171,3 +171,21 @@ a:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 
 /* Until the inline layout script has placed the hand + card, keep them hidden (no layout shift). */
 .hero-stack .flip-box:not([style]){visibility:hidden}
+
+/* ---------- smoothness ---------- */
+.sr-only{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+/* Animated values are written straight to transform/opacity by JS, so only the compositor works on scroll. */
+.pj{will-change:transform}
+/* The glow layer is page-tall: only promote it where it actually moves (desktop parallax). */
+#glows{will-change:auto}
+@media (pointer:fine) and (min-width:901px){#glows{will-change:transform}}
+.mq-track{will-change:transform}
+#liquid{will-change:opacity}
+/* Touch devices: a still version of the liquid background (no WebGL while scrolling) */
+@media (pointer:coarse){
+#liquid{opacity:.3!important;background:
+  radial-gradient(60% 40% at 18% 22%,rgba(81,184,172,.32),transparent 70%),
+  radial-gradient(55% 35% at 82% 58%,rgba(37,61,72,.9),transparent 70%),
+  radial-gradient(70% 45% at 40% 88%,rgba(81,184,172,.18),transparent 70%),
+  radial-gradient(120% 80% at 50% 55%,#25404a,#040506 75%)}
+}

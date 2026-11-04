@@ -26,7 +26,7 @@ function Tile({ d, i, w, h, refCb }: { d: Design; i: number; w: number; h: numbe
 }
 
 /** Phantom-style endless, curved, draggable gallery with a list view. */
-export default function DesignGallery() {
+export default function DesignGallery({ fullscreen = false }: { fullscreen?: boolean }) {
   const [view, setView] = useState<'grid' | 'list'>('grid');
   const [dims, setDims] = useState<Dims | null>(null);
   const wrapRef = useRef<HTMLDivElement>(null);
@@ -46,7 +46,7 @@ export default function DesignGallery() {
     const stage = stageRef.current, wrap = wrapRef.current;
     if (!stage || !wrap) return;
     const vw = document.documentElement.clientWidth;
-    if (vw > 900) {
+    if (fullscreen || vw > 900) {
       stage.classList.add('bleed');
       stage.style.width = `${vw}px`;
       stage.style.marginLeft = `${-wrap.getBoundingClientRect().left}px`;
@@ -57,8 +57,8 @@ export default function DesignGallery() {
     }
     const sw = stage.clientWidth, sh = stage.clientHeight, m = sw < 700;
     const W = m ? 190 : 290, H = m ? 240 : 350, G = m ? 10 : 14;
-    setDims({ W, H, G, cols: Math.ceil(sw / (W + G)) + 3, rows: Math.ceil(sh / (H + G)) + 3 });
-  }, []);
+    setDims({ W, H, G, cols: Math.ceil(sw / (W + G)) + 6, rows: Math.ceil(sh / (H + G)) + 6 });
+  }, [fullscreen]);
 
   const draw = useCallback(() => {
     const stage = stageRef.current;
@@ -70,8 +70,9 @@ export default function DesignGallery() {
     tilesRef.current.forEach((el, k) => {
       if (!el) return;
       const c = k % cols, r = Math.floor(k / cols);
-      const x = mod(c * (W + G) + ox, TW) - (W + G);
-      const y = mod(r * (H + G) + oy, TH) - (H + G);
+      // Centre the tile band on the stage so both edges always have spare tiles.
+      const x = mod(c * (W + G) + ox, TW) - (TW - sw) / 2;
+      const y = mod(r * (H + G) + oy, TH) - (TH - sh) / 2;
       const nx = (x + W / 2 - hw) / hw, ny = (y + H / 2 - hh) / hh;
       const z = -(nx * nx * 1.1 + ny * ny * 0.8) * 260;
       el.style.transform = `translate3d(${x.toFixed(1)}px,${y.toFixed(1)}px,${z.toFixed(1)}px) rotateY(${(-nx * 24).toFixed(2)}deg) rotateX(${(ny * 16).toFixed(2)}deg)`;
@@ -145,7 +146,7 @@ export default function DesignGallery() {
 
   return (
     <div className="cat-list">
-      <div className="dg" ref={wrapRef}>
+      <div className={fullscreen ? 'dg dg-full' : 'dg'} ref={wrapRef}>
         <div className="dg-bar">
           <div className="dg-views" role="group" aria-label="View">
             {(['grid', 'list'] as const).map((v) => (

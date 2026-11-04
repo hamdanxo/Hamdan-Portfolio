@@ -27,7 +27,7 @@ export default function DesignPage() {
         <main id="work" className="design-page">
           <DesignIntro />
           <section className="design-gallery" aria-label="Design gallery">
-            <DesignGallery />
+            <DesignGallery fullscreen />
           </section>
           <WorkCta />
         </main>

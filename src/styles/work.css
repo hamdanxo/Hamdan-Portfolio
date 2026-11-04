@@ -156,3 +156,7 @@
 .design-page .dg-stage{height:min(calc(100svh - 150px),980px)}
 .design-page .wk-hero{padding-top:96px;gap:16px}
 .design-page .wk-title{font-size:clamp(48px,7.2vw,112px)!important}
+/* Full-screen gallery on the Design page: edge to edge, full height, soft edges only */
+.dg-full .dg-stage{height:100vh;height:100svh;max-height:none;border-radius:0;border-left:0;border-right:0}
+.design-page .dg-full .dg-stage{height:100vh;height:100svh}
+.dg-full .dg-vig{background:radial-gradient(140% 120% at 50% 50%,transparent 62%,rgba(0,0,0,.45) 100%),linear-gradient(180deg,rgba(0,0,0,.55),transparent 10%,transparent 90%,rgba(0,0,0,.55))}

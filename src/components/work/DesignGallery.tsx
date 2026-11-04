@@ -4,7 +4,8 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Image from 'next/image';
 import { useIdleEffect } from '@/lib/useIdleEffect';
 import { webglInfo } from '@/lib/motion';
-import { designs, type Design } from '@/data/designs';
+import { designs, work, type Design } from '@/data/designs';
+import DesignViewer from './DesignViewer';
 import type { GalleryGL } from './gallery/glGallery';
 import type { TileSize } from './gallery/atlas';
 
@@ -18,7 +19,7 @@ const tileSize = (stageWidth: number): TileSize =>
 /** DOM tile, only used when WebGL is not available. */
 function Tile({ d, i, w, h, refCb }: { d: Design; i: number; w: number; h: number; refCb: (el: HTMLDivElement | null) => void }) {
   return (
-    <div className="dg-tile" ref={refCb} style={{ width: w, height: h }}>
+    <div className={d.img ? 'dg-tile dg-real' : 'dg-tile'} data-i={i} ref={refCb} style={{ width: w, height: h }}>
       <div className="r"><span>{d.client}</span><span>{d.title}</span></div>
       <div className={d.img ? 'dg-art' : `dg-art a${(i % 8) + 1}`}>
         {d.img ? <Image src={d.img} alt={d.title} fill sizes="300px" draggable={false} /> : <em>{d.title}</em>}
@@ -45,11 +46,12 @@ export default function DesignGallery({ fullscreen = false }: { fullscreen?: boo
   const glRef = useRef<GalleryGL | null>(null);
   const tilesRef = useRef<(HTMLDivElement | null)[]>([]);
   const pos = useRef({ ox: 0, oy: 0, vx: 0, vy: 0 });
-  const real = designs.filter((d) => d.img).length;
+  const [open, setOpen] = useState<Design | null>(null);
+  const close = useCallback(() => setOpen(null), []);
 
   const byYear = useMemo(() => {
     const m = new Map<string, Design[]>();
-    for (const d of designs) m.set(d.year, [...(m.get(d.year) ?? []), d]);
+    for (const d of work) m.set(d.year, [...(m.get(d.year) ?? []), d]);
     return [...m.entries()].sort((a, b) => b[0].localeCompare(a[0]));
   }, []);
 
@@ -164,6 +166,10 @@ export default function DesignGallery({ fullscreen = false }: { fullscreen?: boo
       if (e.pointerType === 'mouse' && glRef.current) {
         const r = stage.getBoundingClientRect();
         glRef.current.setMouse(e.clientX - r.left, e.clientY - r.top);
+        if (!down) {
+          const i = glRef.current.pick(e.clientX - r.left, e.clientY - r.top);
+          stage.classList.toggle('dg-pick', i >= 0 && !!designs[i].img);
+        }
         dirty = true;
       }
       if (!down) return;
@@ -173,7 +179,20 @@ export default function DesignGallery({ fullscreen = false }: { fullscreen?: boo
     };
     const up = () => { if (!down) return; down = false; stage.classList.remove('drag'); if (rm) p.vx = p.vy = 0; };
     const leave = () => { glRef.current?.setMouse(null, null); dirty = true; };
-    const click = (e: MouseEvent) => { if (moved > 6) { e.preventDefault(); e.stopPropagation(); } };
+    const click = (e: MouseEvent) => {
+      if (moved > 6) { e.preventDefault(); e.stopPropagation(); return; }
+      const gl = glRef.current;
+      let i = -1;
+      if (gl) {
+        const r = stage.getBoundingClientRect();
+        i = gl.pick(e.clientX - r.left, e.clientY - r.top);
+      } else {
+        // The stage captures the pointer, so look up which DOM tile is under it.
+        const tile = document.elementsFromPoint(e.clientX, e.clientY).find((el) => el instanceof HTMLElement && el.dataset.i !== undefined) as HTMLElement | undefined;
+        if (tile) i = Number(tile.dataset.i);
+      }
+      if (i >= 0 && designs[i].img) { p.vx = p.vy = 0; setOpen(designs[i]); }
+    };
     const wheel = (e: WheelEvent) => { if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) { e.preventDefault(); p.ox -= e.deltaX; dirty = true; } };
     const key = (e: KeyboardEvent) => {
       const s = 60;
@@ -182,6 +201,9 @@ export default function DesignGallery({ fullscreen = false }: { fullscreen?: boo
       e.preventDefault();
       dirty = true;
     };
+    // Enter on the focused gallery opens the first real design (keyboard users also have the list view).
+    const enter = (e: KeyboardEvent) => { if (e.key === 'Enter' && e.target === stage && work[0]) setOpen(work[0]); };
+    stage.addEventListener('keydown', enter);
     stage.addEventListener('pointerdown', pd);
     stage.addEventListener('pointermove', pm);
     stage.addEventListener('pointerup', up);
@@ -224,6 +246,7 @@ export default function DesignGallery({ fullscreen = false }: { fullscreen?: boo
       stage.removeEventListener('pointerleave', leave);
       stage.removeEventListener('click', click, true); stage.removeEventListener('wheel', wheel);
       stage.removeEventListener('keydown', key);
+      stage.removeEventListener('keydown', enter);
     };
   }, [dims, draw, view, mode]);
 
@@ -244,7 +267,7 @@ export default function DesignGallery({ fullscreen = false }: { fullscreen?: boo
               </button>
             ))}
           </div>
-          <span className="dg-count">All designs <b>{pad(real)}</b></span>
+          <span className="dg-count">All designs <b>{pad(work.length)}</b></span>
           <span className="dg-hint" style={{ visibility: view === 'grid' ? 'visible' : 'hidden' }}><i aria-hidden="true" />Drag to explore</span>
         </div>
 
@@ -262,7 +285,9 @@ export default function DesignGallery({ fullscreen = false }: { fullscreen?: boo
             )}
             <div className="dg-vig" aria-hidden="true" />
             <ul className="sr-only">
-              {designs.map((d) => <li key={d.title}>{d.title}, {d.client}, {d.year}</li>)}
+              {work.map((d) => (
+                <li key={d.title}><button type="button" onClick={() => setOpen(d)}>Open {d.title}, {d.client}, {d.year}</button></li>
+              ))}
             </ul>
           </div>
         )}
@@ -274,11 +299,11 @@ export default function DesignGallery({ fullscreen = false }: { fullscreen?: boo
                 <span>{year}</span>
                 <div>
                   {items.map((d) => (
-                    <div className="dg-row" key={d.title}>
+                    <button type="button" className="dg-row" key={d.title} onClick={() => setOpen(d)}>
                       <b>{d.title}</b>
                       <span className="dg-tags">{d.tags.map((t) => <i key={t}>{t}</i>)}</span>
                       <small>{d.client}</small>
-                    </div>
+                    </button>
                   ))}
                 </div>
               </div>
@@ -286,6 +311,7 @@ export default function DesignGallery({ fullscreen = false }: { fullscreen?: boo
           </div>
         )}
       </div>
+      <DesignViewer design={open} onClose={close} />
     </div>
   );
 }

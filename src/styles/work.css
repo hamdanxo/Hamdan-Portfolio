@@ -170,3 +170,38 @@
 /* DOM fallback grid: no blend modes inside 3D tiles (expensive to composite) */
 .dg-art em{mix-blend-mode:normal;color:rgba(255,255,255,.55)}
 .a3 em,.a5 em{color:rgba(0,0,0,.5)}
+
+/* ---------- clickable designs ---------- */
+.dg-stage.dg-pick:not(.drag){cursor:pointer}
+.dg-tile.dg-real{cursor:pointer}
+button.dg-row{width:100%;font:inherit;text-align:left;background:none;border:0;border-bottom:1px solid rgba(255,255,255,.08);cursor:pointer}
+button.dg-row:last-child{border-bottom:0}
+
+/* ---------- design viewer (book) ---------- */
+.dv{position:fixed;inset:0;z-index:1000;display:flex;flex-direction:column;background:radial-gradient(70% 60% at 50% 55%,rgba(91,61,245,.16),transparent 70%),rgba(3,4,5,.94);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);animation:dvIn .45s cubic-bezier(.2,.7,.2,1) both;overscroll-behavior:contain}
+@keyframes dvIn{from{opacity:0}to{opacity:1}}
+.dv-top{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px clamp(16px,3vw,36px) 10px;color:#fff}
+.dv-title{min-width:0}
+.dv-client{display:block;font-family:var(--f-mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#A99BFF}
+.dv-title h2{margin:4px 0 0;font-family:var(--f-sans);font-weight:300;font-size:clamp(17px,2vw,24px);letter-spacing:-.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dv-right{display:flex;align-items:center;gap:14px;flex:none}
+.dv-count{font-family:var(--f-mono);font-size:11px;letter-spacing:.12em;color:#C9D3D6;font-variant-numeric:tabular-nums}
+.dv-close,.bk-btn{display:grid;place-items:center;width:44px;height:44px;border-radius:50%;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.04);color:#fff;cursor:pointer;transition:background .3s,border-color .3s,transform .3s}
+.dv-close:hover,.bk-btn:hover{background:rgba(139,108,255,.22);border-color:rgba(139,108,255,.6)}
+.dv-close:focus-visible,.bk-btn:focus-visible{outline:2px solid #8B6CFF;outline-offset:3px}
+.dv-close svg,.bk-btn svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.dv-body{flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6px clamp(12px,3vw,40px) 14px}
+.dv-img{max-width:100%;max-height:100%;object-fit:contain;border-radius:6px;box-shadow:0 40px 120px rgba(0,0,0,.6)}
+.bk-host{flex:1;min-height:0;width:100%;display:flex;align-items:center;justify-content:center}
+.bk-root{opacity:0;transform:translateY(14px) scale(.98);transition:opacity .6s,transform .8s cubic-bezier(.2,.7,.2,1);filter:drop-shadow(0 40px 60px rgba(0,0,0,.55))}
+.bk-root.ready{opacity:1;transform:none}
+.bk-page{background:#fff;overflow:hidden}
+.bk-page img{display:block;width:100%;height:100%;object-fit:cover;user-select:none;-webkit-user-select:none;pointer-events:none}
+.bk-controls{display:flex;align-items:center;gap:18px;padding-top:14px}
+.bk-hint{font-family:var(--f-mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#8E9A9F;text-align:center}
+@media (max-width:600px){.bk-hint{font-size:9px;max-width:180px}.dv-top{padding-top:14px}}
+@media (prefers-reduced-motion:reduce){.dv{animation:none}.bk-root{transition:none}}
+.bk-root.ready[data-at=front]{transform:translateX(-25%)}
+.bk-root.ready[data-at=back]{transform:translateX(25%)}
+.bk-touch{display:none}
+@media (pointer:coarse){.bk-fine{display:none}.bk-touch{display:inline}}

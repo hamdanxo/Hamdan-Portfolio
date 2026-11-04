@@ -1,8 +1,8 @@
 import Link from 'next/link';
-import { designs } from '@/data/designs';
+import { work } from '@/data/designs';
 
 export default function DesignIntro() {
-  const count = designs.filter((d) => d.img).length;
+  const count = work.length;
   return (
     <section className="wk-hero">
       <Link className="wk-back" href="/">

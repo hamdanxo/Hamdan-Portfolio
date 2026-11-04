@@ -22,6 +22,7 @@ uniform vec2 uView;     // stage size (px)
 uniform vec2 uTile;     // tile size (px)
 uniform vec2 uMouse;    // pointer in stage px, centred; far away when not hovering
 uniform float uBend;    // curvature strength
+uniform float uCam;     // camera distance (px), to match hover to the projected tile
 varying vec2 vUv;
 varying vec2 vCell;
 varying float vHover;
@@ -36,7 +37,9 @@ void main() {
   float z = -(n.x * n.x * 0.9 + n.y * n.y * 0.6) * uBend;
   vUv = uv;
   vCell = aCell;
-  vec2 d = abs(uMouse - c) - uTile * 0.5;
+  vec2 nc = c / (uView * 0.5);
+  float k = uCam / (uCam + (nc.x * nc.x * 0.9 + nc.y * nc.y * 0.6) * uBend);
+  vec2 d = abs(uMouse - c * k) - uTile * 0.5 * k;
   vHover = step(max(d.x, d.y), 0.0);
   vEdge = clamp(length(n * vec2(0.75, 0.85)), 0.0, 1.6);
   gl_Position = projectionMatrix * modelViewMatrix * vec4(p.x, -p.y, z, 1.0);
@@ -67,6 +70,8 @@ export type GalleryGL = {
   software: boolean;
   setOffset: (x: number, y: number) => void;
   setMouse: (x: number | null, y: number | null) => void;
+  /** Which design (index into the list) is under this stage point, or -1. */
+  pick: (x: number, y: number) => number;
   resize: () => void;
   render: () => void;
   dispose: () => void;
@@ -110,6 +115,7 @@ export function createGalleryGL(
     uTile: { value: new Vector2(W, H) },
     uMouse: { value: new Vector2(1e6, 1e6) },
     uBend: { value: 260 },
+    uCam: { value: 1000 },
     uAtlas: { value: texture },
     uGrid: { value: new Vector2(atlas.cols, atlas.rows) },
   };
@@ -118,16 +124,18 @@ export function createGalleryGL(
   mesh.frustumCulled = false;
   scene.add(mesh);
 
+  let slots = { base: new Float32Array(0), index: new Int32Array(0) };
   const layout = () => {
     const sw = canvas.clientWidth, sh = canvas.clientHeight;
     // Enough slots to cover the screen plus three spare tiles on every side.
     const cols = Math.ceil(sw / (W + G)) + 6, rows = Math.ceil(sh / (H + G)) + 6;
-    const base = new Float32Array(cols * rows * 2), cell = new Float32Array(cols * rows * 2);
+    const base = new Float32Array(cols * rows * 2), cell = new Float32Array(cols * rows * 2), index = new Int32Array(cols * rows);
     for (let r = 0, k = 0; r < rows; r++) {
       for (let c = 0; c < cols; c++, k++) {
         base[k * 2] = c * (W + G) - ((cols - 1) * (W + G)) / 2;
         base[k * 2 + 1] = r * (H + G) - ((rows - 1) * (H + G)) / 2;
         const i = (c + r * 3) % count;
+        index[k] = i;
         cell[k * 2] = i % atlas.cols;
         cell[k * 2 + 1] = Math.floor(i / atlas.cols);
       }
@@ -135,6 +143,7 @@ export function createGalleryGL(
     geometry.setAttribute('aBase', new InstancedBufferAttribute(base, 2));
     geometry.setAttribute('aCell', new InstancedBufferAttribute(cell, 2));
     geometry.instanceCount = cols * rows;
+    slots = { base, index };
     uniforms.uSpan.value.set(cols * (W + G), rows * (H + G));
     uniforms.uView.value.set(sw, sh);
     uniforms.uBend.value = sw < 700 ? 110 : 150;
@@ -147,6 +156,7 @@ export function createGalleryGL(
     camera.aspect = sw / sh;
     camera.position.set(0, 0, sh / 2 / Math.tan((camera.fov * Math.PI) / 360));
     camera.updateProjectionMatrix();
+    uniforms.uCam.value = camera.position.z;
     layout();
   };
   resize();
@@ -162,6 +172,21 @@ export function createGalleryGL(
     setMouse: (x, y) => {
       if (x === null || y === null) uniforms.uMouse.value.set(1e6, 1e6);
       else uniforms.uMouse.value.set(x - canvas.clientWidth / 2, y - canvas.clientHeight / 2);
+    },
+    pick: (x, y) => {
+      // Same maths as the vertex shader: wrap, sink into the bowl, then project.
+      const mx = x - canvas.clientWidth / 2, my = y - canvas.clientHeight / 2;
+      const sx = uniforms.uSpan.value.x, sy = uniforms.uSpan.value.y;
+      const vx = uniforms.uView.value.x / 2, vy = uniforms.uView.value.y / 2;
+      const o = uniforms.uOffset.value, cam = uniforms.uCam.value, bend = uniforms.uBend.value;
+      const wrap = (a: number, b: number) => ((((a + b / 2) % b) + b) % b) - b / 2;
+      for (let k = 0; k < slots.index.length; k++) {
+        const cx = wrap(slots.base[k * 2] + o.x, sx), cy = wrap(slots.base[k * 2 + 1] + o.y, sy);
+        const nx = cx / vx, ny = cy / vy;
+        const s = cam / (cam + (nx * nx * 0.9 + ny * ny * 0.6) * bend);
+        if (Math.abs(mx - cx * s) <= (W / 2) * s && Math.abs(my - cy * s) <= (H / 2) * s) return slots.index[k];
+      }
+      return -1;
     },
     resize,
     render: () => renderer.render(scene, camera),

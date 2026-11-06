@@ -175,7 +175,7 @@ export async function buildAtlas(items: Design[], images: (HTMLImageElement | nu
       ctx.letterSpacing = '1px';
       const tw = ctx.measureText(t).width + 14;
       ctx.letterSpacing = '0px';
-      roundRect(ctx, tx, by - 9, tw, 18, 9);
+      roundRect(ctx, tx, by - 9, tw, 18, 2);
       ctx.fillStyle = 'rgba(255,255,255,0.07)';
       ctx.fill();
       ctx.strokeStyle = 'rgba(255,255,255,0.08)';

@@ -10,7 +10,7 @@ export default function DesignIntro() {
         <span>Back to home</span>
       </Link>
       <p className="wk-label">Graphic design · {count < 10 ? `0${count}` : count} {count === 1 ? 'project' : 'projects'}</p>
-      <h1 className="wk-title"><span className="h2l"><span>The designs<span className="dot">.</span></span></span></h1>
+      <h1 className="wk-title"><span className="h2l"><span>The designs</span></span></h1>
       <p className="wk-sub">Brand work, social posts, print and ad creatives. Drag around to explore, or switch to the list.</p>
     </section>
   );

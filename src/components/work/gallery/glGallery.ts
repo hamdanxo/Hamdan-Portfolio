@@ -95,7 +95,7 @@ export function createGalleryGL(
   const renderer = new WebGLRenderer({ canvas, antialias: false, alpha: true, powerPreference: 'high-performance' });
   // Phones: cap the pixel ratio a little lower; the cards are textures, so they stay sharp.
   const coarse = window.matchMedia('(pointer: coarse)').matches;
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, coarse ? 1.75 : 2));
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, coarse ? 1.25 : 2));
   renderer.setClearColor(0x000000, 0);
 
   const scene = new Scene();
@@ -107,7 +107,7 @@ export function createGalleryGL(
   texture.anisotropy = renderer.capabilities.getMaxAnisotropy();
 
   const { W, H, G } = size;
-  const plane = new PlaneGeometry(W, H, 12, 12);
+  const plane = new PlaneGeometry(W, H, coarse ? 6 : 12, coarse ? 6 : 12);
   const geometry = new InstancedBufferGeometry();
   geometry.index = plane.index;
   geometry.setAttribute('position', plane.getAttribute('position'));

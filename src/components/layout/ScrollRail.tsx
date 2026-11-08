@@ -34,10 +34,29 @@ export default function ScrollRail() {
       window.clearTimeout(hide);
       if (!dragging) hide = window.setTimeout(() => rail.classList.remove('on'), 1600);
     };
-    const onScroll = () => { update(); show(); };
-    const moveTo = (clientY: number) => {
+    let sframe = 0;
+    const onScroll = () => {
+      if (!sframe) sframe = requestAnimationFrame(() => { sframe = 0; update(); });
+      show();
+    };
+    // Jump straight to the position (no smooth-scroll animation per step) and keep Lenis in step.
+    const jump = (y: number) => {
       const m = metrics();
-      window.scrollTo(0, startScroll + (clientY - startY) * (m.max / Math.max(m.travel, 1)));
+      const top = Math.min(Math.max(0, y), Math.max(m.max, 0));
+      const lenis = (window as Window & { __lenis?: { scrollTo: (v: number, o: { immediate: boolean; force?: boolean }) => void } }).__lenis;
+      if (lenis) lenis.scrollTo(top, { immediate: true, force: true });
+      else window.scrollTo({ top, behavior: 'instant' as ScrollBehavior });
+      update();
+    };
+    let pendingY = 0, frame = 0;
+    const moveTo = (clientY: number) => {
+      pendingY = clientY;
+      if (frame) return;
+      frame = requestAnimationFrame(() => {
+        frame = 0;
+        const m = metrics();
+        jump(startScroll + (pendingY - startY) * (m.max / Math.max(m.travel, 1)));
+      });
     };
     const down = (e: PointerEvent) => {
       e.preventDefault();
@@ -47,7 +66,7 @@ export default function ScrollRail() {
       // Tapping the rail outside the thumb jumps there first.
       if (e.clientY < t.top || e.clientY > t.bottom) {
         const m = metrics();
-        window.scrollTo(0, ((e.clientY - 8 - m.th / 2) / Math.max(m.travel, 1)) * m.max);
+        jump(((e.clientY - 8 - m.th / 2) / Math.max(m.travel, 1)) * m.max);
       }
       startY = e.clientY;
       startScroll = window.scrollY;
@@ -68,6 +87,8 @@ export default function ScrollRail() {
     update();
     return () => {
       window.clearTimeout(hide);
+      cancelAnimationFrame(frame);
+      cancelAnimationFrame(sframe);
       window.removeEventListener('scroll', onScroll);
       window.removeEventListener('resize', update);
       ro.disconnect();

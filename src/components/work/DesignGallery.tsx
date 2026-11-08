@@ -109,8 +109,11 @@ export default function DesignGallery({ fullscreen = false }: { fullscreen?: boo
       }
     })();
 
-    let t = 0;
+    let t = 0, lastW = window.innerWidth;
     const onResize = () => {
+      // Phones resize the window while scrolling (the address bar hides and shows). Only rebuild when the width changes.
+      if (window.matchMedia('(pointer: coarse)').matches && window.innerWidth === lastW) return;
+      lastW = window.innerWidth;
       window.clearTimeout(t);
       t = window.setTimeout(() => {
         bleed();
@@ -214,6 +217,10 @@ export default function DesignGallery({ fullscreen = false }: { fullscreen?: boo
     stage.addEventListener('wheel', wheel, { passive: false });
     stage.addEventListener('keydown', key);
 
+    // While the page itself is scrolling, hold the idle drift so scrolling stays smooth (mostly matters on phones).
+    let scrollingUntil = 0;
+    const onPageScroll = () => { scrollingUntil = performance.now() + 220; };
+    window.addEventListener('scroll', onPageScroll, { passive: true });
     const io = new IntersectionObserver((es) => { visible = es[0].isIntersecting; }, { rootMargin: '100px' });
     io.observe(stage);
 
@@ -224,6 +231,7 @@ export default function DesignGallery({ fullscreen = false }: { fullscreen?: boo
       const dt = Math.min(3, (now - last) / 16.667);
       last = now;
       if (!visible || document.hidden) return;
+      if (!down && now < scrollingUntil && Math.abs(p.vx) < 0.05 && Math.abs(p.vy) < 0.05) { if (dirty) { dirty = false; draw(); } return; }
       if (!down) {
         if (Math.abs(p.vx) > 0.05 || Math.abs(p.vy) > 0.05) {
           p.ox += p.vx * dt; p.oy += p.vy * dt;
@@ -241,7 +249,7 @@ export default function DesignGallery({ fullscreen = false }: { fullscreen?: boo
     raf = requestAnimationFrame(loop);
 
     return () => {
-      cancelAnimationFrame(raf); io.disconnect();
+      cancelAnimationFrame(raf); io.disconnect(); window.removeEventListener('scroll', onPageScroll);
       stage.removeEventListener('pointerdown', pd); stage.removeEventListener('pointermove', pm);
       stage.removeEventListener('pointerup', up); stage.removeEventListener('pointercancel', up);
       stage.removeEventListener('pointerleave', leave);

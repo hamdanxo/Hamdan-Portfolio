@@ -427,3 +427,19 @@ a:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
   #glows,#glows .glow,#glows .vg{will-change:auto!important}
 }
 .jr-w{display:inline-block}
+
+/* Hero, simplified: big name, three words, two links. Solid colour, no gradient text. */
+.hx{gap:30px}
+.hx .hl>span,.hx .hl em{background:none!important;color:#F2F5F8!important;-webkit-text-fill-color:#F2F5F8!important}
+.hx .hx-name{font-size:clamp(46px,min(6.6vw,11vh),100px)!important;line-height:.95!important}
+.hx .hx-name .serif{font-size:1.1em}
+.hx-roles{margin:0;display:flex;gap:34px;font-family:var(--f-mono);font-size:12px;letter-spacing:.3em;text-transform:uppercase;color:#9FB0C0!important}
+.hx-links{display:flex;gap:32px;align-items:center}
+.hx-links a{position:relative;font-family:var(--f-body);font-size:15px;color:#DDE6EE;text-decoration:none;padding:6px 0}
+.hx-links a::after{content:"";position:absolute;left:0;right:0;bottom:2px;height:1px;background:rgba(221,230,238,.35);transform-origin:right;transition:transform .45s cubic-bezier(.2,.7,.2,1),background .3s}
+.hx-links a:hover::after{background:#F2F5F8;animation:hxline .7s cubic-bezier(.2,.7,.2,1)}
+@keyframes hxline{0%{transform:scaleX(1);transform-origin:right}45%{transform:scaleX(0);transform-origin:right}46%{transform-origin:left}100%{transform:scaleX(1);transform-origin:left}}
+/* More room between the name and the card: the hand sits further right on wide screens. */
+@media (min-width:901px){html:not(.hero-stack) .flip-box{right:-7vw}}
+.hero-stack .hx{gap:22px}
+.hero-stack .hx .hx-name{font-size:clamp(44px,13vw,84px)!important}

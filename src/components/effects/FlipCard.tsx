@@ -28,10 +28,10 @@ export default function FlipCard() {
       for (const c of Array.from(ht.children) as HTMLElement[]) if (c.offsetHeight) tb = Math.max(tb, c.offsetTop + c.offsetHeight);
       tb += ht.offsetTop;
       let w = Math.min(vw * 0.88, 560) / 0.42;
-      const hMax = (vh - 18 - tb) / 0.86;
+      const hMax = (vh - 48 - tb) / 0.86;
       w = Math.max(Math.min(w, hMax * 1.5), vw * 0.8);
       const h = w / 1.5;
-      box.style.cssText = `width:${w.toFixed(0)}px;left:${Math.min(vw / 2 - 0.355 * w, vw * 0.06).toFixed(0)}px;top:${(tb + 18 + 0.16 * h).toFixed(0)}px;right:auto;bottom:auto`;
+      box.style.cssText = `width:${w.toFixed(0)}px;left:${Math.min(vw / 2 - 0.355 * w, vw * 0.06).toFixed(0)}px;top:${(tb + 48 + 0.16 * h).toFixed(0)}px;right:auto;bottom:auto`;
     };
     const fit = () => { layout(); card.style.setProperty('--k', (card.clientWidth / 359).toFixed(4)); };
     document.fonts?.ready.then(fit);

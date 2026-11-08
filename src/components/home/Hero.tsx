@@ -7,15 +7,12 @@ export default function Hero() {
     <>
 <section className="flip" id="card" aria-label="Business card">
 <div className="flip-pin">
-<div className="hero-text" id="heroText">
-<span className="glass mono s-23a2fd"><span className="s-63150a"></span>Open to internships</span>
-<h1 className="s-9eabf6"><span className="hl"><span>Muhammad</span></span><span className="hl"><span className="s-33dd4a"><em className="serif">Hamdan</em><span className="s-1b96e3">.</span></span></span></h1>
-<p className="mono s-3fb4e3"><span>Web Developer</span><span className="s-a80552" aria-hidden="true">/</span><span>Graphic Designer</span><span className="s-a80552" aria-hidden="true">/</span><span>Marketing</span></p>
-<p className="hero-intro c-b9 s-084c17">Computer Science student at the University of Wollongong in Dubai, studying Big Data and AI. I build websites, design graphics and run marketing and social media.</p>
-<div className="s-c64adb">
-<a className="s-98d8a6" href="#about">About me
-<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12h14"></path><path d="M13 6l6 6-6 6"></path></svg></a>
-<a className="glass s-54bb11" href="#contact">Get in touch</a>
+<div className="hero-text hx" id="heroText">
+<h1 className="s-9eabf6 hx-name"><span className="hl"><span>Muhammad</span></span><span className="hl"><span className="s-33dd4a"><em className="serif">Hamdan</em></span></span></h1>
+<p className="mono hx-roles"><span>Web</span><span>Design</span><span>Marketing</span></p>
+<div className="hx-links">
+<a href="#about">About me</a>
+<a href="#contact">Get in touch</a>
 </div>
 </div>
 <div className="flip-box" id="flipBox" suppressHydrationWarning>

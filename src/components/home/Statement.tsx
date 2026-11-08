@@ -1,5 +1,5 @@
 const text =
-  'I design brand material, build websites and run marketing for companies in Dubai. Right now that means company profiles, product launches and the systems that run behind them.';
+  'I bring design and development together to build brands, websites and systems that work as well as they look. Clear thinking, careful detail and reliable delivery, from the first idea to the finished product.';
 
 /** Big statement whose words fill in as you scroll (see ScrollFill). */
 export default function Statement() {

@@ -234,7 +234,7 @@ a:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 
 /* Top bar: minimal. No box at the top of the page; a soft blurred backing appears once you scroll. */
 .site-header{top:0!important;max-width:none!important;padding:0!important;background:transparent;border-bottom:1px solid transparent;transition:background .4s ease,border-color .4s ease,-webkit-backdrop-filter .4s ease,backdrop-filter .4s ease}
-.site-header.scrolled{background:rgba(5,7,8,.62);-webkit-backdrop-filter:blur(16px) saturate(140%);backdrop-filter:blur(16px) saturate(140%);border-bottom-color:rgba(238,241,243,.07)}
+.site-header.scrolled{background:rgba(5,7,8,.84);-webkit-backdrop-filter:blur(16px) saturate(140%);backdrop-filter:blur(16px) saturate(140%);border-bottom-color:rgba(238,241,243,.07)}
 .site-header header{max-width:1280px;margin:0 auto;box-sizing:border-box;padding:22px 32px!important;border:0!important;border-radius:0!important;background:none!important;box-shadow:none!important;flex-wrap:nowrap!important;transition:padding .4s ease}
 .site-header.scrolled header{padding-top:14px!important;padding-bottom:14px!important}
 .site-header .brand{font-family:var(--f-sans);font-weight:400!important;font-size:18px;letter-spacing:.02em;color:#EEF1F3}
@@ -381,3 +381,10 @@ a:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 .cv-btn svg{width:16px;height:16px}
 .cv-btn:hover{background:#EEF1F3;color:#060708;border-color:#EEF1F3}
 @media (max-width:600px){.tl-row{grid-template-columns:86px 24px minmax(0,1fr)}.tl-track{left:98px}}
+
+/* Phones: draggable scroll bar on the right edge (see ScrollRail). */
+.srail{position:fixed;top:0;right:0;width:28px;height:100vh;height:100dvh;z-index:80;opacity:.45;transition:opacity .35s;touch-action:none}
+.srail::before{content:"";position:absolute;top:8px;bottom:8px;right:6px;width:1px;background:rgba(238,241,243,.1)}
+.srail.on,.srail.drag{opacity:1}
+.srail-thumb{position:absolute;top:0;right:4px;width:5px;border-radius:5px;background:rgba(140,190,242,.8);box-shadow:0 0 12px rgba(140,190,242,.35);transition:width .2s,right .2s,background .2s}
+.srail.drag .srail-thumb{width:8px;right:3px;background:#8CBEF2}

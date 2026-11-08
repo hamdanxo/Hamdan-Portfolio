@@ -20,11 +20,11 @@ export default function SiteHeader({ page }: { page: Page }) {
           <Link href="/" className="brand">MH<span>.</span></Link>
         )}
         <nav aria-label="Main">
+          <a className="nl" href={hash('about')}>About</a>
           {pageLink('/design', 'Design', 'design')}
           {pageLink('/work', 'Work', 'work')}
-          <a className="nl" href={hash('about')}>About</a>
-          <a className="nl" href={hash('education')}>Education</a>
           <a className="nl" href={hash('skills')}>Skills</a>
+          <a className="nl" href={hash('education')}>Education</a>
           <a href={hash('contact')} className="nav-cta">Contact</a>
         </nav>
       </header>

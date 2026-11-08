@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next';
 import { fontVariables } from './fonts';
 import { site } from '@/lib/site';
 import { heroModeScript } from '@/components/effects/HeroLayoutScript';
+import ScrollRail from '@/components/layout/ScrollRail';
 import '@/styles/components.css';
 import '@/styles/globals.css';
 
@@ -26,7 +27,10 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       <head>
         <script dangerouslySetInnerHTML={{ __html: heroModeScript }} />
       </head>
-      <body>{children}</body>
+      <body>
+        {children}
+        <ScrollRail />
+      </body>
     </html>
   );
 }

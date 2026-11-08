@@ -345,3 +345,21 @@ a:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 
 /* Blue palette: nudge the teal hand render toward the ice blue. */
 .hand{filter:hue-rotate(28deg) saturate(.9)}
+
+/* The card keeps its original purple, while the rest of the site is ice blue. */
+:where(.s-02a2d3){font-weight:500!important}
+:where(.s-05a88a){opacity:0.06!important}
+:where(.s-298997){position:absolute!important;left:calc(150px * var(--k))!important;top:calc(-70px * var(--k))!important;width:calc(220px * var(--k))!important;height:calc(150px * var(--k))!important;border-radius:50%!important;background:#5A2E7A!important;opacity:.55!important;filter:blur(calc(50px * var(--k)))!important}
+:where(.s-38f477){font-family:var(--f-display)!important;font-size:calc(15px * var(--k))!important;line-height:1.25!important;letter-spacing:.1em!important;color:#FFFFFF!important}
+:where(.s-53b30b){background:#17161B!important;font-family:var(--f-card)!important;color:#F1EEF7!important}
+:where(.s-65a69d){font-family:var(--f-display)!important;font-size:calc(15px * var(--k))!important;letter-spacing:.08em!important;color:#FFFFFF!important}
+:where(.s-6bb8e7){position:absolute!important;left:calc(120px * var(--k))!important;top:calc(120px * var(--k))!important;width:calc(240px * var(--k))!important;height:calc(150px * var(--k))!important;border-radius:50%!important;background:#B23BE6!important;opacity:.85!important;filter:blur(calc(48px * var(--k)))!important}
+:where(.s-7c3ca0){position:absolute!important;left:calc(22px * var(--k))!important;bottom:calc(20px * var(--k))!important;margin:0!important;font-size:calc(9px * var(--k))!important;letter-spacing:.06em!important}
+:where(.s-ae999a){position:absolute!important;left:calc(-90px * var(--k))!important;top:calc(40px * var(--k))!important;width:calc(260px * var(--k))!important;height:calc(200px * var(--k))!important;border-radius:50%!important;background:#5B3DF5!important;opacity:.9!important;filter:blur(calc(46px * var(--k)))!important}
+:where(.s-c5f564){opacity:0.10!important}
+:where(.s-d07711){width:calc(46px * var(--k))!important;height:calc(2px * var(--k))!important;border-radius:calc(2px * var(--k))!important;background:linear-gradient(90deg,#5B3DF5,#B23BE6)!important}
+:where(.s-e934a4){background:#1B1B1E!important;font-family:var(--f-card)!important;color:#ECEBF0!important;box-sizing:border-box!important;padding:calc(22px * var(--k))!important;display:flex!important;justify-content:space-between!important;gap:calc(16px * var(--k))!important}
+.face{box-shadow:0 40px 120px rgba(0,0,0,.7),0 0 120px rgba(120,70,240,.16)}
+.palm-glow{background:radial-gradient(closest-side,rgba(139,108,255,.5),transparent)!important}
+.card-time{color:rgba(241,238,247,.78)}
+.card-save:hover span,.card-save:focus-visible span{color:#FFFFFF}

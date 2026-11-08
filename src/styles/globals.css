@@ -276,3 +276,27 @@ a:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 @media (max-width:900px){.wid-cell:nth-child(n){grid-column:span 6}}
 @media (max-width:600px){.wid{padding-left:16px;padding-right:16px}.wid-cell:nth-child(n){grid-column:1 / -1;border-right:0;border-bottom:1px solid rgba(238,243,242,.08);min-height:300px}.wid-cell:last-child{border-bottom:0}}
 @media (prefers-reduced-motion:reduce){.iso-a{transition:none}.wid-cell:hover .iso-a{transform:none}}
+
+/* Skills: same thin-line grid as What I do; proof lines instead of percentage bars; tool logos colour in on hover. */
+.sk-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border:1px solid rgba(238,243,242,.08);background:#0B0E0F;margin-top:clamp(28px,4vh,48px)}
+.sk-cell{padding:clamp(24px,2.6vw,40px);border-right:1px solid rgba(238,243,242,.08)}
+.sk-cell:last-child{border-right:0}
+#skills .sk-h{margin:0 0 22px;font-family:var(--f-sans);font-size:18px;font-weight:500!important;letter-spacing:-.01em;color:#F1F5F4}
+.sk-rows,.sk-list,.sk-tools{list-style:none;margin:0;padding:0}
+.sk-rows li{display:flex;flex-direction:column;gap:6px;padding:16px 0;border-top:1px solid rgba(238,243,242,.07)}
+.sk-rows li:first-child{border-top:0;padding-top:0}
+#skills .sk-rows b{font-family:var(--f-sans);font-size:15px;font-weight:400!important;color:#E6EEED}
+#skills .sk-rows span{font-family:var(--f-sans);font-size:14px;line-height:1.55;font-weight:300!important;color:#8E9C9F}
+.sk-list{display:grid;grid-template-columns:1fr 1fr;column-gap:24px}
+#skills .sk-list li{padding:13px 0;border-top:1px solid rgba(238,243,242,.07);font-family:var(--f-sans);font-size:15px;font-weight:300!important;color:#D4DEDD}
+#skills .sk-list li:nth-child(-n+2){border-top:0;padding-top:0}
+.sk-tools li:nth-child(5) svg{width:44px;height:44px;margin:-7px 0}
+.sk-tools{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(238,243,242,.07);border:1px solid rgba(238,243,242,.07)}
+.sk-tools li{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;aspect-ratio:1/0.82;background:#0B0E0F;transition:background .3s}
+.sk-tools svg{width:30px;height:30px;fill:#5E6A6D;transition:fill .3s,transform .4s cubic-bezier(.2,.7,.2,1)}
+#skills .sk-tools span{font-family:var(--f-sans);font-size:13px;font-weight:300!important;color:#8E9C9F;transition:color .3s}
+.sk-tools li:hover{background:#0F1314}
+.sk-tools li:hover svg{fill:var(--c);transform:translateY(-2px)}
+#skills .sk-tools li:hover span{color:#F1F5F4}
+@media (hover:none){.sk-tools svg{fill:var(--c);opacity:.85}}
+@media (max-width:900px){.sk-grid{grid-template-columns:1fr}.sk-cell{border-right:0;border-bottom:1px solid rgba(238,243,242,.08)}.sk-cell:last-child{border-bottom:0}}

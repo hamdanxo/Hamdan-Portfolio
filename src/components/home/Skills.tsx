@@ -1,3 +1,12 @@
+import { tools } from './toolIcons';
+
+const strengths = [
+  { name: 'Team work', note: 'Comfortable leading a group or getting on with it on my own.' },
+  { name: 'Event organising', note: 'Planned and ran events for clients as an event coordinator.' },
+  { name: 'Project management', note: 'Took a management system from an empty database to a working app.' },
+];
+
+const expertise = ['Management', 'Creativity', 'Digital marketing', 'Negotiation', 'Critical thinking', 'Leadership'];
 
 export default function Skills() {
   return (
@@ -7,19 +16,32 @@ export default function Skills() {
 <p className="mono s-f0b806">Skills and tools</p>
 <h2 className="s-c994cd"><span className="h2l"><span>What I bring</span></span></h2>
 </div>
-<div className="s-9990c5">
-<div className="glass s-49fae2">
-<h3 className="s-b4b5df">Strengths</h3>
-<div className="s-2b1e4d"><div className="s-be2653"><div className="s-cc03f7"><span>Team work</span><span className="mono s-35c462">95%</span></div><div className="s-6d6ec5"><div className="bar s-94ec5b"></div></div></div><div className="s-be2653"><div className="s-cc03f7"><span>Event organising</span><span className="mono s-35c462">90%</span></div><div className="s-6d6ec5"><div className="bar s-618147"></div></div></div><div className="s-be2653"><div className="s-cc03f7"><span>Project management</span><span className="mono s-35c462">80%</span></div><div className="s-6d6ec5"><div className="bar s-cc93a0"></div></div></div></div>
-</div>
-<div className="glass s-49fae2">
-<h3 className="s-b4b5df">Expertise</h3>
-<div className="s-c21c70"><span className="chip">Management</span><span className="chip">Creativity</span><span className="chip">Digital marketing</span><span className="chip">Negotiation</span><span className="chip">Critical thinking</span><span className="chip">Leadership</span></div>
-</div>
-<div className="glass s-49fae2">
-<h3 className="s-b4b5df">Tech and tools</h3>
-<div className="s-c21c70"><span className="chip">HTML</span><span className="chip">CSS</span><span className="chip">JavaScript</span><span className="chip">Node.js</span><span className="chip">MySQL</span><span className="chip">Excel</span></div>
-</div>
+<div className="sk-grid">
+  <div className="sk-cell">
+    <h3 className="sk-h">Strengths</h3>
+    <ul className="sk-rows">
+      {strengths.map((s) => (
+        <li key={s.name}><b>{s.name}</b><span>{s.note}</span></li>
+      ))}
+    </ul>
+  </div>
+  <div className="sk-cell">
+    <h3 className="sk-h">Expertise</h3>
+    <ul className="sk-list">
+      {expertise.map((e) => <li key={e}>{e}</li>)}
+    </ul>
+  </div>
+  <div className="sk-cell">
+    <h3 className="sk-h">Tech and tools</h3>
+    <ul className="sk-tools">
+      {tools.map((t) => (
+        <li key={t.name} style={{ '--c': t.color } as React.CSSProperties}>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d={t.path} fillRule="evenodd" /></svg>
+          <span>{t.name}</span>
+        </li>
+      ))}
+    </ul>
+  </div>
 </div>
 </section>
     </>

@@ -363,3 +363,10 @@ a:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 .palm-glow{background:radial-gradient(closest-side,rgba(139,108,255,.5),transparent)!important}
 .card-time{color:rgba(241,238,247,.78)}
 .card-save:hover span,.card-save:focus-visible span{color:#FFFFFF}
+
+/* Statement: white band with blue text for contrast. Words go from pale blue to deep blue as you scroll. */
+.stmt{max-width:none;background:#F3F6FA;padding:clamp(90px,14vh,170px) max(clamp(20px,5vw,64px),calc((100% - 1180px) / 2))}
+.stmt-text{color:#123B70}
+.stmt-text .fw{opacity:1;color:#C3D3E7;transition:color .35s ease}
+.stmt-text .fw.lit{color:#123B70}
+@media (prefers-reduced-motion:reduce){.stmt-text .fw{color:#123B70}}

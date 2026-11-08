@@ -1,3 +1,4 @@
+import { Fragment } from 'react';
 import JourneyMotion from '@/components/effects/JourneyMotion';
 
 const items = [
@@ -19,7 +20,9 @@ export default function Journey() {
       <div className="jr-pin">
         <div className="jr-head">
           <p className="jr-label">Timeline</p>
-          <h2 className="jr-title">The journey so far</h2>
+          <h2 className="jr-title">{'The journey so far'.split(' ').map((w, i) => (
+            <Fragment key={i}>{i ? ' ' : ''}<span className="jr-w">{w}</span></Fragment>
+          ))}</h2>
         </div>
         <div className="jr-stage">
           <ol className="jr-track" style={{ '--n': items.length } as React.CSSProperties}>

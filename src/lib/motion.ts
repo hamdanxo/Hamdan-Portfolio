@@ -39,3 +39,25 @@ export function webglInfo(): { ok: boolean; software: boolean } {
 
 /** True when the browser can create a WebGL context. */
 export const hasWebGL = (): boolean => webglInfo().ok;
+
+/** True when the browser can run scroll-driven animations (ViewTimeline). */
+export const hasViewTimeline = (): boolean => typeof window !== 'undefined' && 'ViewTimeline' in window;
+
+export type ScrollAnim = { anim: Animation; set: (p: number) => void; driven: boolean };
+
+/**
+ * Ties keyframes to how far a tall pinned section has been scrolled: offset 0 when its top reaches the top of the
+ * screen, offset 1 when its bottom reaches the bottom. Where the browser supports scroll-driven animations the
+ * graphics chip runs it, so it moves exactly with the finger. Otherwise call set(p) from a frame loop.
+ */
+export function scrollAnim(el: Element, subject: Element, frames: Keyframe[]): ScrollAnim {
+  const VT = (window as Window & { ViewTimeline?: new (o: { subject: Element; axis: string }) => AnimationTimeline }).ViewTimeline;
+  if (VT) {
+    const opts = { fill: 'both', easing: 'linear', timeline: new VT({ subject, axis: 'block' }), rangeStart: 'contain 0%', rangeEnd: 'contain 100%' };
+    const anim = el.animate(frames, opts as KeyframeAnimationOptions);
+    return { anim, set: () => {}, driven: true };
+  }
+  const anim = el.animate(frames, { duration: 1000, fill: 'both', easing: 'linear' });
+  anim.pause();
+  return { anim, set: (p) => { anim.currentTime = p * 1000; }, driven: false };
+}

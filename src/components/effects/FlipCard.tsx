@@ -1,6 +1,6 @@
 'use client';
 
-import { prefersReducedMotion } from '@/lib/motion';
+import { hasViewTimeline, prefersReducedMotion, scrollAnim } from '@/lib/motion';
 import { useIdleEffect } from '@/lib/useIdleEffect';
 
 const ease = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
@@ -97,9 +97,20 @@ export default function FlipCard() {
       cancelAnimationFrame(raf);
       if (live && !reduce) raf = requestAnimationFrame(loop);
     });
-    if (!reduce) { cur = target(); io.observe(sec); }
+    // Phones with scroll-driven animations: the spin is a keyframe animation the graphics chip plays in step with
+    // the finger, so no frame loop is needed at all.
+    let spin: Animation | undefined;
+    if (!reduce && !fine && hasViewTimeline()) {
+      const frames: Keyframe[] = [];
+      for (let k = 0; k <= 48; k++) {
+        const p = k / 48, c = ease(Math.min(1, Math.max(0, (p - 0.05) / 0.8)));
+        frames.push({ offset: p, transform: `translate3d(0,0,0) rotateZ(-9deg) rotateX(16deg) rotateY(${(c * 540).toFixed(2)}deg)` });
+      }
+      spin = scrollAnim(inner, sec, frames).anim;
+    } else if (!reduce) { cur = target(); io.observe(sec); }
     return () => {
       io.disconnect();
+      spin?.cancel();
       window.removeEventListener('resize', onResize);
       window.removeEventListener('pointermove', onMove);
       window.clearInterval(clockTimer);

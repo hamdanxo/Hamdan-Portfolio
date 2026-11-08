@@ -426,3 +426,4 @@ a:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
     background-size:100% 100lvh;background-repeat:repeat-y}
   #glows,#glows .glow,#glows .vg{will-change:auto!important}
 }
+.jr-w{display:inline-block}

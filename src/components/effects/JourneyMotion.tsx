@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
-import { prefersReducedMotion } from '@/lib/motion';
+import { prefersReducedMotion, scrollAnim, type ScrollAnim } from '@/lib/motion';
 
 type Dust = { x: number; y: number; vx: number; vy: number; d: number; r: number; a: number; w: number; blue: boolean };
 
@@ -89,6 +89,65 @@ export default function JourneyMotion() {
       }
     };
 
+    // Ease used by the glide (gentle, still tied to the scroll).
+    const easeA = (a: number) => a * a * (3 - 2 * a) * 0.35 + a * 0.65;
+    const f0 = () => (vw < 700 ? 1.16 : 1); // phones start a touch further along so the second card fits
+
+    // Phones: every moving part is a keyframe animation tied to the scroll position. Where the browser supports
+    // scroll-driven animations the graphics chip plays them, so nothing lags behind the finger. The dissolve is a
+    // staggered fade (left to right) instead of a moving mask, which phones would have to repaint every frame.
+    let anims: ScrollAnim[] = [];
+    const build = () => {
+      anims.forEach((a) => a.anim.cancel());
+      anims = [];
+      const off = (b: number) => A + (1 - A) * Math.min(1, Math.max(0, b));
+      const K = 40;
+      const tf: Keyframe[] = [], ff: Keyframe[] = [];
+      for (let k = 0; k <= K; k++) {
+        const a = k / K, ea = easeA(a);
+        const focus = S * (f0() + ea * (n - 0.5 - f0())), sc = 0.92 + 0.18 * ea;
+        tf.push({ offset: a * A, transform: `translate3d(${(vw / 2 - sc * focus).toFixed(1)}px,0,0) scale(${sc.toFixed(4)})` });
+        ff.push({ offset: a * A, transform: `scaleX(${(focus / (S * n)).toFixed(4)})` });
+      }
+      tf.push({ ...tf[K], offset: 1 }); ff.push({ ...ff[K], offset: 1 });
+      track.style.transformOrigin = '0 0';
+      anims.push(scrollAnim(track, sec, tf), scrollAnim(fill, sec, ff));
+
+      // Where everything sits on screen once the glide has finished.
+      const focusE = S * (n - 0.5), scE = 1.1;
+      const X = (t: number) => vw / 2 + scE * (t - focusE);
+      // A thing spanning u0..u1 (share of the screen width) starts fading as the sweep reaches its left side
+      // and is gone once it passes its right side.
+      const fade = (el: Element, u0: number, u1: number) => {
+        const bS = Math.max(0, u0 / 1.35), bE = Math.max(bS + 0.04, (u1 + 0.12) / 1.35);
+        anims.push(scrollAnim(el, sec, [
+          { offset: 0, opacity: 1 }, { offset: off(bS), opacity: 1 }, { offset: off(bE), opacity: 0 }, { offset: 1, opacity: 0 },
+        ]));
+      };
+      items.forEach((it, i) => {
+        const cw = it.querySelector<HTMLElement>('.jr-card')?.offsetWidth ?? S;
+        const x0 = S * (i + 0.5) - 14;
+        fade(it, X(x0) / vw, X(x0 + cw) / vw);
+      });
+      const pb = pin.getBoundingClientRect();
+      head.querySelectorAll('.jr-label, .jr-w').forEach((el) => {
+        const r = el.getBoundingClientRect();
+        fade(el, (r.left - pb.left) / vw, (r.right - pb.left) / vw);
+      });
+      // The line shrinks from the left so its end follows the sweep.
+      const line = track.querySelector<HTMLElement>('.jr-line');
+      if (line) {
+        const L = X(0), R = X(S * n), lf: Keyframe[] = [{ offset: 0, transform: 'scaleX(1)' }];
+        for (let k = 0; k <= 24; k++) {
+          const b = k / 24, edge = (b * 1.35 - 0.06) * vw;
+          lf.push({ offset: off(b), transform: `scaleX(${Math.min(1, Math.max(0, (R - Math.max(L, edge)) / (R - L))).toFixed(4)})` });
+        }
+        lf.push({ offset: 1, transform: 'scaleX(0)' });
+        line.style.transformOrigin = '100% 50%';
+        anims.push(scrollAnim(line, sec, lf));
+      }
+    };
+
     let raf = 0, live = false, lastP = -1;
     const frame = () => {
       raf = requestAnimationFrame(frame);
@@ -99,10 +158,15 @@ export default function JourneyMotion() {
       lastP = p;
       const a = Math.min(1, p / A);
       const b = Math.max(0, (p - A) / (1 - A));
-      const ea = a * a * (3 - 2 * a) * 0.35 + a * 0.65; // a gentle ease, still tied to the scroll
-      const f0 = vw < 700 ? 1.16 : 1; // phones start a touch further along so the second card fits
-      const focus = S * (f0 + ea * (n - 0.5 - f0));
-      const scale = 0.92 + 0.18 * ea;
+      const focus = S * (f0() + easeA(a) * (n - 0.5 - f0()));
+      if (coarse) {
+        anims.forEach((x) => x.set(p));
+        items.forEach((it, i) => it.classList.toggle('on', S * (i + 0.5) <= focus + S * 0.3));
+        if (b <= 0) dust = null;
+        drawDust(b);
+        return;
+      }
+      const scale = 0.92 + 0.18 * easeA(a);
       track.style.transformOrigin = `${focus.toFixed(1)}px 0`;
       track.style.transform = `translate3d(${(vw / 2 - focus).toFixed(1)}px,0,0) scale(${scale.toFixed(4)})`;
       fill.style.transform = `scaleX(${(focus / (S * n)).toFixed(4)})`;
@@ -122,12 +186,13 @@ export default function JourneyMotion() {
     const onResize = () => {
       if (coarse && window.innerWidth === lastW) return; // phones: ignore address-bar height changes
       lastW = window.innerWidth;
-      layout(); lastP = -1;
+      layout(); if (coarse) build(); lastP = -1;
     };
     layout(); lastW = window.innerWidth;
+    if (coarse) { build(); document.fonts?.ready.then(() => { if (window.innerWidth === lastW) build(); }); }
     io.observe(sec);
     window.addEventListener('resize', onResize);
-    return () => { stop(); io.disconnect(); window.removeEventListener('resize', onResize); };
+    return () => { stop(); io.disconnect(); window.removeEventListener('resize', onResize); anims.forEach((x) => x.anim.cancel()); };
   }, []);
   return null;
 }

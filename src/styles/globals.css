@@ -328,3 +328,21 @@ a:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 .ct-spot{background:radial-gradient(460px circle at var(--mx) var(--my),rgba(139,108,255,.24),rgba(178,59,230,.08) 40%,transparent 70%)}
 .ct-spot2{background:radial-gradient(800px circle at calc(100% - var(--mx)) calc(100% - var(--my)),rgba(91,61,245,.1),transparent 60%)}
 .ct-arc{transform:translate(var(--dx),var(--dy));filter:hue-rotate(var(--hue))}
+
+/* Tape: thin moving strip under the hero. Dashes slide along a line over a blurred band of work; it never pauses. */
+.tape{position:relative;height:70px;overflow:hidden;background:#0B0E0F;border-top:1px solid rgba(238,243,242,.06);border-bottom:1px solid rgba(238,243,242,.06)}
+.tape-bg{position:absolute;inset:0}
+.tape-bg-track{display:flex;height:100%;width:max-content;animation:tape-move 110s linear infinite}
+.tape-bg-track span{flex:none;width:clamp(360px,30vw,520px);margin-right:clamp(-180px,-10vw,-120px);height:100%;background-size:cover;background-position:center;-webkit-mask-image:linear-gradient(90deg,transparent,#000 32%,#000 68%,transparent);mask-image:linear-gradient(90deg,transparent,#000 32%,#000 68%,transparent)}
+.tape-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(8,10,11,.84) 0%,rgba(8,10,11,.6) 32%,rgba(8,10,11,.45) 100%)}
+.tape-line{position:absolute;left:0;right:0;top:50%;height:1px;background:rgba(238,243,242,.22)}
+.tape-bars{position:absolute;left:0;right:0;top:50%;height:8px;margin-top:-4px}
+.tape-bars-track{display:flex;width:max-content;height:100%;animation:tape-move 50s linear infinite}
+.tape-half{display:flex;flex:none;height:100%;padding-right:0}
+.tape-half i{flex:none;height:100%;border-radius:4px;background:#EEF0F1}
+.tape-pill{position:absolute;left:clamp(16px,10vw,190px);top:50%;transform:translateY(-50%);z-index:2;display:flex;align-items:center;gap:12px;height:34px;padding:0 18px 0 12px;border:1px solid rgba(238,243,242,.7);border-radius:999px;background:rgba(14,17,19,.55);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+.tape-dot{width:13px;height:13px;border-radius:50%;flex:none;transition:background .5s}
+.tape-word{font-family:var(--f-mono);font-size:13px;letter-spacing:.14em;color:#F2F4F5;white-space:pre;font-weight:400}
+@keyframes tape-move{to{transform:translateX(-50%)}}
+@media (max-width:600px){.tape{height:58px}.tape-pill{height:30px;padding:0 14px 0 10px}.tape-word{font-size:11.5px}}
+@media (prefers-reduced-motion:reduce){.tape-bg-track,.tape-bars-track{animation-duration:200s}}

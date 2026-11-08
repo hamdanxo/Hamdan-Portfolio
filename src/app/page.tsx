@@ -11,6 +11,7 @@ import SiteHeader from '@/components/layout/SiteHeader';
 import Hero from '@/components/home/Hero';
 import Projects from '@/components/home/Projects';
 import Statement from '@/components/home/Statement';
+import Tape from '@/components/home/Tape';
 import ScrollFill from '@/components/effects/ScrollFill';
 import About from '@/components/home/About';
 import WhatIDo from '@/components/home/WhatIDo';
@@ -31,6 +32,7 @@ export default function HomePage() {
         <SiteHeader page="home" />
         <main>
           <Hero />
+          <Tape />
           <Statement />
           <Projects />
           <About />

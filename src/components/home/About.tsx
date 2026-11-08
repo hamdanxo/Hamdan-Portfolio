@@ -6,8 +6,8 @@ export default function About() {
 <div className="s-70882f">
 <p className="mono s-f0b806">About</p>
 <h2 className="s-c6ed9c"><span className="h2l"><span>Developer, designer</span></span><span className="h2l"><span className="s-f032f1">and marketer.</span></span></h2>
-<p className="c-b9 s-4c8a14">I&apos;m Muhammad Hamdan, a Computer Science student in Dubai looking for internships and volunteering opportunities. I&apos;m great at working in a team, and I can work on my own just as well.</p>
-<p className="c-b9 s-4c8a14">I currently handle graphic design and marketing at Lapiz Blue in Dubai. Before that I ran events for clients and built a full management system from the database up.</p>
+<p className="c-b9 s-4c8a14">I&apos;m a Computer Science student at the University of Wollongong in Dubai, majoring in Big Data and AI. I like work that sits between design and engineering, where how something looks matters as much as how it runs.</p>
+<p className="c-b9 s-4c8a14">At Lapiz Blue I look after graphic design and marketing, from company profiles to product launches. Before that I coordinated client events at Cheeky Monkeys and handled data work for The Mosbach Group. I&apos;m open to internships and volunteer roles where I can keep learning by doing.</p>
 </div>
 <div className="glass s-a18df3">
 <p className="mono s-a11a04">Experience</p>

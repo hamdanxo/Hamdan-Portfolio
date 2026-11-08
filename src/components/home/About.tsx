@@ -1,12 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import TimelineScroll from '@/components/effects/TimelineScroll';
 
-const jobs = [
-  { when: 'Now', role: 'Graphic Designer and Marketing', org: 'Lapiz Blue General Trading, Dubai' },
-  { when: '2023 to 2024', role: 'Event Coordinator', org: 'Cheeky Monkeys' },
-  { when: '2023', role: 'Spreadsheet Management', org: 'The Mosbach Group' },
-];
 
 // The Download CV button only appears once public/cv.pdf exists, so there is never a broken link.
 const hasCv = fs.existsSync(path.join(process.cwd(), 'public', 'cv.pdf'));
@@ -27,20 +21,6 @@ export default function About() {
 </dl>
 {hasCv && <a className="cv-btn" href="/cv.pdf" download="Muhammad Hamdan CV.pdf">Download CV<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><path d="M12 4v12" /><path d="m6 11 6 6 6-6" /><path d="M5 20h14" /></svg></a>}
 </div>
-<div className="tl" id="timeline">
-<p className="tl-label">Experience</p>
-<ol className="tl-list">
-{jobs.map((j) => (
-<li className="tl-row" key={j.role}>
-<span className="tl-year">{j.when}</span>
-<span className="tl-dot" aria-hidden="true" />
-<div className="tl-body"><h3 className="tl-role">{j.role}</h3><span className="tl-org">{j.org}</span></div>
-</li>
-))}
-</ol>
-<div className="tl-track" aria-hidden="true"><div className="tl-fill" /></div>
-</div>
-<TimelineScroll />
 </section>
     </>
   );

@@ -358,29 +358,13 @@ a:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 .stmt-text .fw.lit{color:#123B70}
 @media (prefers-reduced-motion:reduce){.stmt-text .fw{color:#123B70}}
 
-/* About: experience as a timeline that fills in as you scroll, a small facts row, and a CV button (shown once cv.pdf exists). */
-.tl{position:relative;flex:1.3 1 460px;min-width:0;padding:8px 0 0}
-#about .tl-label{margin:0 0 26px;font-family:var(--f-mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#8CBEF2;font-weight:300!important}
-.tl-list{list-style:none;margin:0;padding:0}
-.tl-row{display:grid;grid-template-columns:120px 28px minmax(0,1fr);align-items:start;padding:0 0 60px}
-.tl-row:last-child{padding-bottom:4px}
-#about .tl-year{padding-top:4px;font-family:var(--f-mono);font-size:12px;letter-spacing:.08em;color:#6F7C88;transition:color .4s;font-weight:300!important}
-.tl-dot{justify-self:center;margin-top:7px;width:9px;height:9px;border-radius:50%;background:#0B0D10;border:1px solid rgba(238,241,243,.28);position:relative;z-index:1;transition:background .4s,border-color .4s,box-shadow .4s}
-#about .tl-role{margin:0;font-family:var(--f-sans);font-size:clamp(18px,1.6vw,22px);letter-spacing:-.01em;color:#8E99A4;transition:color .4s;font-weight:300!important}
-#about .tl-org{display:block;margin-top:6px;font-family:var(--f-sans);font-size:14px;color:#5F6B76;transition:color .4s;font-weight:300!important}
-.tl-row.on .tl-dot{background:#8CBEF2;border-color:#8CBEF2;box-shadow:0 0 0 5px rgba(140,190,242,.14),0 0 18px rgba(140,190,242,.45)}
-#about .tl-row.on .tl-year{color:#8CBEF2}
-#about .tl-row.on .tl-role{color:#F2F5F8}
-#about .tl-row.on .tl-org{color:#9AA6B2}
-.tl-track{position:absolute;left:134px;top:calc(8px + 26px + 11px + 11px);bottom:20px;width:1px;background:rgba(238,241,243,.1)}
-.tl-fill{position:absolute;inset:0;background:linear-gradient(180deg,#8CBEF2,#3D7BC4);transform:scaleY(0);transform-origin:top}
+/* About: small facts row and a CV button (shown once cv.pdf exists). */
 .ab-facts{display:flex;gap:44px;margin:8px 0 0;padding-top:20px;border-top:1px solid rgba(238,241,243,.08);max-width:520px}
 #about .ab-facts dt{font-family:var(--f-sans);font-size:12px;color:#6F7C88;font-weight:300!important}
 #about .ab-facts dd{margin:6px 0 0;font-family:var(--f-sans);font-size:15px;color:#E6EBF0;font-weight:300!important}
 .cv-btn{align-self:flex-start;display:inline-flex;align-items:center;gap:10px;margin-top:6px;padding:11px 16px;border:1px solid rgba(238,241,243,.22);border-radius:4px;font-family:var(--f-sans);font-size:14px;color:#EEF1F3;text-decoration:none;transition:background .25s,color .25s,border-color .25s}
 .cv-btn svg{width:16px;height:16px}
 .cv-btn:hover{background:#EEF1F3;color:#060708;border-color:#EEF1F3}
-@media (max-width:600px){.tl-row{grid-template-columns:86px 24px minmax(0,1fr)}.tl-track{left:98px}}
 
 /* Phones: draggable scroll bar on the right edge (see ScrollRail). */
 .srail{position:fixed;top:0;right:0;width:28px;height:100vh;height:100dvh;z-index:80;opacity:.45;transition:opacity .35s;touch-action:none}
@@ -398,3 +382,33 @@ a:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
   .flip-card .foil{filter:none}
   .flip-inner{will-change:transform}
 }
+
+/* Timeline: pinned while you scroll; glides sideways with a slow zoom, then dissolves into rising dust. */
+.jr{position:relative;height:500vh}
+.jr-pin{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden}
+.jr-head{position:absolute;left:max(32px,calc((100% - 1216px) / 2));top:clamp(90px,14vh,140px);z-index:2}
+.jr-label{margin:0;font-family:var(--f-mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#8CBEF2}
+#journey .jr-title{margin:12px 0 0;font-family:var(--f-sans);font-size:clamp(32px,4vw,56px);font-weight:300;letter-spacing:-.04em;line-height:1;color:#F2F5F8}
+.jr-stage{position:absolute;inset:0}
+.jr-track{position:absolute;left:0;top:56%;height:0;margin:0;padding:0;list-style:none;will-change:transform}
+.jr-line{position:absolute;left:0;right:0;top:-0.5px;height:1px;background:rgba(238,241,243,.14)}
+.jr-fill{position:absolute;inset:0;transform:scaleX(0);transform-origin:left center;background:linear-gradient(90deg,#3D7BC4,#8CBEF2)}
+.jr-item{position:absolute;top:0;left:calc(var(--s,400px) * (var(--i) + .5))}
+.jr-dot{position:absolute;left:-6px;top:-6px;width:11px;height:11px;border-radius:50%;background:#0B0D10;border:1px solid rgba(238,241,243,.35);transition:background .5s,border-color .5s,box-shadow .5s}
+.jr-card{position:absolute;left:-12px;width:min(calc(var(--s,400px) * .86),340px);opacity:.35;transition:opacity .6s}
+.jr-item.up .jr-card{bottom:30px}
+.jr-item.down .jr-card{top:30px}
+.jr-when{display:block;font-family:var(--f-mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:#8CBEF2}
+#journey .jr-name{margin:10px 0 0;font-family:var(--f-sans);font-size:clamp(18px,1.7vw,24px);font-weight:300;letter-spacing:-.015em;line-height:1.2;color:#F2F5F8}
+#journey .jr-note{margin:8px 0 0;font-family:var(--f-sans);font-size:14px;line-height:1.5;font-weight:300;color:#8E99A4}
+.jr-item.on .jr-card{opacity:1}
+.jr-item.on .jr-dot{background:#8CBEF2;border-color:#8CBEF2;box-shadow:0 0 0 6px rgba(140,190,242,.14),0 0 22px rgba(140,190,242,.5)}
+.jr-dust{position:absolute;inset:0;pointer-events:none;z-index:3}
+/* Reduced motion: no pinning, just a row you can swipe through. */
+.jr.jr-static{height:auto}
+.jr-static .jr-pin{position:relative;height:auto;padding:120px 0 80px;overflow-x:auto}
+.jr-static .jr-head{position:relative;left:auto;top:auto;padding:0 32px 140px}
+.jr-static .jr-stage{position:relative;inset:auto;height:220px}
+.jr-static .jr-track{top:50%}
+.jr-static .jr-track{width:calc(var(--s,320px) * var(--n));--s:320px}
+@media (max-width:600px){.jr-head{left:16px}.jr-card{left:-10px;width:calc(var(--s,180px) * .84)}#journey .jr-name{font-size:16px}#journey .jr-note{font-size:12.5px}.jr-when{font-size:11px}}

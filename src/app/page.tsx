@@ -4,6 +4,7 @@ import Reveal from '@/components/effects/Reveal';
 import Cursor from '@/components/effects/Cursor';
 import FlipCard from '@/components/effects/FlipCard';
 import GlowParallax from '@/components/effects/GlowParallax';
+import ContactSpotlight from '@/components/effects/ContactSpotlight';
 import ProjectStack from '@/components/effects/ProjectStack';
 import Glows from '@/components/layout/Glows';
 import SiteHeader from '@/components/layout/SiteHeader';
@@ -44,6 +45,7 @@ export default function HomePage() {
       <Reveal selector={REVEAL} />
       <Cursor magnetic="#heroText a, header nav a:last-child" />
       <FlipCard />
+      <ContactSpotlight />
       <GlowParallax />
       <ProjectStack />
       <ScrollFill id="statement" />

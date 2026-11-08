@@ -321,3 +321,10 @@ a:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 .ct .cta.wa{background:transparent;color:#EEF3F2;border:1px solid rgba(238,243,242,.22)}
 .ct .cta.wa:hover{background:rgba(37,211,102,.12);border-color:rgba(37,211,102,.5);color:#FFFFFF;transform:none;box-shadow:none}
 @media (max-width:800px){.ct{grid-template-columns:1fr;align-items:start}.ct-r{align-items:flex-start}.ct .cta-row{justify-content:flex-start}.ct-arc{width:120%;right:-80%;top:-60%}}
+
+/* Contact band reacts to the mouse: a soft violet light follows the cursor and the arc drifts against it. */
+.ct{--mx:30%;--my:40%;--dx:0px;--dy:0px;--hue:0deg}
+.ct-spot,.ct-spot2{position:absolute;inset:0;pointer-events:none;mix-blend-mode:screen}
+.ct-spot{background:radial-gradient(460px circle at var(--mx) var(--my),rgba(139,108,255,.24),rgba(178,59,230,.08) 40%,transparent 70%)}
+.ct-spot2{background:radial-gradient(800px circle at calc(100% - var(--mx)) calc(100% - var(--my)),rgba(91,61,245,.1),transparent 60%)}
+.ct-arc{transform:translate(var(--dx),var(--dy));filter:hue-rotate(var(--hue))}

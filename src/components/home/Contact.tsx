@@ -4,7 +4,9 @@ export default function Contact() {
   return (
     <>
 <section className="s-0941a7" id="contact">
-<div className="ct">
+<div className="ct" id="contactBand">
+<div className="ct-spot" aria-hidden="true"></div>
+<div className="ct-spot2" aria-hidden="true"></div>
 <div className="ct-arc" aria-hidden="true"></div>
 <div className="ct-l">
 <p className="ct-label">Contact</p>

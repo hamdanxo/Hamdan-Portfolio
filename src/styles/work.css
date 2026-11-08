@@ -215,3 +215,20 @@ button.dg-row:last-child{border-bottom:0}
 .st-card:focus-visible{outline:2px solid #8B6CFF;outline-offset:4px}
 @media (prefers-reduced-motion:reduce){.st-card,.st-dim{transition:none}}
 @media (hover:hover){.st-card:not(.on):hover .st-dim{opacity:.08!important}}
+
+/* Work page: compact intro so the project shows on the first screen. */
+#work:not(.design-page) .wk-hero{flex-direction:row;justify-content:space-between;align-items:flex-end;gap:40px;padding:84px 0 36px;margin-bottom:56px;border-bottom:1px solid rgba(238,243,242,.08)}
+#work:not(.design-page) .wk-title{font-size:clamp(56px,8vw,128px);line-height:.9;letter-spacing:-.05em}
+#work:not(.design-page) .wk-sub{margin-top:20px;max-width:440px;font-size:17px;color:#97A6A9}
+.wh-meta{display:flex;gap:44px;margin:0;padding-bottom:6px}
+.wh-meta dt{font-family:var(--f-sans);font-size:12px;color:#6F8084}
+.wh-meta dd{margin:6px 0 0;font-family:var(--f-sans);font-size:15px;color:#E6EEED}
+#work:not(.design-page) .cat-head{grid-template-columns:1fr auto;align-items:end;padding-bottom:18px;border-bottom-color:rgba(238,243,242,.08)}
+#work:not(.design-page) .cat-name{font-size:clamp(20px,1.8vw,26px);letter-spacing:-.02em;line-height:1.2}
+#work:not(.design-page) .cat-desc{margin-top:6px;font-size:15px;color:#8F9EA2}
+#work:not(.design-page) .cat-count{padding:0;font-family:var(--f-sans);font-size:14px;letter-spacing:0;text-transform:none;color:#8F9EA2}
+#work:not(.design-page) .cs-num{display:none}
+#work:not(.design-page) .cs-top{grid-template-columns:1fr auto}
+#work:not(.design-page) .cs-kicker{font-family:var(--f-sans);font-size:14px;letter-spacing:0;text-transform:none;color:#8F9EA2}
+#work:not(.design-page) .cs-title{margin-top:6px;font-size:clamp(34px,3.8vw,56px);letter-spacing:-.035em}
+@media (max-width:760px){#work:not(.design-page) .wk-hero{flex-direction:column;align-items:flex-start;gap:28px;padding-top:56px;border-bottom:0;margin-bottom:24px}.wh-meta{gap:28px}}

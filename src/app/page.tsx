@@ -13,6 +13,7 @@ import Projects from '@/components/home/Projects';
 import Statement from '@/components/home/Statement';
 import ScrollFill from '@/components/effects/ScrollFill';
 import About from '@/components/home/About';
+import WhatIDo from '@/components/home/WhatIDo';
 import Education from '@/components/home/Education';
 import Skills from '@/components/home/Skills';
 import Languages from '@/components/home/Languages';
@@ -33,6 +34,7 @@ export default function HomePage() {
           <Statement />
           <Projects />
           <About />
+          <WhatIDo />
           <Education />
           <Skills />
           <Languages />

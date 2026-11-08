@@ -44,7 +44,7 @@ export default function FlipCard() {
     const fine = window.matchMedia('(pointer: fine)').matches && window.innerWidth > 900;
     const sheens = Array.from(inner.querySelectorAll<HTMLElement>('.sheen'));
     const foil = document.getElementById('cardFoil');
-    let cur = 0, last = -1, raf = 0;
+    let cur = 0, last = -1, raf = 0, live = true;
 
     // Mouse tilt: the card leans toward the cursor and the shine and foil follow it (desktop only).
     let mx = 0, my = 0, tx = 0, ty = 0;
@@ -61,9 +61,8 @@ export default function FlipCard() {
     tick();
     const clockTimer = window.setInterval(tick, 15000);
     const loop = () => {
+      if (!live) return;
       raf = requestAnimationFrame(loop);
-      const rr = sec.getBoundingClientRect();
-      if (rr.bottom < 0 || rr.top > window.innerHeight) return;
       const t = target();
       // Phones already scroll with their own momentum, so the card follows a little more directly there.
       cur += (t - cur) * (fine ? 0.09 : 0.16);
@@ -92,8 +91,15 @@ export default function FlipCard() {
     };
     window.addEventListener('resize', onResize);
     fit();
-    if (!reduce) { cur = target(); raf = requestAnimationFrame(loop); }
+    // The loop only runs while the card section is on screen.
+    const io = new IntersectionObserver(([e]) => {
+      live = e.isIntersecting;
+      cancelAnimationFrame(raf);
+      if (live && !reduce) raf = requestAnimationFrame(loop);
+    });
+    if (!reduce) { cur = target(); io.observe(sec); }
     return () => {
+      io.disconnect();
       window.removeEventListener('resize', onResize);
       window.removeEventListener('pointermove', onMove);
       window.clearInterval(clockTimer);

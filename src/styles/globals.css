@@ -412,3 +412,17 @@ a:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 .jr-static .jr-track{top:50%}
 .jr-static .jr-track{width:calc(var(--s,320px) * var(--n));--s:320px}
 @media (max-width:600px){.jr-head{left:16px}.jr-card{left:-10px;width:calc(var(--s,180px) * .84)}#journey .jr-name{font-size:16px}#journey .jr-note{font-size:12.5px}.jr-when{font-size:11px}}
+
+/* Phones: no fixed background layer under the page. A fixed layer underneath forces every section above it onto its own
+   GPU layer (one of them the full page height), which is what made scrolling stutter. The same still look is painted
+   straight into the page instead, so it scrolls for free. */
+@media (pointer:coarse){
+  #liquid{display:none!important}
+  .page{background:
+    radial-gradient(60% 30% at 18% 24%,rgba(81,138,184,.096),transparent 70%),
+    radial-gradient(55% 34% at 82% 58%,rgba(37,55,72,.27),transparent 70%),
+    radial-gradient(70% 30% at 40% 76%,rgba(81,138,184,.054),transparent 70%),
+    radial-gradient(120% 80% at 50% 50%,#0b1116,#010202 75%);
+    background-size:100% 100lvh;background-repeat:repeat-y}
+  #glows,#glows .glow,#glows .vg{will-change:auto!important}
+}

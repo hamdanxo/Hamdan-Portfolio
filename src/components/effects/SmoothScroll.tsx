@@ -17,6 +17,20 @@ export default function SmoothScroll({ offset = -90 }: { offset?: number }) {
     if (!reduce && 'IntersectionObserver' in window) document.documentElement.classList.add('js-anim');
     if (reduce) return;
 
+    // Phones and tablets scroll natively: their own momentum is smoother than any script, and it keeps the main thread free.
+    if (window.matchMedia('(pointer: coarse)').matches) {
+      const onTap = (e: MouseEvent) => {
+        const a = (e.target as Element | null)?.closest?.('a[href^="#"]');
+        const id = a?.getAttribute('href') ?? '';
+        const el = id.length > 1 ? document.querySelector(id) : null;
+        if (!el) return;
+        e.preventDefault();
+        window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY + offset, behavior: 'smooth' });
+      };
+      document.addEventListener('click', onTap);
+      return () => document.removeEventListener('click', onTap);
+    }
+
     const lenis = new Lenis({ lerp: 0.08, smoothWheel: true, wheelMultiplier: 0.9, touchMultiplier: 1.2 });
     window.__lenis = lenis;
     let raf = 0;

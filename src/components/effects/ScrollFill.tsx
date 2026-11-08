@@ -10,8 +10,9 @@ export default function ScrollFill({ id }: { id: string }) {
     if (!sec) return;
     const words = Array.from(sec.querySelectorAll<HTMLElement>('.fw'));
     if (prefersReducedMotion()) { words.forEach((w) => w.classList.add('lit')); return; }
-    let raf = 0, lastN = -1;
+    let raf = 0, lastN = -1, live = false;
     const loop = () => {
+      if (!live) return;
       raf = requestAnimationFrame(loop);
       const r = sec.getBoundingClientRect(), vh = window.innerHeight;
       // 0 when the top of the text reaches 85% down the screen, 1 when its bottom reaches 45%.
@@ -21,8 +22,14 @@ export default function ScrollFill({ id }: { id: string }) {
       lastN = n;
       words.forEach((w, i) => w.classList.toggle('lit', i < n));
     };
-    raf = requestAnimationFrame(loop);
-    return () => cancelAnimationFrame(raf);
+    // The loop only runs while the section is on screen.
+    const io = new IntersectionObserver(([e]) => {
+      live = e.isIntersecting;
+      cancelAnimationFrame(raf);
+      if (live) raf = requestAnimationFrame(loop);
+    }, { rootMargin: '20% 0px' });
+    io.observe(sec);
+    return () => { io.disconnect(); cancelAnimationFrame(raf); };
   }, [id]);
   return null;
 }

@@ -3,7 +3,6 @@ import SmoothScroll from '@/components/effects/SmoothScroll';
 import Reveal from '@/components/effects/Reveal';
 import Cursor from '@/components/effects/Cursor';
 import FlipCard from '@/components/effects/FlipCard';
-import ContactSpotlight from '@/components/effects/ContactSpotlight';
 import GlowParallax from '@/components/effects/GlowParallax';
 import ProjectStack from '@/components/effects/ProjectStack';
 import Glows from '@/components/layout/Glows';
@@ -45,7 +44,6 @@ export default function HomePage() {
       <Reveal selector={REVEAL} />
       <Cursor magnetic="#heroText a, header nav a:last-child" />
       <FlipCard />
-      <ContactSpotlight />
       <GlowParallax />
       <ProjectStack />
       <ScrollFill id="statement" />

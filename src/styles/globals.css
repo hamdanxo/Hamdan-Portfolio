@@ -388,3 +388,13 @@ a:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 .srail.on,.srail.drag{opacity:1}
 .srail-thumb{position:absolute;top:0;right:4px;width:5px;border-radius:5px;background:rgba(140,190,242,.8);box-shadow:0 0 12px rgba(140,190,242,.35);transition:width .2s,right .2s,background .2s}
 .srail.drag .srail-thumb{width:8px;right:3px;background:#8CBEF2}
+
+/* Phones: the spinning card is drawn without live blur or big shadows, so it stays smooth.
+   The blurred colour blobs become one painted gradient that looks the same. */
+@media (pointer:coarse){
+  .flip-card .s-ae999a,.flip-card .s-6bb8e7,.flip-card .s-298997{display:none!important}
+  .flip-card .face.front{background:radial-gradient(62% 78% at 11% 67%,rgba(91,61,245,.62),rgba(91,61,245,0) 72%),radial-gradient(62% 72% at 68% 96%,rgba(178,59,230,.82),rgba(178,59,230,0) 72%),radial-gradient(58% 62% at 72% 0%,rgba(90,46,122,.9),rgba(90,46,122,0) 72%),#17161B!important}
+  .flip-card .face{box-shadow:none!important}
+  .flip-card .foil{filter:none}
+  .flip-inner{will-change:transform}
+}

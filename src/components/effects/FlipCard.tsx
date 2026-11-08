@@ -65,7 +65,8 @@ export default function FlipCard() {
       const rr = sec.getBoundingClientRect();
       if (rr.bottom < 0 || rr.top > window.innerHeight) return;
       const t = target();
-      cur += (t - cur) * 0.09;
+      // Phones already scroll with their own momentum, so the card follows a little more directly there.
+      cur += (t - cur) * (fine ? 0.09 : 0.16);
       if (Math.abs(t - cur) < 0.0005) cur = t;
       mx += (tx - mx) * 0.08;
       my += (ty - my) * 0.08;

@@ -14,7 +14,7 @@ void main(){
   float f=fbm(uv*1.7+3.4*w);
   float m=pow(sin(f*13.+w.x*5.)*.5+.5,12.);
   float m2=pow(sin(f*8.-w.y*4.+1.3)*.5+.5,18.);
-  vec3 dark=vec3(0.016,0.021,0.023),vio=vec3(0.146,0.238,0.284),lil=vec3(0.781,0.989,0.982),tea=vec3(0.318,0.722,0.675);
+  vec3 dark=vec3(0.014,0.017,0.024),vio=vec3(0.110,0.190,0.330),lil=vec3(0.760,0.870,0.990),tea=vec3(0.300,0.530,0.850);
   vec3 col=mix(dark,vio,f*f*f*.9);
   col+=(lil*m*.08+tea*m2*.15)*smoothstep(.3,.9,f);
   col+=tea*.06*smoothstep(.5,.95,w.y);

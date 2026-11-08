@@ -62,7 +62,7 @@ void main() {
   // hover: lift the card and add a thin violet edge
   vec2 e = min(vUv, 1.0 - vUv);
   float border = 1.0 - step(0.006, min(e.x, e.y * 0.83));
-  col.rgb += vHover * (0.05 + border * vec3(0.33, 0.24, 0.62));
+  col.rgb += vHover * (0.05 + border * vec3(0.24, 0.42, 0.66));
   // soft edge fade, like the CSS vignette
   col.rgb *= 1.0 - smoothstep(0.85, 1.45, vEdge) * 0.55;
   gl_FragColor = col;

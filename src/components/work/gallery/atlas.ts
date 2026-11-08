@@ -40,39 +40,39 @@ function radial(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, 
 function drawArt(ctx: CanvasRenderingContext2D, i: number, x: number, y: number, w: number, h: number) {
   const fill = (c: string) => { ctx.fillStyle = c; ctx.fillRect(x, y, w, h); };
   switch (i % 8) {
-    case 0: fill('#17161B'); radial(ctx, x, y, w, h, 0.25, 0.3, 0.9, 0.7, '#7A55F0'); radial(ctx, x, y, w, h, 0.8, 0.8, 0.7, 0.7, '#B23BE6'); break;
-    case 1: fill('#06100F'); radial(ctx, x, y, w, h, 0.7, 0.25, 0.8, 0.8, '#64B6AC'); radial(ctx, x, y, w, h, 0.2, 0.85, 0.7, 0.6, '#5D737E', 0.65); break;
+    case 0: fill('#16181B'); radial(ctx, x, y, w, h, 0.25, 0.3, 0.9, 0.7, '#609CE5'); radial(ctx, x, y, w, h, 0.8, 0.8, 0.7, 0.7, '#4182E0'); break;
+    case 1: fill('#060C10'); radial(ctx, x, y, w, h, 0.7, 0.25, 0.8, 0.8, '#6492B6'); radial(ctx, x, y, w, h, 0.2, 0.85, 0.7, 0.6, '#5D6E7E', 0.65); break;
     case 2: {
       const g = ctx.createLinearGradient(x, y, x + w * 0.35, y + h);
-      g.addColorStop(0, '#DAFFEF'); g.addColorStop(0.45, '#C0FDFB'); g.addColorStop(1, '#64B6AC');
+      g.addColorStop(0, '#DFEFFA'); g.addColorStop(0.45, '#C7E1F6'); g.addColorStop(1, '#6492B6');
       ctx.fillStyle = g; ctx.fillRect(x, y, w, h); break;
     }
     case 3: {
       const g = ctx.createConicGradient((210 - 90) * (Math.PI / 180), x + w * 0.5, y + h * 0.6);
-      g.addColorStop(0, '#0B0614'); g.addColorStop(0.2, '#5B3DF5'); g.addColorStop(0.4, '#0B0614');
-      g.addColorStop(0.6, '#64B6AC'); g.addColorStop(0.8, '#0B0614'); g.addColorStop(1, '#0B0614');
+      g.addColorStop(0, '#060C14'); g.addColorStop(0.2, '#5092E2'); g.addColorStop(0.4, '#060C14');
+      g.addColorStop(0.6, '#6492B6'); g.addColorStop(0.8, '#060C14'); g.addColorStop(1, '#060C14');
       ctx.fillStyle = g; ctx.fillRect(x, y, w, h); break;
     }
-    case 4: fill('#5D737E'); radial(ctx, x, y, w, h, 0.5, 0.5, 0.6, 0.6, '#C0FDFB', 0.62); break;
+    case 4: fill('#5D6E7E'); radial(ctx, x, y, w, h, 0.5, 0.5, 0.6, 0.6, '#C7E1F6', 0.62); break;
     case 5: {
       // CSS linear-gradient(135deg, dark 50%, violet 50%): violet where (px + py) > (w + h) / 2
-      fill('#1B1B1E');
+      fill('#1B1C1E');
       const s = (w + h) / 2, far = w + h;
       ctx.save(); ctx.beginPath(); ctx.rect(x, y, w, h); ctx.clip();
-      ctx.fillStyle = '#8B6CFF';
+      ctx.fillStyle = '#81B0EA';
       ctx.beginPath();
       ctx.moveTo(x + s, y); ctx.lineTo(x + s + far, y);
       ctx.lineTo(x + s + far, y + far); ctx.lineTo(x + s - far, y + far);
       ctx.closePath(); ctx.fill(); ctx.restore(); break;
     }
-    case 6: fill('#0A0A0D'); radial(ctx, x, y, w, h, 0.3, 0.7, 0.7, 0.9, '#B23BE6'); radial(ctx, x, y, w, h, 0.75, 0.25, 0.7, 0.7, '#64B6AC'); break;
+    case 6: fill('#0A0B0D'); radial(ctx, x, y, w, h, 0.3, 0.7, 0.7, 0.9, '#4182E0'); radial(ctx, x, y, w, h, 0.75, 0.25, 0.7, 0.7, '#6492B6'); break;
     case 7: {
-      fill('#0E1214');
-      ctx.fillStyle = '#16201F';
+      fill('#0E1114');
+      ctx.fillStyle = '#161C20';
       for (let sx = 14; sx < w; sx += 28) ctx.fillRect(x + sx, y, Math.min(14, w - sx), h);
       const r = Math.min(w, h) * 0.28, cx = x + w / 2, cy = y + h / 2;
       const g = ctx.createRadialGradient(cx - r * 0.3, cy - r * 0.3, 0, cx, cy, r);
-      g.addColorStop(0, '#DAFFEF'); g.addColorStop(0.45, '#64B6AC'); g.addColorStop(1, '#1B3B37');
+      g.addColorStop(0, '#DFEFFA'); g.addColorStop(0.45, '#6492B6'); g.addColorStop(1, '#1B2D3B');
       ctx.fillStyle = g; ctx.beginPath(); ctx.ellipse(cx, cy, w * 0.28, h * 0.28, 0, 0, Math.PI * 2); ctx.fill(); break;
     }
   }
@@ -142,7 +142,7 @@ export async function buildAtlas(items: Design[], images: (HTMLImageElement | nu
     ctx.fillStyle = '#FFFFFF';
     ctx.font = `300 ${small ? 11 : 12}px ${sans}`;
     letterSpaced(ctx, d.client, pad, pad + 7, 0.24, 'left');
-    ctx.fillStyle = '#C9D3D6';
+    ctx.fillStyle = '#C9D0D6';
     ctx.font = `300 ${small ? 8.5 : 9.5}px ${mono}`;
     letterSpaced(ctx, d.title.toUpperCase(), W - pad, pad + 7, 1.1, 'right');
 
@@ -180,11 +180,11 @@ export async function buildAtlas(items: Design[], images: (HTMLImageElement | nu
       ctx.fill();
       ctx.strokeStyle = 'rgba(255,255,255,0.08)';
       ctx.stroke();
-      ctx.fillStyle = '#B4C0C4';
+      ctx.fillStyle = '#B4BCC4';
       letterSpaced(ctx, t, tx + 7, by + 0.5, 1, 'left');
       tx += tw + 5;
     }
-    ctx.fillStyle = '#C9D3D6';
+    ctx.fillStyle = '#C9D0D6';
     ctx.font = `300 ${small ? 8.5 : 9.5}px ${mono}`;
     letterSpaced(ctx, d.year, W - pad, by, 1.1, 'right');
 

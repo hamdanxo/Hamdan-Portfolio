@@ -195,10 +195,49 @@ a:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 .lang-list{margin:0;font-family:var(--f-sans);font-size:clamp(20px,2vw,24px);color:#FFFFFF;display:flex;flex-wrap:wrap;align-items:baseline;gap:0 16px;line-height:1.4}
 .lang-list i{font-style:normal;color:#4F5E63}
 /* Card: gold foil logo, live Dubai time, tap to save contact. */
-.foil{font-size:calc(22px * var(--k))!important;background:linear-gradient(110deg,#6E5223 0%,#D9BC74 16%,#A8832F 30%,#FFF1C8 45%,#B08A36 57%,#ECD490 72%,#80612A 88%,#5E4419 100%)!important;background-size:280% 100%!important;background-position:50% 50%;-webkit-background-clip:text!important;background-clip:text!important;color:transparent!important;-webkit-text-fill-color:transparent;filter:drop-shadow(0 calc(1px * var(--k)) 0 rgba(0,0,0,.6)) drop-shadow(0 calc(-.5px * var(--k)) 0 rgba(255,236,190,.22))}
-.s-a5484f .s-e7b62d{background:linear-gradient(90deg,#A8832F,#F4E2AE,#A8832F)!important;opacity:.9!important}
+.foil{font-size:calc(22px * var(--k))!important;background:linear-gradient(110deg,#5F646B 0%,#C9CED5 16%,#8D939B 30%,#FFFFFF 45%,#9AA0A8 57%,#E1E5EA 72%,#6A7078 88%,#4E5359 100%)!important;background-size:280% 100%!important;background-position:50% 50%;-webkit-background-clip:text!important;background-clip:text!important;color:transparent!important;-webkit-text-fill-color:transparent;filter:drop-shadow(0 calc(1px * var(--k)) 0 rgba(0,0,0,.6)) drop-shadow(0 calc(-.5px * var(--k)) 0 rgba(255,255,255,.22))}
+.s-a5484f .s-e7b62d{background:linear-gradient(90deg,#8D939B,#F2F4F7,#8D939B)!important;opacity:.9!important}
 .card-time{position:absolute;left:calc(22px * var(--k));top:calc(18px * var(--k));margin:0;z-index:2;font-family:var(--f-mono);font-size:calc(8px * var(--k));letter-spacing:.16em;text-transform:uppercase;white-space:pre;color:rgba(241,238,247,.78)}
 .card-save{position:absolute;inset:0;z-index:3;display:flex;align-items:flex-end;justify-content:flex-start;padding:calc(20px * var(--k)) calc(22px * var(--k));text-decoration:none;cursor:pointer}
 .card-save span{font-family:var(--f-mono);font-size:calc(7px * var(--k));letter-spacing:.16em;text-transform:uppercase;color:rgba(236,235,240,.7);border-bottom:1px solid rgba(236,235,240,.3);padding-bottom:calc(1px * var(--k));transition:color .3s,border-color .3s}
-.card-save:hover span,.card-save:focus-visible span{color:#FFFFFF;border-color:#D9BC74}
-.card-save:focus-visible{outline:2px solid #D9BC74;outline-offset:-4px}
+.card-save:hover span,.card-save:focus-visible span{color:#FFFFFF;border-color:#D5DAE0}
+.card-save:focus-visible{outline:2px solid #D5DAE0;outline-offset:-4px}
+
+/* Home: work photos fill their boxes. */
+.pj-photo{position:relative;overflow:hidden;background:#0B0F11}
+.pj-photo img{object-fit:cover}
+
+/* Statement that fills in word by word as you scroll. */
+.stmt{max-width:1180px;margin:0 auto;padding:clamp(90px,14vh,170px) clamp(20px,5vw,64px)}
+.stmt-text{margin:0;font-family:var(--f-sans);font-weight:300;font-size:clamp(30px,4.3vw,62px);line-height:1.18;letter-spacing:-.025em;color:#F1F6F5}
+.stmt-text .fw{opacity:.16;transition:opacity .35s ease}
+.stmt-text .fw.lit{opacity:1}
+
+/* Worked with: slow moving client names. */
+.cl{display:flex;align-items:center;gap:clamp(18px,3vw,44px);padding:clamp(56px,9vh,110px) 0 clamp(40px,6vh,80px);overflow:hidden}
+.cl-label{flex:none;margin:0 0 0 clamp(20px,5vw,64px);font-family:var(--f-mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#7F959A}
+.cl-view{flex:1;overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
+.cl-track{display:flex;width:max-content;animation:cl-move 46s linear infinite}
+.cl-half{display:flex;flex:none}
+.cl-half span{display:flex;align-items:center;gap:clamp(22px,3vw,44px);padding-right:clamp(22px,3vw,44px);font-family:var(--f-sans);font-weight:200;font-size:clamp(34px,5vw,72px);letter-spacing:-.03em;color:#EEF4F3;white-space:nowrap}
+.cl-half i{font-style:normal;font-size:.36em;color:#8B6CFF}
+.cl:hover .cl-track{animation-play-state:paused}
+@keyframes cl-move{to{transform:translateX(-50%)}}
+@media (max-width:700px){.cl{flex-direction:column;align-items:flex-start}.cl-view{width:100%}}
+
+/* Cursor turns into a "View" label over work. */
+.cur span{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--f-sans);font-size:11px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:#060708;opacity:0;transition:opacity .2s}
+.cur.view{mix-blend-mode:normal!important;width:88px!important;height:88px!important;margin:-44px 0 0 -44px!important;background:rgba(240,245,244,.95)!important;border-color:transparent!important}
+.cur.view span{opacity:1}
+
+/* Page change wipe in the card's colours. */
+.pt{position:fixed;inset:0;z-index:5000;pointer-events:none;display:grid;place-items:center;background:linear-gradient(120deg,#22157A 0%,#5B3DF5 48%,#B23BE6 100%);transform:scaleX(0);transform-origin:left center}
+.pt-mark{font-family:var(--f-display);font-size:clamp(34px,5vw,64px);letter-spacing:.08em;background:linear-gradient(110deg,#8D939B,#FFFFFF 45%,#9AA0A8 60%,#E1E5EA);-webkit-background-clip:text;background-clip:text;color:transparent;opacity:0}
+.pt.in{transform:scaleX(1);transition:transform .55s cubic-bezier(.7,0,.25,1)}
+.pt.in .pt-mark{opacity:1;transition:opacity .3s .25s}
+html.pt-cover .pt{transform:scaleX(1);animation:pt-safety 0s 4s forwards}
+html.pt-cover .pt-mark{opacity:1}
+.pt.out{transform:scaleX(0);transform-origin:right center;transition:transform .65s cubic-bezier(.7,0,.25,1) .08s}
+.pt.out .pt-mark{opacity:0;transition:opacity .2s}
+@keyframes pt-safety{to{transform:scaleX(0)}}
+@media (prefers-reduced-motion:reduce){.cl-track{animation:none}.stmt-text .fw{opacity:1}}

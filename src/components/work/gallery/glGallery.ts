@@ -48,13 +48,23 @@ void main() {
 const fragment = /* glsl */ `
 uniform sampler2D uAtlas;
 uniform vec2 uGrid;     // atlas columns, rows
+uniform float uRipple;  // seconds since the pointer reached a new card
 varying vec2 vUv;
 varying vec2 vCell;
 varying float vHover;
 varying float vEdge;
 
 void main() {
-  vec2 uv = (vCell + vec2(vUv.x, 1.0 - vUv.y)) / uGrid;
+  // hover ripple: a quick water ring that settles in under a second
+  vec2 st = vUv;
+  if (vHover > 0.5) {
+    float t = uRipple;
+    float amp = 0.014 * exp(-t * 2.4) * step(0.0, t);
+    vec2 c = st - 0.5;
+    float d = length(c) + 0.0001;
+    st = clamp(st + c / d * sin(d * 38.0 - t * 14.0) * amp, 0.003, 0.997);
+  }
+  vec2 uv = (vCell + vec2(st.x, 1.0 - st.y)) / uGrid;
   vec4 col = texture2D(uAtlas, vec2(uv.x, 1.0 - uv.y));
   // hover: lift the card and add a thin violet edge
   vec2 e = min(vUv, 1.0 - vUv);
@@ -72,6 +82,8 @@ export type GalleryGL = {
   setMouse: (x: number | null, y: number | null) => void;
   /** Which design (index into the list) is under this stage point, or -1. */
   pick: (x: number, y: number) => number;
+  /** Tell the gallery which design is hovered; a new one starts a ripple. */
+  hover: (index: number) => void;
   resize: () => void;
   render: () => void;
   dispose: () => void;
@@ -118,7 +130,9 @@ export function createGalleryGL(
     uCam: { value: 1000 },
     uAtlas: { value: texture },
     uGrid: { value: new Vector2(atlas.cols, atlas.rows) },
+    uRipple: { value: 99 },
   };
+  let rippleStart = -1e9, hovered = -1;
   const material = new ShaderMaterial({ vertexShader: vertex, fragmentShader: fragment, uniforms, transparent: true, depthTest: false, depthWrite: false });
   const mesh = new Mesh(geometry, material);
   mesh.frustumCulled = false;
@@ -188,8 +202,16 @@ export function createGalleryGL(
       }
       return -1;
     },
+    hover: (index) => {
+      if (index === hovered) return;
+      hovered = index;
+      if (index >= 0) rippleStart = performance.now();
+    },
     resize,
-    render: () => renderer.render(scene, camera),
+    render: () => {
+      uniforms.uRipple.value = (performance.now() - rippleStart) / 1000;
+      renderer.render(scene, camera);
+    },
     dispose: () => { plane.dispose(); geometry.dispose(); material.dispose(); texture.dispose(); renderer.dispose(); },
   };
 }

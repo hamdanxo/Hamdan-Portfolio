@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next';
 import { fontVariables } from './fonts';
 import { site } from '@/lib/site';
 import { heroModeScript } from '@/components/effects/HeroLayoutScript';
+import PageTransition, { pageTransitionScript } from '@/components/effects/PageTransition';
 import '@/styles/components.css';
 import '@/styles/globals.css';
 
@@ -25,8 +26,13 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     <html lang="en" className={fontVariables} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: heroModeScript }} />
+        <script dangerouslySetInnerHTML={{ __html: pageTransitionScript }} />
       </head>
-      <body>{children}</body>
+      <body>
+        {children}
+        <div className="pt" id="pt" aria-hidden="true"><span className="pt-mark">MH</span></div>
+        <PageTransition />
+      </body>
     </html>
   );
 }

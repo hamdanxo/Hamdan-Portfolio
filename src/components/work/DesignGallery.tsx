@@ -169,6 +169,7 @@ export default function DesignGallery({ fullscreen = false }: { fullscreen?: boo
         if (!down) {
           const i = glRef.current.pick(e.clientX - r.left, e.clientY - r.top);
           stage.classList.toggle('dg-pick', i >= 0 && !!designs[i].img);
+          glRef.current.hover(i);
         }
         dirty = true;
       }
@@ -178,7 +179,7 @@ export default function DesignGallery({ fullscreen = false }: { fullscreen?: boo
       p.ox += dx; p.oy += dy; p.vx = dx; p.vy = dy; dirty = true;
     };
     const up = () => { if (!down) return; down = false; stage.classList.remove('drag'); if (rm) p.vx = p.vy = 0; };
-    const leave = () => { glRef.current?.setMouse(null, null); dirty = true; };
+    const leave = () => { glRef.current?.setMouse(null, null); glRef.current?.hover(-1); stage.classList.remove('dg-pick'); dirty = true; };
     const click = (e: MouseEvent) => {
       if (moved > 6) { e.preventDefault(); e.stopPropagation(); return; }
       const gl = glRef.current;
@@ -299,7 +300,7 @@ export default function DesignGallery({ fullscreen = false }: { fullscreen?: boo
                 <span>{year}</span>
                 <div>
                   {items.map((d) => (
-                    <button type="button" className="dg-row" key={d.title} onClick={() => setOpen(d)}>
+                    <button type="button" className="dg-row" data-cursor="view" key={d.title} onClick={() => setOpen(d)}>
                       <b>{d.title}</b>
                       <span className="dg-tags">{d.tags.map((t) => <i key={t}>{t}</i>)}</span>
                       <small>{d.client}</small>

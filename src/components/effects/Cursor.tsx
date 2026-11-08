@@ -10,9 +10,14 @@ export default function Cursor({ magnetic }: { magnetic: string }) {
     const c = document.createElement('div');
     c.className = 'cur';
     c.setAttribute('aria-hidden', 'true');
+    c.innerHTML = '<span>View</span>';
     document.body.appendChild(c);
     let x = -100, y = -100, cx = -100, cy = -100, raf = 0;
-    const move = (e: PointerEvent) => { x = e.clientX; y = e.clientY; c.classList.add('on'); };
+    const move = (e: PointerEvent) => {
+      x = e.clientX; y = e.clientY; c.classList.add('on');
+      // Over work (images, design tiles, list rows) the circle becomes a "View" label.
+      c.classList.toggle('view', !!(e.target as Element | null)?.closest?.('[data-cursor="view"], .dg-stage.dg-pick'));
+    };
     const leave = () => c.classList.remove('on');
     const over = (e: PointerEvent) => c.classList.toggle('big', !!(e.target as Element | null)?.closest?.('a,button'));
     window.addEventListener('pointermove', move, { passive: true });

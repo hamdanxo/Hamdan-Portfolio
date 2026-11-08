@@ -15,13 +15,13 @@ export default function Projects() {
 <div className="pj-stack">
 <article className="pj s-c5cbe4">
 <div className="pj-head">
-<div className="pj-id"><span className="pj-num">01</span><div className="pj-meta"><span className="pj-client">Landing soon</span><h3 className="pj-title">Graphic Design</h3></div></div>
+<div className="pj-id"><span className="pj-num">01</span><div className="pj-meta"><span className="pj-client">04 projects</span><h3 className="pj-title">Graphic Design</h3></div></div>
 <a className="pj-link" href="/design">View projects <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M7 17 17 7" /><path d="M8 7h9v9" /></svg></a>
 </div>
-<a className="pj-grid" href="/design" aria-label="Open Graphic Design projects">
-<div className="pj-img pj-big pj-soon">[DESIGN]</div>
-<div className="pj-img pj-soon">[DESIGN]</div>
-<div className="pj-img pj-soon">[DESIGN]</div>
+<a className="pj-grid" data-cursor="view" href="/design" aria-label="Open Graphic Design projects">
+<div className="pj-img pj-big pj-photo"><Image src="/designs/stone-collections/01.webp" alt="Stone Collections post for Global Classic" fill sizes="(max-width: 900px) 92vw, 62vw" /></div>
+<div className="pj-img pj-photo"><Image src="/designs/fuga-shock/01.webp" alt="Fuga-Shock launch post for Lapiz Blue" fill sizes="(max-width: 900px) 46vw, 30vw" /></div>
+<div className="pj-img pj-photo"><Image src="/designs/lapiz-blue-profile/p01.webp" alt="Lapiz Blue company profile cover" fill sizes="(max-width: 900px) 46vw, 30vw" /></div>
 </a>
 <span className="pj-dim" aria-hidden="true" />
 </article>
@@ -30,7 +30,7 @@ export default function Projects() {
 <div className="pj-id"><span className="pj-num">02</span><div className="pj-meta"><span className="pj-client">01 project</span><h3 className="pj-title">Websites</h3></div></div>
 <a className="pj-link" href="/work#websites">View projects <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M7 17 17 7" /><path d="M8 7h9v9" /></svg></a>
 </div>
-<a className="pj-grid" href="/work#websites" aria-label="Open Websites projects">
+<a className="pj-grid" data-cursor="view" href="/work#websites" aria-label="Open Websites projects">
 <div className="pj-img pj-big"><Image className="s-96d9c8" src={siteShot} alt="Portfolio website home page" sizes="(max-width: 900px) 92vw, 62vw" /></div>
 <div className="pj-img pj-soon">Next site</div>
 <div className="pj-img pj-soon">Next site</div>
@@ -42,7 +42,7 @@ export default function Projects() {
 <div className="pj-id"><span className="pj-num">03</span><div className="pj-meta"><span className="pj-client">01 project</span><h3 className="pj-title">Automations &amp; Systems</h3></div></div>
 <a className="pj-link" href="/work#automations">View projects <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M7 17 17 7" /><path d="M8 7h9v9" /></svg></a>
 </div>
-<a className="pj-grid" href="/work#automations" aria-label="Open Automations & Systems projects">
+<a className="pj-grid" data-cursor="view" href="/work#automations" aria-label="Open Automations & Systems projects">
 <div className="pj-img pj-big pj-live"><div className="flow" aria-label="How the lead staging system works">
 <div className="flow-row">
 <div className="node"><span className="node-k">Source</span><b>Counter form</b><small>Walk in enquiries</small></div>

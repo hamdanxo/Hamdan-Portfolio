@@ -11,6 +11,10 @@ import SiteHeader from '@/components/layout/SiteHeader';
 import Hero from '@/components/home/Hero';
 import Marquee from '@/components/home/Marquee';
 import Projects from '@/components/home/Projects';
+import Statement from '@/components/home/Statement';
+import ClientStrip from '@/components/home/ClientStrip';
+import ScrollFill from '@/components/effects/ScrollFill';
+import ImageRipple from '@/components/effects/ImageRipple';
 import About from '@/components/home/About';
 import Education from '@/components/home/Education';
 import Skills from '@/components/home/Skills';
@@ -30,7 +34,9 @@ export default function HomePage() {
         <main>
           <Hero />
           <Marquee />
+          <Statement />
           <Projects />
+          <ClientStrip />
           <About />
           <Education />
           <Skills />
@@ -45,6 +51,8 @@ export default function HomePage() {
       <ContactSpotlight />
       <GlowParallax />
       <ProjectStack />
+      <ScrollFill id="statement" />
+      <ImageRipple selector=".pj-photo img" />
     </div>
   );
 }

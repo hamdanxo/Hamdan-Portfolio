@@ -391,8 +391,8 @@ a:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 #journey .jr-title{margin:12px 0 0;font-family:var(--f-sans);font-size:clamp(32px,4vw,56px);font-weight:300;letter-spacing:-.04em;line-height:1;color:#F2F5F8}
 .jr-stage{position:absolute;inset:0}
 .jr-track{position:absolute;left:0;top:56%;height:0;margin:0;padding:0;list-style:none;will-change:transform}
-.jr-line{position:absolute;left:0;right:0;top:-0.5px;height:1px;background:rgba(238,241,243,.14)}
-.jr-fill{position:absolute;inset:0;transform:scaleX(0);transform-origin:left center;background:linear-gradient(90deg,#3D7BC4,#8CBEF2)}
+.jr-line{position:absolute;left:0;right:0;top:-1px;height:2px;border-radius:2px;background:rgba(238,241,243,.12)}
+.jr-fill{position:absolute;inset:0;border-radius:2px;transform:scaleX(0);transform-origin:left center;background:linear-gradient(90deg,rgba(84,112,232,0) 0%,rgba(92,120,236,.6) 30%,#7E98FF 72%,#C8D6FF 93%,#fff 100%);box-shadow:0 0 6px 1px rgba(112,140,255,.6),0 0 20px 3px rgba(92,118,240,.3)}
 .jr-item{position:absolute;top:0;left:calc(var(--s,400px) * (var(--i) + .5))}
 .jr-dot{position:absolute;left:-6px;top:-6px;width:11px;height:11px;border-radius:50%;background:#0B0D10;border:1px solid rgba(238,241,243,.35);transition:background .5s,border-color .5s,box-shadow .5s}
 .jr-card{position:absolute;left:-12px;width:min(calc(var(--s,400px) * .86),340px);opacity:.35;transition:opacity .6s}

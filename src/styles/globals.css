@@ -440,6 +440,6 @@ a:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 .hx-links a:hover::after{background:#F2F5F8;animation:hxline .7s cubic-bezier(.2,.7,.2,1)}
 @keyframes hxline{0%{transform:scaleX(1);transform-origin:right}45%{transform:scaleX(0);transform-origin:right}46%{transform-origin:left}100%{transform:scaleX(1);transform-origin:left}}
 /* More room between the name and the card: the hand sits further right on wide screens. */
-@media (min-width:901px){html:not(.hero-stack) .flip-box{right:-7vw}}
+@media (min-width:901px){html:not(.hero-stack) .flip-box{right:-3.5vw}}
 .hero-stack .hx{gap:22px}
 .hero-stack .hx .hx-name{font-size:clamp(44px,13vw,84px)!important}

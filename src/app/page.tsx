@@ -21,7 +21,7 @@ import Languages from '@/components/home/Languages';
 import Contact from '@/components/home/Contact';
 
 const REVEAL =
-  '#heroText, #projects > div:first-child, #about > div, #skills > div:first-child, #skills .sk-cell, #languages > *, #contact > *';
+  '#heroText, #projects > div:first-child, #about > div, #education > div:first-child, #education .glass, #skills > div:first-child, #skills .sk-cell, #languages > *, #contact > *';
 
 export default function HomePage() {
   return (

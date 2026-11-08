@@ -329,19 +329,6 @@ a:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 .ct-spot2{background:radial-gradient(800px circle at calc(100% - var(--mx)) calc(100% - var(--my)),rgba(80,146,226,.1),transparent 60%)}
 .ct-arc{transform:translate(var(--dx),var(--dy));filter:hue-rotate(var(--hue))}
 
-/* Tape: thin moving strip under the hero. Dashes slide along a line over a blurred band of work; it never pauses. */
-.tape{position:relative;height:70px;overflow:hidden;background:transparent;border-top:1px solid rgba(238,241,243,.06);border-bottom:1px solid rgba(238,241,243,.06)}
-.tape-line{position:absolute;left:0;right:0;top:50%;height:1px;background:rgba(238,241,243,.22)}
-.tape-bars{position:absolute;left:0;right:0;top:50%;height:8px;margin-top:-4px}
-.tape-bars-track{display:flex;width:max-content;height:100%;animation:tape-move 50s linear infinite}
-.tape-half{display:flex;flex:none;height:100%;padding-right:0}
-.tape-half i{flex:none;height:100%;border-radius:4px;background:#EEF0F1}
-.tape-pill{position:absolute;left:clamp(16px,10vw,190px);top:50%;transform:translateY(-50%);z-index:2;display:flex;align-items:center;gap:12px;height:34px;padding:0 18px 0 12px;border:1px solid rgba(238,241,243,.7);border-radius:999px;background:rgba(14,17,19,.55);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
-.tape-dot{width:13px;height:13px;border-radius:50%;flex:none;transition:background .5s}
-.tape-word{font-family:var(--f-mono);font-size:13px;letter-spacing:.14em;color:#F2F4F5;white-space:pre;font-weight:400}
-@keyframes tape-move{to{transform:translateX(-50%)}}
-@media (max-width:600px){.tape{height:58px}.tape-pill{height:30px;padding:0 14px 0 10px}.tape-word{font-size:11.5px}}
-@media (prefers-reduced-motion:reduce){.tape-bars-track{animation-duration:200s}}
 
 /* Blue palette: nudge the teal hand render toward the ice blue. */
 .hand{filter:hue-rotate(28deg) saturate(.9)}

@@ -43,7 +43,23 @@ export default function FlipCard() {
     };
     const fine = window.matchMedia('(pointer: fine)').matches && window.innerWidth > 900;
     const sheens = Array.from(inner.querySelectorAll<HTMLElement>('.sheen'));
+    const foil = document.getElementById('cardFoil');
     let cur = 0, last = -1, raf = 0;
+
+    // Mouse tilt: the card leans toward the cursor and the shine and foil follow it (desktop only).
+    let mx = 0, my = 0, tx = 0, ty = 0;
+    const onMove = (e: PointerEvent) => {
+      tx = (e.clientX / window.innerWidth - 0.5) * 2;
+      ty = (e.clientY / window.innerHeight - 0.5) * 2;
+    };
+    if (fine && !reduce) window.addEventListener('pointermove', onMove, { passive: true });
+
+    // Live Dubai time on the front of the card.
+    const clock = document.getElementById('cardTime');
+    const fmt = new Intl.DateTimeFormat('en-US', { timeZone: 'Asia/Dubai', hour: 'numeric', minute: '2-digit' });
+    const tick = () => { if (clock) clock.textContent = `Dubai  ${fmt.format(new Date())}`; };
+    tick();
+    const clockTimer = window.setInterval(tick, 15000);
     const loop = () => {
       raf = requestAnimationFrame(loop);
       const rr = sec.getBoundingClientRect();
@@ -51,14 +67,17 @@ export default function FlipCard() {
       const t = target();
       cur += (t - cur) * 0.09;
       if (Math.abs(t - cur) < 0.0005) cur = t;
+      mx += (tx - mx) * 0.08;
+      my += (ty - my) * 0.08;
       if (!fine && cur === last) return;
       last = cur;
       // One transform write per frame; no CSS variables, so the card's children never restyle.
       const fy = fine ? Math.sin(performance.now() / 1400) * 6 : 0;
-      inner.style.transform = `translate3d(0,${fy.toFixed(2)}px,0) rotateZ(-9deg) rotateX(16deg) rotateY(${(cur * 540).toFixed(2)}deg)`;
+      inner.style.transform = `translate3d(0,${fy.toFixed(2)}px,0) rotateZ(-9deg) rotateX(${(16 - my * 9).toFixed(2)}deg) rotateY(${(cur * 540 + mx * 14).toFixed(2)}deg)`;
       if (fine) {
-        const sh = `${(100 - ((cur * 3) % 1) * 100).toFixed(1)}% 0`;
+        const sh = `${(100 - ((cur * 3) % 1) * 100 - mx * 28).toFixed(1)}% 0`;
         for (const el of sheens) el.style.backgroundPosition = sh;
+        if (foil) foil.style.backgroundPosition = `${(50 + mx * 40 + cur * 70 - my * 10).toFixed(1)}% 50%`;
       }
     };
 
@@ -73,7 +92,12 @@ export default function FlipCard() {
     window.addEventListener('resize', onResize);
     fit();
     if (!reduce) { cur = target(); raf = requestAnimationFrame(loop); }
-    return () => { window.removeEventListener('resize', onResize); cancelAnimationFrame(raf); };
+    return () => {
+      window.removeEventListener('resize', onResize);
+      window.removeEventListener('pointermove', onMove);
+      window.clearInterval(clockTimer);
+      cancelAnimationFrame(raf);
+    };
   }, []);
 
   return null;

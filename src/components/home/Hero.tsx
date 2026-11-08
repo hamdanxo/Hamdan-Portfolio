@@ -28,8 +28,9 @@ export default function Hero() {
 <div className="s-6bb8e7" aria-hidden="true"></div>
 <div className="s-298997" aria-hidden="true"></div>
 <div className="grain s-c5f564" aria-hidden="true"></div>
+<p className="card-time" id="cardTime" aria-hidden="true" suppressHydrationWarning>Dubai</p>
 <p className="s-7c3ca0">Crafting Dreams Into Reality</p>
-<div className="s-a5484f"><span className="s-65a69d">MH</span><span className="s-e7b62d" aria-hidden="true"></span></div>
+<div className="s-a5484f"><span className="s-65a69d foil" id="cardFoil">MH</span><span className="s-e7b62d" aria-hidden="true"></span></div>
 </div>
 <div className="face back s-e934a4"><div className="sheen" aria-hidden="true"></div>
 <div className="grain s-05a88a" aria-hidden="true"></div>
@@ -39,6 +40,7 @@ export default function Hero() {
 <span className="s-02a2d3">Web Developer<br />Graphic Designer<br />Marketing</span>
 <span className="s-f9cff0"><span>+971 55 800 5474</span><span className="s-c38a8c"><svg className="s-0e446f" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="17.5" cy="6.5" r="0.6" fill="currentColor"></circle></svg>@xvii.hamdan</span><span className="s-d29fc4">hamdanxo.github.io/Portfolio</span></span>
 </div>
+<a className="card-save" href="/muhammad-hamdan.vcf" download="Muhammad Hamdan.vcf" aria-label="Save Muhammad Hamdan to your contacts"><span>Tap to save contact</span></a>
 </div>
 </div>
 </div>

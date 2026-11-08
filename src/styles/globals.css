@@ -194,3 +194,11 @@ a:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 .soc:hover{background:none!important;transform:none;color:#FFFFFF;text-decoration:underline;text-underline-offset:5px}
 .lang-list{margin:0;font-family:var(--f-sans);font-size:clamp(20px,2vw,24px);color:#FFFFFF;display:flex;flex-wrap:wrap;align-items:baseline;gap:0 16px;line-height:1.4}
 .lang-list i{font-style:normal;color:#4F5E63}
+/* Card: gold foil logo, live Dubai time, tap to save contact. */
+.foil{font-size:calc(22px * var(--k))!important;background:linear-gradient(110deg,#6E5223 0%,#D9BC74 16%,#A8832F 30%,#FFF1C8 45%,#B08A36 57%,#ECD490 72%,#80612A 88%,#5E4419 100%)!important;background-size:280% 100%!important;background-position:50% 50%;-webkit-background-clip:text!important;background-clip:text!important;color:transparent!important;-webkit-text-fill-color:transparent;filter:drop-shadow(0 calc(1px * var(--k)) 0 rgba(0,0,0,.6)) drop-shadow(0 calc(-.5px * var(--k)) 0 rgba(255,236,190,.22))}
+.s-a5484f .s-e7b62d{background:linear-gradient(90deg,#A8832F,#F4E2AE,#A8832F)!important;opacity:.9!important}
+.card-time{position:absolute;left:calc(22px * var(--k));top:calc(18px * var(--k));margin:0;z-index:2;font-family:var(--f-mono);font-size:calc(8px * var(--k));letter-spacing:.16em;text-transform:uppercase;white-space:pre;color:rgba(241,238,247,.78)}
+.card-save{position:absolute;inset:0;z-index:3;display:flex;align-items:flex-end;justify-content:flex-start;padding:calc(20px * var(--k)) calc(22px * var(--k));text-decoration:none;cursor:pointer}
+.card-save span{font-family:var(--f-mono);font-size:calc(7px * var(--k));letter-spacing:.16em;text-transform:uppercase;color:rgba(236,235,240,.7);border-bottom:1px solid rgba(236,235,240,.3);padding-bottom:calc(1px * var(--k));transition:color .3s,border-color .3s}
+.card-save:hover span,.card-save:focus-visible span{color:#FFFFFF;border-color:#D9BC74}
+.card-save:focus-visible{outline:2px solid #D9BC74;outline-offset:-4px}

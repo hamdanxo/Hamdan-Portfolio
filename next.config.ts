@@ -21,6 +21,10 @@ const nextConfig: NextConfig = {
           { key: 'Permissions-Policy', value: 'camera=(), microphone=(), geolocation=()' },
         ],
       },
+      {
+        source: '/muhammad-hamdan.vcf',
+        headers: [{ key: 'Content-Type', value: 'text/vcard; charset=utf-8' }],
+      },
     ];
   },
 };

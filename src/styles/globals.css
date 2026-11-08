@@ -443,3 +443,34 @@ a:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 @media (min-width:901px){html:not(.hero-stack) .flip-box{right:-3.5vw}}
 .hero-stack .hx{gap:22px}
 .hero-stack .hx .hx-name{font-size:clamp(44px,13vw,84px)!important}
+
+/* Education: a scroll scene in a classroom. The stage pictures always cover the view (like background-size:cover). */
+.ed{position:relative;height:440vh}
+.ed-pin{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;container-type:size;background:#050708}
+.ed-stage{--w:max(100cqw,176.84cqh);position:absolute;width:var(--w);height:calc(var(--w) * .56548);left:calc(50% - var(--w) / 2);top:calc(50% - var(--w) * .28274);will-change:transform,opacity}
+.ed-stage img{position:absolute;inset:0;width:100%;height:100%;display:block;user-select:none;-webkit-user-drag:none}
+.ed-wide{transform-origin:50.5% 62%}
+.ed-close{transform-origin:52.01% 48.95%;opacity:0}
+.ed-screen{position:absolute;left:24.63%;top:18.88%;width:54.76%;height:60.13%;container-type:size;overflow:hidden}
+.ed-ui{position:absolute;inset:0;padding:6cqh 7cqw;display:flex;flex-direction:column;gap:5cqh;opacity:0;color:#E8EEF4;background:radial-gradient(90% 80% at 50% 40%,rgba(80,120,200,.10),transparent 70%)}
+.ed-bar{margin:0;display:flex;align-items:center;gap:max(4px,.8cqw);font-family:var(--f-mono);font-size:max(8px,1.4cqw);letter-spacing:.2em;text-transform:uppercase;color:#8CBEF2}
+.ed-bar i{width:max(5px,.9cqw);height:max(5px,.9cqw);border-radius:50%;background:rgba(232,238,244,.22)}
+.ed-bar span{margin-left:max(6px,1.2cqw)}
+#education .ed-title{margin:0;font-family:var(--f-sans);font-weight:300;font-size:max(20px,5.4cqw);line-height:1;letter-spacing:-.04em;color:#F2F5F8}
+.ed-rows{display:flex;flex-direction:column;gap:4cqh;border-top:1px solid rgba(232,238,244,.14);padding-top:4cqh}
+.ed-row{display:flex;flex-direction:column;gap:max(3px,.7cqw)}
+.ed-when{font-family:var(--f-mono);font-size:max(8.5px,1.4cqw);letter-spacing:.14em;text-transform:uppercase;color:#8CBEF2}
+#education .ed-row h3{margin:0;font-family:var(--f-sans);font-weight:300;font-size:max(13px,3cqw);line-height:1.15;letter-spacing:-.015em;color:#F2F5F8}
+#education .ed-row p{margin:0;font-family:var(--f-body);font-weight:300;font-size:max(10.5px,1.8cqw);line-height:1.5;color:#B6C3D0}
+.ed-veil{position:absolute;inset:0;background:#050708;pointer-events:none}
+/* Phones held upright: size the close-up so the whole laptop screen fits the width, and fade its top and bottom edges. */
+@media (orientation:portrait){
+  .ed-close{--w:168cqw;-webkit-mask-image:linear-gradient(180deg,transparent,#000 16%,#000 84%,transparent);mask-image:linear-gradient(180deg,transparent,#000 16%,#000 84%,transparent)}
+  .ed-ui{padding:5cqh 6cqw;gap:4cqh}
+  .ed-rows{gap:3.5cqh;padding-top:3.5cqh}
+}
+/* Reduced motion: no pinning, just the laptop with the details on it. */
+.ed.ed-static{height:auto}
+.ed-static .ed-pin{position:relative}
+.ed-static .ed-wide,.ed-static .ed-veil{display:none}
+.ed-static .ed-close,.ed-static .ed-ui{opacity:1}

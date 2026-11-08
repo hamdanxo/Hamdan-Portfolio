@@ -9,6 +9,7 @@ import SiteHeader from '@/components/layout/SiteHeader';
 import WorkIntro from '@/components/work/WorkIntro';
 import Automations from '@/components/work/Automations';
 import WorkCta from '@/components/work/WorkCta';
+import ContactSpotlight from '@/components/effects/ContactSpotlight';
 import '@/styles/work.css';
 
 export const metadata: Metadata = {
@@ -32,6 +33,7 @@ export default function WorkPage() {
       </div>
       <SmoothScroll />
       <Reveal selector=".wk-hero, .cat-head, .cs, .empty, .wk-cta-box" className="rv2" />
+      <ContactSpotlight />
       <Cursor magnetic=".wk-hero a, header nav a:last-child, .cs-links a" />
       <GlowParallax />
     </div>

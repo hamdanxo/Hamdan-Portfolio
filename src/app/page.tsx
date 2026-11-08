@@ -9,10 +9,8 @@ import ProjectStack from '@/components/effects/ProjectStack';
 import Glows from '@/components/layout/Glows';
 import SiteHeader from '@/components/layout/SiteHeader';
 import Hero from '@/components/home/Hero';
-import Marquee from '@/components/home/Marquee';
 import Projects from '@/components/home/Projects';
 import Statement from '@/components/home/Statement';
-import ClientStrip from '@/components/home/ClientStrip';
 import ScrollFill from '@/components/effects/ScrollFill';
 import ImageRipple from '@/components/effects/ImageRipple';
 import About from '@/components/home/About';
@@ -22,7 +20,7 @@ import Languages from '@/components/home/Languages';
 import Contact from '@/components/home/Contact';
 
 const REVEAL =
-  '#heroText, #strip, #projects > div:first-child, #about > div, #education > div:first-child, #education .glass, #skills > div:first-child, #skills .glass, #languages > *, #contact > *';
+  '#heroText, #projects > div:first-child, #about > div, #education > div:first-child, #education .glass, #skills > div:first-child, #skills .glass, #languages > *, #contact > *';
 
 export default function HomePage() {
   return (
@@ -33,10 +31,8 @@ export default function HomePage() {
         <SiteHeader page="home" />
         <main>
           <Hero />
-          <Marquee />
           <Statement />
           <Projects />
-          <ClientStrip />
           <About />
           <Education />
           <Skills />

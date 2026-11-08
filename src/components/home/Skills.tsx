@@ -6,7 +6,7 @@ const strengths = [
   { name: 'Project management', note: 'Took a management system from an empty database to a working app.' },
 ];
 
-const expertise = ['Management', 'Creativity', 'Digital marketing', 'Negotiation', 'Critical thinking', 'Leadership'];
+const expertise = ['Brand identity', 'Print and editorial design', 'Social media content', 'Digital marketing', 'Web development', 'Workflow automation'];
 
 export default function Skills() {
   return (

@@ -12,7 +12,6 @@ import Hero from '@/components/home/Hero';
 import Projects from '@/components/home/Projects';
 import Statement from '@/components/home/Statement';
 import ScrollFill from '@/components/effects/ScrollFill';
-import ImageRipple from '@/components/effects/ImageRipple';
 import About from '@/components/home/About';
 import Education from '@/components/home/Education';
 import Skills from '@/components/home/Skills';
@@ -48,7 +47,6 @@ export default function HomePage() {
       <GlowParallax />
       <ProjectStack />
       <ScrollFill id="statement" />
-      <ImageRipple selector=".pj-photo img" />
     </div>
   );
 }

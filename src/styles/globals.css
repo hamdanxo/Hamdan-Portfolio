@@ -134,7 +134,7 @@ body::after{display:none}
 @media (prefers-reduced-motion:reduce){.pj{transform:none}}
 a.pj-grid{text-decoration:none}
 .pj-img img{transition:transform 1.2s cubic-bezier(.2,.7,.2,1)}
-.pj:hover .pj-img img{transform:scale(1.04)}
+.pj-img:hover img{transform:scale(1.02)}
 .pj-soon{color:#697E85}
 .see-all{color:#FFFFFF;text-decoration:underline;text-decoration-color:var(--accent);text-underline-offset:4px}
 #liquid{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;display:block;opacity:.55}
@@ -230,14 +230,4 @@ a:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 .cur.view{mix-blend-mode:normal!important;width:88px!important;height:88px!important;margin:-44px 0 0 -44px!important;background:rgba(240,245,244,.95)!important;border-color:transparent!important}
 .cur.view span{opacity:1}
 
-/* Page change wipe in the card's colours. */
-.pt{position:fixed;inset:0;z-index:5000;pointer-events:none;display:grid;place-items:center;background:linear-gradient(120deg,#22157A 0%,#5B3DF5 48%,#B23BE6 100%);transform:scaleX(0);transform-origin:left center}
-.pt-mark{font-family:var(--f-display);font-size:clamp(34px,5vw,64px);letter-spacing:.08em;background:linear-gradient(110deg,#8D939B,#FFFFFF 45%,#9AA0A8 60%,#E1E5EA);-webkit-background-clip:text;background-clip:text;color:transparent;opacity:0}
-.pt.in{transform:scaleX(1);transition:transform .55s cubic-bezier(.7,0,.25,1)}
-.pt.in .pt-mark{opacity:1;transition:opacity .3s .25s}
-html.pt-cover .pt{transform:scaleX(1);animation:pt-safety 0s 4s forwards}
-html.pt-cover .pt-mark{opacity:1}
-.pt.out{transform:scaleX(0);transform-origin:right center;transition:transform .65s cubic-bezier(.7,0,.25,1) .08s}
-.pt.out .pt-mark{opacity:0;transition:opacity .2s}
-@keyframes pt-safety{to{transform:scaleX(0)}}
 @media (prefers-reduced-motion:reduce){.cl-track{animation:none}.stmt-text .fw{opacity:1}}

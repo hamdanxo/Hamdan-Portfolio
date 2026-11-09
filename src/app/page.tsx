@@ -15,13 +15,12 @@ import ScrollFill from '@/components/effects/ScrollFill';
 import About from '@/components/home/About';
 import Journey from '@/components/home/Journey';
 import WhatIDo from '@/components/home/WhatIDo';
-import Education from '@/components/home/Education';
 import Skills from '@/components/home/Skills';
 import Languages from '@/components/home/Languages';
 import Contact from '@/components/home/Contact';
 
 const REVEAL =
-  '#heroText, #projects > div:first-child, #about > div, #education > div:first-child, #education .glass, #skills > div:first-child, #skills .sk-cell, #languages > *, #contact > *';
+  '#heroText, #projects > div:first-child, #about > div, #skills > div:first-child, #skills .sk-cell, #languages > *, #contact > *';
 
 export default function HomePage() {
   return (
@@ -37,7 +36,6 @@ export default function HomePage() {
           <About />
           <Journey />
           <WhatIDo />
-          <Education />
           <Skills />
           <Languages />
           <Contact />

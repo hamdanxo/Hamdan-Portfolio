@@ -24,7 +24,6 @@ export default function SiteHeader({ page }: { page: Page }) {
           {pageLink('/design', 'Design', 'design')}
           {pageLink('/work', 'Work', 'work')}
           <a className="nl" href={hash('skills')}>Skills</a>
-          <a className="nl" href={hash('education')}>Education</a>
           <a href={hash('contact')} className="nav-cta">Contact</a>
         </nav>
       </header>

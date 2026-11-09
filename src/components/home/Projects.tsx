@@ -1,5 +1,23 @@
 import Image from 'next/image';
 import siteShot from '@/assets/site-shot.webp';
+import { categories, work, type Category } from '@/data/designs';
+
+const inCat = (c: Category) => work.filter((d) => d.category === c);
+const countLabel = (c: Category) => {
+  const n = inCat(c).length, unit = categories.find((x) => x.id === c)!.unit;
+  return `${String(n).padStart(2, '0')} ${n === 1 ? unit[0] : unit[1]}`;
+};
+const pad = (n: number) => String(n).padStart(2, '0');
+
+// Printed profiles lying on a desk: three covers and one inside page from each.
+const DESK = [
+  { k: 'a', src: '/designs/lapiz-blue-profile/p01.webp' },
+  { k: 'b', src: '/designs/global-classic-profile/p01.webp' },
+  { k: 'c', src: '/designs/sahihi-profile/p06.webp' },
+  { k: 'd', src: '/designs/lapiz-blue-profile/p10.webp' },
+  { k: 'e', src: '/designs/global-classic-profile/p02.webp' },
+  { k: 'f', src: '/designs/sahihi-profile/p01.webp' },
+];
 
 export default function Projects() {
   return (
@@ -15,13 +33,20 @@ export default function Projects() {
 <div className="pj-stack">
 <article className="pj s-c5cbe4">
 <div className="pj-head">
-<div className="pj-id"><span className="pj-num">01</span><div className="pj-meta"><span className="pj-client">04 projects</span><h3 className="pj-title">Graphic Design</h3></div></div>
+<div className="pj-id"><span className="pj-num">01</span><div className="pj-meta"><span className="pj-client">{pad(work.length)} projects</span><h3 className="pj-title">Graphic Design</h3></div></div>
 <a className="pj-link" href="/design">View projects <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M7 17 17 7" /><path d="M8 7h9v9" /></svg></a>
 </div>
-<a className="pj-grid" data-cursor="view" href="/design" aria-label="Open Graphic Design projects">
-<div className="pj-img pj-big pj-photo"><Image src="/designs/stone-collections/01.webp" alt="Stone Collections post for Global Classic" fill sizes="(max-width: 900px) 92vw, 62vw" /></div>
-<div className="pj-img pj-photo"><Image src="/designs/fuga-shock/01.webp" alt="Fuga-Shock launch post for Lapiz Blue" fill sizes="(max-width: 900px) 46vw, 30vw" /></div>
-<div className="pj-img pj-photo"><Image src="/designs/lapiz-blue-profile/p01.webp" alt="Lapiz Blue company profile cover" fill sizes="(max-width: 900px) 46vw, 30vw" /></div>
+<a className="pj-grid pj-cats" data-cursor="view" href="/design" aria-label="Open Graphic Design projects">
+<div className="pj-img pj-big pj-photo pj-desk">
+<div className="pj-plane" aria-hidden="true">
+{DESK.map((d) => (
+<div className={`bk bk-${d.k}`} key={d.k}><Image src={d.src} alt="" fill sizes="(max-width: 900px) 30vw, 16vw" /></div>
+))}
+</div>
+<span className="pj-cat"><em>{countLabel('profile')}</em>Company Profiles and Catalogues</span>
+</div>
+<div className="pj-img pj-photo"><Image src="/designs/fuga-shock/01.webp" alt="Fuga-Shock launch ad for Lapiz Blue" fill sizes="(max-width: 900px) 46vw, 30vw" /><span className="pj-cat"><em>{countLabel('ad')}</em>Ad Creatives</span></div>
+<div className="pj-img pj-photo"><Image src="/designs/stone-collections/01.webp" alt="Stone Collections post for Global Classic" fill sizes="(max-width: 900px) 46vw, 30vw" /><span className="pj-cat"><em>{countLabel('social')}</em>Social Media</span></div>
 </a>
 <span className="pj-dim" aria-hidden="true" />
 </article>

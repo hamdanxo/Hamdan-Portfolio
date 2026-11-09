@@ -14,8 +14,18 @@ export type ImageSet = {
   height: number;
 };
 
+/** The three kinds of design work, shown as categories on the home page. */
+export type Category = 'profile' | 'ad' | 'social';
+export const categories: { id: Category; name: string; unit: [string, string] }[] = [
+  { id: 'profile', name: 'Company Profiles and Catalogues', unit: ['profile', 'profiles'] },
+  { id: 'ad', name: 'Ad Creatives', unit: ['ad', 'ads'] },
+  { id: 'social', name: 'Social Media', unit: ['series', 'series'] },
+];
+
 export type Design = {
   client: string;
+  /** Which category it belongs to (placeholders have none). */
+  category?: Category;
   title: string;
   year: string;
   tags: string[];
@@ -35,7 +45,17 @@ const shots = (folder: string, count: number) =>
 /** Real work. Add new designs here (newest first). */
 export const work: Design[] = [
   {
+    client: 'Sahihi Construction Chemicals',
+    category: 'profile',
+    title: 'Company Profile 2026',
+    year: '2026',
+    tags: ['Print', 'Brand'],
+    img: '/designs/sahihi-profile/cover.webp',
+    book: { pages: pages('sahihi-profile', 24), width: 1000, height: 1414 },
+  },
+  {
     client: 'Lapiz Blue',
+    category: 'profile',
     title: 'Company Profile 2026-27',
     year: '2026',
     tags: ['Print', 'Brand'],
@@ -44,6 +64,7 @@ export const work: Design[] = [
   },
   {
     client: 'Global Classic',
+    category: 'social',
     title: 'Stone Collections',
     year: '2026',
     tags: ['Social', 'Series'],
@@ -52,6 +73,7 @@ export const work: Design[] = [
   },
   {
     client: 'Lapiz Blue',
+    category: 'ad',
     title: 'Fuga-Shock Launch',
     year: '2026',
     tags: ['Social', 'Ad'],
@@ -60,6 +82,7 @@ export const work: Design[] = [
   },
   {
     client: 'Global Classic',
+    category: 'profile',
     title: 'Company Profile 2026',
     year: '2026',
     tags: ['Print', 'Brand'],

@@ -458,7 +458,7 @@ a:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 .bk-a{left:8%;top:12%;--r:-8deg}
 .bk-b{left:44%;top:6%;--r:7deg}
 .bk-c{left:74%;top:14%;--r:-5deg}
-.bk-d{left:14%;top:50%;--r:10deg}
+.bk-d{left:6%;top:52%;--r:8deg;width:25%;aspect-ratio:1414/1000}
 .bk-e{left:68%;top:52%;--r:-9deg}
 .bk-f{left:40%;top:40%;--r:3deg;z-index:2}
 .pj-cats:hover .bk{transform:rotate(var(--r)) translateZ(10px)}

@@ -45,6 +45,15 @@ const shots = (folder: string, count: number) =>
 /** Real work. Add new designs here (newest first). */
 export const work: Design[] = [
   {
+    client: 'Sixty Newton',
+    category: 'profile',
+    title: 'Company Profile 2026',
+    year: '2026',
+    tags: ['Print', 'Brand'],
+    img: '/designs/sixty-newton-profile/cover.webp',
+    book: { pages: pages('sixty-newton-profile', 24), width: 1414, height: 1000 },
+  },
+  {
     client: 'Sahihi Construction Chemicals',
     category: 'profile',
     title: 'Company Profile 2026',

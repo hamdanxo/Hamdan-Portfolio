@@ -9,12 +9,12 @@ const countLabel = (c: Category) => {
 };
 const pad = (n: number) => String(n).padStart(2, '0');
 
-// Printed profiles lying on a desk: three covers and one inside page from each.
+// Printed profiles lying on a desk: the four covers plus two inside pages.
 const DESK = [
   { k: 'a', src: '/designs/lapiz-blue-profile/p01.webp' },
   { k: 'b', src: '/designs/global-classic-profile/p01.webp' },
   { k: 'c', src: '/designs/sahihi-profile/p06.webp' },
-  { k: 'd', src: '/designs/lapiz-blue-profile/p10.webp' },
+  { k: 'd', src: '/designs/sixty-newton-profile/p01.webp' },
   { k: 'e', src: '/designs/global-classic-profile/p02.webp' },
   { k: 'f', src: '/designs/sahihi-profile/p01.webp' },
 ];

@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import siteShot from '@/assets/site-shot.webp';
+import siteShot from '@/assets/castedluxe-shot.webp';
 import { categories, work, type Category } from '@/data/designs';
 
 const inCat = (c: Category) => work.filter((d) => d.category === c);
@@ -53,10 +53,10 @@ export default function Projects() {
 <article className="pj s-3ea882">
 <div className="pj-head">
 <div className="pj-id"><span className="pj-num">02</span><div className="pj-meta"><span className="pj-client">01 project</span><h3 className="pj-title">Websites</h3></div></div>
-<a className="pj-link" href="/work#websites">View projects <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M7 17 17 7" /><path d="M8 7h9v9" /></svg></a>
+<a className="pj-link" href="https://castedluxe.com" target="_blank" rel="noopener noreferrer">Visit site <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M7 17 17 7" /><path d="M8 7h9v9" /></svg></a>
 </div>
-<a className="pj-grid" data-cursor="view" href="/work#websites" aria-label="Open Websites projects">
-<div className="pj-img pj-big"><Image className="s-96d9c8" src={siteShot} alt="Portfolio website home page" sizes="(max-width: 900px) 92vw, 62vw" /></div>
+<a className="pj-grid" data-cursor="view" href="https://castedluxe.com" target="_blank" rel="noopener noreferrer" aria-label="Open the Casted Luxe website">
+<div className="pj-img pj-big"><Image src={siteShot} alt="Casted Luxe website home page" sizes="(max-width: 900px) 92vw, 62vw" /></div>
 <div className="pj-img pj-soon">Next site</div>
 <div className="pj-img pj-soon">Next site</div>
 </a>

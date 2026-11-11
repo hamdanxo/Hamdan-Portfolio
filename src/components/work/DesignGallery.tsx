@@ -21,7 +21,7 @@ function Tile({ d, i, w, h, refCb }: { d: Design; i: number; w: number; h: numbe
   return (
     <div className={d.img ? 'dg-tile dg-real' : 'dg-tile'} data-i={i} ref={refCb} style={{ width: w, height: h }}>
       <div className="r"><span>{d.client}</span><span>{d.title}</span></div>
-      <div className={d.img ? (d.book && d.book.width > d.book.height ? 'dg-art dg-wide' : 'dg-art') : `dg-art a${(i % 8) + 1}`}>
+      <div className={d.img ? ((d.book ?? d.set) && (d.book ?? d.set)!.width > (d.book ?? d.set)!.height ? 'dg-art dg-wide' : 'dg-art') : `dg-art a${(i % 8) + 1}`}>
         {d.img ? <Image src={d.img} alt={d.title} fill sizes="300px" draggable={false} /> : <em>{d.title}</em>}
       </div>
       <div className="r">

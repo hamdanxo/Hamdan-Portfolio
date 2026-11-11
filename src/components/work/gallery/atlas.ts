@@ -154,7 +154,7 @@ export async function buildAtlas(items: Design[], images: (HTMLImageElement | nu
     ctx.clip();
     const img = images[i];
     if (img && img.naturalWidth > img.naturalHeight * 1.1) {
-      // A landscape book in a tall tile: show the whole cover, lying in the middle with a soft shadow.
+      // A landscape book or board in a tall tile: show the whole image, lying in the middle with a soft shadow.
       const bg = ctx.createRadialGradient(ax + aw / 2, top + ah * 0.45, 0, ax + aw / 2, top + ah * 0.45, ah * 0.8);
       bg.addColorStop(0, '#18212B');
       bg.addColorStop(1, '#07090C');
@@ -167,8 +167,8 @@ export async function buildAtlas(items: Design[], images: (HTMLImageElement | nu
       ctx.shadowColor = 'rgba(0,0,0,0.6)';
       ctx.shadowBlur = 22;
       ctx.shadowOffsetY = 12;
-      ctx.fillStyle = '#B9BFC6';
-      ctx.fillRect(x + 2, y + 2, iw, ih); // page edges under the cover
+      ctx.fillStyle = d.book ? '#B9BFC6' : '#0A0B0C';
+      ctx.fillRect(x + (d.book ? 2 : 0), y + (d.book ? 2 : 0), iw, ih); // page edges under a book cover
       ctx.restore();
       ctx.drawImage(img, x, y, iw, ih);
     } else if (img) {

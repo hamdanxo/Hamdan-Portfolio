@@ -46,6 +46,15 @@ const shots = (folder: string, count: number) =>
 /** Real work. Add new designs here (newest first). */
 export const work: Design[] = [
   {
+    client: 'Casted Luxe',
+    category: 'brand',
+    title: 'Brand Board',
+    year: '2026',
+    tags: ['Brand', 'Identity'],
+    img: '/designs/casted-luxe-brand/cover.webp',
+    set: { images: shots('casted-luxe-brand', 4), width: 2400, height: 1500 },
+  },
+  {
     client: 'Global Classic',
     category: 'brand',
     title: 'Brand Board',

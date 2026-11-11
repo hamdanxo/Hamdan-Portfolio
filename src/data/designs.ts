@@ -1,3 +1,5 @@
+import { brandBuild, type BuildSlide } from './brandBuild';
+
 export type Book = {
   /** Page images in reading order (first = front cover, last = back cover). */
   pages: string[];
@@ -36,6 +38,8 @@ export type Design = {
   book?: Book;
   /** A series of posts or ads: opens as a stack you can flip through. */
   set?: ImageSet;
+  /** Brand boards: each slide builds itself from layers when it opens. */
+  build?: BuildSlide[];
 };
 
 const pages = (folder: string, count: number) =>
@@ -53,6 +57,7 @@ export const work: Design[] = [
     tags: ['Brand', 'Identity'],
     img: '/designs/casted-luxe-brand/cover.webp',
     set: { images: shots('casted-luxe-brand', 4), width: 2400, height: 1500 },
+    build: brandBuild['casted-luxe'],
   },
   {
     client: 'Global Classic',
@@ -62,6 +67,7 @@ export const work: Design[] = [
     tags: ['Brand', 'Identity'],
     img: '/designs/global-classic-brand/cover.webp',
     set: { images: shots('global-classic-brand', 4), width: 2400, height: 1500 },
+    build: brandBuild['global-classic'],
   },
   {
     client: 'Sixty Newton',
@@ -71,6 +77,7 @@ export const work: Design[] = [
     tags: ['Brand', 'Identity'],
     img: '/designs/sixty-newton-brand/cover.webp',
     set: { images: shots('sixty-newton-brand', 4), width: 2400, height: 1500 },
+    build: brandBuild['sixty-newton'],
   },
   {
     client: 'Lapiz Blue',
@@ -80,6 +87,7 @@ export const work: Design[] = [
     tags: ['Brand', 'Identity'],
     img: '/designs/lapiz-blue-brand/cover.webp',
     set: { images: shots('lapiz-blue-brand', 4), width: 2400, height: 1500 },
+    build: brandBuild['lapiz-blue'],
   },
   {
     client: 'Sixty Newton',

@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import type { Book, Design, ImageSet } from '@/data/designs';
+import type { BuildSlide } from '@/data/brandBuild';
 import type { PageFlip } from 'page-flip/dist/js/page-flip.module.js';
 
 const PRELOAD = 6;
@@ -229,6 +230,102 @@ function SetView({ set, title, onLabel }: { set: ImageSet; title: string; onLabe
   );
 }
 
+/** Waits until every image in a slide has loaded, so the build never starts with holes in it. */
+function loadSlide(sl: BuildSlide): Promise<void> {
+  return Promise.all([sl.bg, ...sl.layers.map((l) => l.src)].map((src) => new Promise<void>((res) => {
+    const im = new Image();
+    im.onload = im.onerror = () => res();
+    im.src = src;
+    im.decode?.().then(() => res(), () => res());
+  }))).then(() => undefined);
+}
+
+/** A brand board: each slide builds itself, the page first, then the pieces arriving one after another. */
+function BuildView({ slides, title, onLabel }: { slides: BuildSlide[]; title: string; onLabel: (label: string) => void }) {
+  const n = slides.length;
+  const [active, setActive] = useState(0);
+  const [ready, setReady] = useState<boolean[]>(() => slides.map(() => false));
+  const [w, setW] = useState(0);
+  const hostRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const fit = () => {
+      const host = hostRef.current;
+      if (!host) return;
+      setW(Math.floor(Math.min(host.clientWidth * 0.96, host.clientHeight * 0.96 * 1.6)));
+    };
+    fit();
+    window.addEventListener('resize', fit);
+    return () => window.removeEventListener('resize', fit);
+  }, []);
+
+  // Load the open slide first, then the rest in the background.
+  useEffect(() => {
+    let alive = true;
+    const mark = (i: number) => { if (alive) setReady((r) => (r[i] ? r : r.map((v, j) => (j === i ? true : v)))); };
+    loadSlide(slides[active]).then(() => {
+      mark(active);
+      slides.forEach((sl, i) => { if (i !== active) loadSlide(sl).then(() => mark(i)); });
+    });
+    return () => { alive = false; };
+  }, [slides, active]);
+
+  useEffect(() => { onLabel(`${active + 1} / ${n}`); }, [active, n, onLabel]);
+  const go = useCallback((step: number) => setActive((i) => (i + step + n) % n), [n]);
+
+  useEffect(() => {
+    const key = (e: KeyboardEvent) => {
+      if (e.key === 'ArrowRight') go(1);
+      else if (e.key === 'ArrowLeft') go(-1);
+    };
+    window.addEventListener('keydown', key);
+    return () => window.removeEventListener('keydown', key);
+  }, [go]);
+
+  const start = useRef<{ x: number; y: number } | null>(null);
+  const onDown = (e: React.PointerEvent) => { start.current = { x: e.clientX, y: e.clientY }; };
+  const onUp = (e: React.PointerEvent) => {
+    const s0 = start.current; start.current = null;
+    if (!s0) return;
+    const dx = e.clientX - s0.x, dy = e.clientY - s0.y;
+    if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) go(dx < 0 ? 1 : -1);
+  };
+
+  const sl = slides[active];
+  return (
+    <>
+      <div className="bv-host" ref={hostRef} onPointerDown={onDown} onPointerUp={onUp}>
+        {w > 0 && (
+          <div className={ready[active] ? 'bv-slide go' : 'bv-slide'} key={active} style={{ width: w, height: w / 1.6 }} role="img" aria-label={`${title}, slide ${active + 1} of ${n}`}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img className="bv-bg" src={sl.bg} alt="" draggable={false} />
+            {sl.layers.map((l, i) => (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                key={l.src}
+                className={`bv-l bv-${l.k}`}
+                src={l.src}
+                alt=""
+                draggable={false}
+                style={{ left: `${l.x}%`, top: `${l.y}%`, width: `${l.w}%`, height: `${l.h}%`, animationDelay: `${300 + i * Math.max(110, 900 / sl.layers.length)}ms` }}
+              />
+            ))}
+          </div>
+        )}
+      </div>
+      <div className="bk-controls">
+        <button type="button" className="bk-btn" aria-label="Previous slide" onClick={() => go(-1)}>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6" /></svg>
+        </button>
+        <span className="bk-hint"><span className="bk-fine">Use the arrows or arrow keys</span><span className="bk-touch">Swipe for the next slide</span></span>
+        <button type="button" className="bk-btn" aria-label="Next slide" onClick={() => go(1)}>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6" /></svg>
+        </button>
+      </div>
+    </>
+  );
+}
+
 /** Full-screen viewer: books turn like pages, sets fan out as a stack, single designs show large. */
 export default function DesignViewer({ design, onClose }: { design: Design | null; onClose: () => void }) {
   const [label, setLabel] = useState('');
@@ -263,14 +360,16 @@ export default function DesignViewer({ design, onClose }: { design: Design | nul
           <h2>{design.title}</h2>
         </div>
         <div className="dv-right">
-          {(design.book || design.set) && label && <span className="dv-count" aria-live="polite">{label}</span>}
+          {(design.book || design.set || design.build) && label && <span className="dv-count" aria-live="polite">{label}</span>}
           <button ref={closeRef} type="button" className="dv-close" aria-label="Close" onClick={onClose}>
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" /></svg>
           </button>
         </div>
       </div>
       <div className="dv-body" onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}>
-        {design.book ? (
+        {design.build ? (
+          <BuildView key={design.title + design.client} slides={design.build} title={`${design.client} ${design.title}`} onLabel={onLabel} />
+        ) : design.book ? (
           <BookFlip key={design.title} book={design.book} title={design.title} onLabel={onLabel} />
         ) : design.set ? (
           <SetView key={design.title} set={design.set} title={design.title} onLabel={onLabel} />

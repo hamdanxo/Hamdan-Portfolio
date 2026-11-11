@@ -32,6 +32,39 @@ function Tile({ d, i, w, h, refCb }: { d: Design; i: number; w: number; h: numbe
   );
 }
 
+/** Desktop list view: a small preview of the hovered design that trails the mouse, leaning into the motion. */
+function ListPeek({ items, d, on }: { items: Design[]; d: Design | null; on: boolean }) {
+  const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || !window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+    let tx = -999, ty = -999, x = -999, y = -999, raf = 0, first = true;
+    const move = (e: PointerEvent) => {
+      tx = e.clientX + 28; ty = e.clientY - el.offsetHeight / 2;
+      if (first) { x = tx; y = ty; first = false; }
+    };
+    const loop = () => {
+      raf = requestAnimationFrame(loop);
+      const dx = tx - x;
+      x += dx * 0.16; y += (ty - y) * 0.16;
+      el.style.transform = `translate3d(${x.toFixed(1)}px,${y.toFixed(1)}px,0) rotate(${Math.max(-8, Math.min(8, dx * 0.05)).toFixed(2)}deg)`;
+    };
+    window.addEventListener('pointermove', move, { passive: true });
+    raf = requestAnimationFrame(loop);
+    return () => { cancelAnimationFrame(raf); window.removeEventListener('pointermove', move); };
+  }, []);
+  const shape = d ? (d.book ?? d.set) : undefined;
+  const wide = !!shape && shape.width > shape.height;
+  return (
+    <div className={on && d ? 'dg-peek on' : 'dg-peek'} ref={ref} aria-hidden="true" style={{ ['--pw' as string]: wide ? '340px' : '230px', ['--ph' as string]: wide ? '214px' : '300px' }}>
+      {items.filter((it) => it.img).map((it) => (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img key={it.client + it.title} src={it.img!} alt="" loading="lazy" decoding="async" className={it === d ? 'on' : undefined} />
+      ))}
+    </div>
+  );
+}
+
 /**
  * Phantom-style endless, curved, draggable gallery with a list view.
  * Drawn with WebGL (Three.js) so it stays smooth on phones; falls back to DOM tiles without WebGL.
@@ -47,6 +80,7 @@ export default function DesignGallery({ fullscreen = false }: { fullscreen?: boo
   const tilesRef = useRef<(HTMLDivElement | null)[]>([]);
   const pos = useRef({ ox: 0, oy: 0, vx: 0, vy: 0 });
   const [open, setOpen] = useState<Design | null>(null);
+  const [peek, setPeek] = useState<{ d: Design | null; on: boolean }>({ d: null, on: false });
   const close = useCallback(() => setOpen(null), []);
 
   const byYear = useMemo(() => {
@@ -302,13 +336,13 @@ export default function DesignGallery({ fullscreen = false }: { fullscreen?: boo
         )}
 
         {view === 'list' && (
-          <div className="dg-list">
+          <div className="dg-list" onPointerLeave={() => setPeek((p) => ({ ...p, on: false }))}>
             {byYear.map(([year, items]) => (
               <div className="dg-yr" key={year}>
                 <span>{year}</span>
                 <div>
                   {items.map((d) => (
-                    <button type="button" className="dg-row" data-cursor="view" key={d.title} onClick={() => setOpen(d)}>
+                    <button type="button" className="dg-row" data-cursor="view" key={d.client + d.title} onPointerEnter={(e) => { if (e.pointerType === 'mouse') setPeek({ d, on: true }); }} onClick={() => { setPeek((p) => ({ ...p, on: false })); setOpen(d); }}>
                       <b>{d.title}</b>
                       <span className="dg-tags">{d.tags.map((t) => <i key={t}>{t}</i>)}</span>
                       <small>{d.client}</small>
@@ -317,6 +351,7 @@ export default function DesignGallery({ fullscreen = false }: { fullscreen?: boo
                 </div>
               </div>
             ))}
+            <ListPeek items={work} d={peek.d} on={peek.on} />
           </div>
         )}
       </div>

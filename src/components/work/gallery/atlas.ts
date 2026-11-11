@@ -153,7 +153,25 @@ export async function buildAtlas(items: Design[], images: (HTMLImageElement | nu
     roundRect(ctx, ax, top, aw, ah, 3);
     ctx.clip();
     const img = images[i];
-    if (img) {
+    if (img && img.naturalWidth > img.naturalHeight * 1.1) {
+      // A landscape book in a tall tile: show the whole cover, lying in the middle with a soft shadow.
+      const bg = ctx.createRadialGradient(ax + aw / 2, top + ah * 0.45, 0, ax + aw / 2, top + ah * 0.45, ah * 0.8);
+      bg.addColorStop(0, '#18212B');
+      bg.addColorStop(1, '#07090C');
+      ctx.fillStyle = bg;
+      ctx.fillRect(ax, top, aw, ah);
+      const s = (aw * 0.88) / img.naturalWidth;
+      const iw = img.naturalWidth * s, ih = img.naturalHeight * s;
+      const x = ax + (aw - iw) / 2, y = top + (ah - ih) / 2;
+      ctx.save();
+      ctx.shadowColor = 'rgba(0,0,0,0.6)';
+      ctx.shadowBlur = 22;
+      ctx.shadowOffsetY = 12;
+      ctx.fillStyle = '#B9BFC6';
+      ctx.fillRect(x + 2, y + 2, iw, ih); // page edges under the cover
+      ctx.restore();
+      ctx.drawImage(img, x, y, iw, ih);
+    } else if (img) {
       const s = Math.max(aw / img.naturalWidth, ah / img.naturalHeight);
       const iw = img.naturalWidth * s, ih = img.naturalHeight * s;
       ctx.drawImage(img, ax + (aw - iw) / 2, top + (ah - ih) / 2, iw, ih);

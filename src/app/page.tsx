@@ -1,12 +1,9 @@
-import LiquidBackground from '@/components/effects/LiquidBackground';
 import SmoothScroll from '@/components/effects/SmoothScroll';
 import Reveal from '@/components/effects/Reveal';
 import Cursor from '@/components/effects/Cursor';
 import FlipCard from '@/components/effects/FlipCard';
-import GlowParallax from '@/components/effects/GlowParallax';
 import ContactSpotlight from '@/components/effects/ContactSpotlight';
 import ProjectStack from '@/components/effects/ProjectStack';
-import Glows from '@/components/layout/Glows';
 import SiteHeader from '@/components/layout/SiteHeader';
 import Hero from '@/components/home/Hero';
 import Projects from '@/components/home/Projects';
@@ -25,8 +22,6 @@ const REVEAL =
 export default function HomePage() {
   return (
     <div className="page">
-      <LiquidBackground />
-      <Glows />
       <div className="page-inner">
         <SiteHeader page="home" />
         <main>
@@ -46,7 +41,6 @@ export default function HomePage() {
       <Cursor magnetic="#heroText a, header nav a:last-child" />
       <FlipCard />
       <ContactSpotlight />
-      <GlowParallax />
       <ProjectStack />
       <ScrollFill id="statement" />
     </div>

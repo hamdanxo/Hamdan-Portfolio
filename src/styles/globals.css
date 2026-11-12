@@ -644,3 +644,49 @@ html body .page article.pj:not(#_a):not(#_b){background:linear-gradient(160deg,#
 html body .page :is(.draft>div,.draft-btn):not(#_a):not(#_b){background:rgba(255,255,255,.75)!important;border-color:rgba(14,22,32,.1)!important}
 /* Skills lists: plain rows with thin dividers, no boxes */
 html body .page .sk-grid li:not(#_a):not(#_b){background:transparent!important;box-shadow:none!important;border-color:rgba(14,22,32,.1)!important}
+
+/* ---------- Purple accents (matches the business card) ---------- */
+:root{--pu:#5B3FD0;--pu2:#7E62E8;--pul:rgba(110,80,220,.14)}
+/* a little lilac light in the background */
+html body .page{background:
+  radial-gradient(40% 30% at 70% 12%,rgba(255,255,255,.95),transparent 70%),
+  radial-gradient(45% 32% at 88% 34%,rgba(150,120,235,.28),transparent 70%),
+  radial-gradient(50% 35% at 12% 44%,rgba(160,184,206,.55),transparent 70%),
+  radial-gradient(42% 30% at 30% 78%,rgba(140,110,230,.22),transparent 70%),
+  radial-gradient(45% 30% at 85% 70%,rgba(140,166,192,.5),transparent 70%),
+  linear-gradient(180deg,#E8EEF3 0%,#D3D8EA 50%,#DCE2EE 100%)!important;
+  background-size:100% 1800px!important;background-repeat:repeat-y!important}
+.ice-orb{background:radial-gradient(circle at 35% 30%,#fff 0%,rgba(236,232,250,.9) 25%,rgba(160,145,220,.5) 60%,rgba(130,110,210,0) 75%)!important}
+
+/* small section labels, numbers, kickers */
+html body .page :is(p.mono.s-f0b806,.jr-label,.ct-label,.wk-label,.cl-label,.cs-kicker,.pj-client,.node-k,.cs-block h4,.cs-steps span,.pj-num):not(#_a):not(#_b):not(#_c):not(#_d){color:var(--pu)!important}
+html body .page .pj-num:not(#_a):not(#_b):not(#_c):not(#_d){-webkit-text-fill-color:var(--pu)!important;background:none!important}
+html body .page .hx-name em:not(#_a):not(#_b):not(#_c):not(#_d),html body .page .hx-name .serif:not(#_a):not(#_b):not(#_c):not(#_d){color:var(--pu)!important}
+
+/* links and buttons */
+html body .page :is(.hx-links a,.see-all,.cs-links a):not(#_a):not(#_b):not(#_c):not(#_d){color:var(--pu)!important;border-color:var(--pu)!important;text-decoration-color:var(--pu)!important}
+html body .page :is(.pj-link,.chip,.dv-btn,.bk-btn):not(#_a):not(#_b):not(#_c){border-color:rgba(91,63,208,.35)!important}
+html body .page .pj-link:not(#_a):not(#_b):not(#_c):not(#_d),html body .page .pj-link *:not(#_a):not(#_b):not(#_c):not(#_d){color:var(--pu)!important}
+html body .page :is(.pj-link,.chip):hover{background:var(--pul)!important;border-color:var(--pu)!important}
+html body .page .cta.mail:not(#_a):not(#_b):not(#_c){background:var(--pu)!important;border-color:var(--pu)!important}
+html body .page .cta.mail *:not(#_a):not(#_b):not(#_c):not(#_d){color:#fff!important}
+.nav-cta{border-color:rgba(91,63,208,.45)!important}
+.nav-cta:hover{background:var(--pul)!important}
+header nav a:not(:last-child)::after{background:linear-gradient(90deg,var(--pu),var(--pu2))!important}
+.site-header .nl.on,.site-header a[aria-current]{color:var(--pu)!important}
+
+/* cards: purple edge on hover */
+html body .page :is(article.pj,article.cs,.dg-tile):hover{border-color:rgba(91,63,208,.35)!important}
+
+/* timeline in purple */
+.jr-fill{background:linear-gradient(90deg,rgba(91,63,208,0) 0%,rgba(91,63,208,.5) 30%,#5B3FD0 72%,#7E62E8 100%)!important;box-shadow:0 0 10px rgba(110,80,220,.35)!important}
+.jr-item.on .jr-dot,.on .jr-dot{background:var(--pu)!important;border-color:var(--pu)!important;box-shadow:0 0 0 6px rgba(91,63,208,.12)!important}
+
+/* intro, cursor, scrollbar, selection */
+.intro-q em{color:var(--pu)!important}
+.intro-line{background:linear-gradient(90deg,transparent,var(--pu),transparent)!important}
+.cur{border-color:rgba(91,63,208,.55)!important;background:radial-gradient(circle,rgba(91,63,208,.10),transparent 70%)!important}
+::-webkit-scrollbar-thumb{background:#9C8BE0!important}
+html{scrollbar-color:rgba(91,63,208,.5) transparent}
+::selection{background:rgba(91,63,208,.22)!important}
+html body .page .wordmark{background:linear-gradient(180deg,#2A1E6E,rgba(91,63,208,.15) 90%)!important;-webkit-background-clip:text!important;background-clip:text!important}

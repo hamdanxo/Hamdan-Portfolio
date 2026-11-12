@@ -19,20 +19,9 @@ const violet: CSSProperties[] = [
   { top: 3600, left: '40%', width: 560, height: 560, opacity: 0.4 },
 ];
 
-/** Faint copies of the hero light band running through the page, so the hero light seems to carry on. */
-const echoes: CSSProperties[] = [
-  { top: 1100, left: '-25%', width: '120%', transform: 'scaleX(-1) rotate(-6deg)', opacity: 1 },
-  { top: 2500, right: '-30%', width: '125%', transform: 'rotate(8deg)', opacity: 0.9 },
-  { top: 4000, left: '-20%', width: '115%', transform: 'scaleX(-1) rotate(4deg)', opacity: 0.85 },
-];
-
 export default function Glows() {
   return (
     <div aria-hidden="true" id="glows">
-      {echoes.map((s, i) => (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img key={`e${i}`} className="echo" src={i === 1 ? '/hero/waves/rp-13.webp' : '/hero/waves/rp-14.webp'} alt="" loading="lazy" decoding="async" style={s} />
-      ))}
       {violet.map((s, i) => <div key={`v${i}`} className="vg" style={s} />)}
       {blobs.map(({ color, ...s }, i) => (
         <div key={i} className="glow" style={{ ...s, background: `radial-gradient(closest-side, ${color}, transparent)` }} />

@@ -565,8 +565,6 @@ html.hero-stack .wv-scrim{background:radial-gradient(90% 34% at 30% 20%,rgba(3,2
 
 /* ---------- The hero light carries through the whole site ---------- */
 #glows{opacity:.9!important}
-#glows .echo{position:absolute;display:block;height:auto;max-width:none;pointer-events:none;mix-blend-mode:screen;
-  -webkit-mask-image:radial-gradient(60% 55% at 50% 50%,#000 30%,transparent 75%);mask-image:radial-gradient(70% 60% at 50% 50%,#000 40%,transparent 80%)}
 /* Cards catch the light: a red-purple rim on the far edge and a soft spill of light underneath */
 .glass::before{background:linear-gradient(140deg,rgba(255,255,255,.26),rgba(255,255,255,.05) 38%,rgba(255,255,255,0) 58%,rgba(214,58,128,.5) 86%,rgba(120,60,220,.55))!important}
 .glass{box-shadow:0 40px 90px -40px rgba(122,26,72,.55),0 0 0 1px rgba(255,255,255,.02),inset 0 1px 0 rgba(255,170,210,.07)}
@@ -575,5 +573,3 @@ html.hero-stack .wv-scrim{background:radial-gradient(90% 34% at 30% 20%,rgba(3,2
   background:radial-gradient(closest-side,rgba(168,40,110,.16),rgba(90,30,160,.08) 45%,transparent 70%);mix-blend-mode:screen;will-change:transform}
 .cursor-light.on{opacity:1}
 @media (hover:none),(pointer:coarse){.cursor-light{display:none}}
-/* Phones: the echoes are drawn too but kept lighter */
-@media (pointer:coarse){#glows .echo{opacity:.6!important}}

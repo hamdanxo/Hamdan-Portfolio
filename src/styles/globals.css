@@ -690,3 +690,53 @@ html body .page :is(article.pj,article.cs,.dg-tile):hover{border-color:rgba(91,6
 html{scrollbar-color:rgba(91,63,208,.5) transparent}
 ::selection{background:rgba(91,63,208,.22)!important}
 html body .page .wordmark{background:linear-gradient(180deg,#2A1E6E,rgba(91,63,208,.15) 90%)!important;-webkit-background-clip:text!important;background-clip:text!important}
+
+/* ---------- About on a screen ---------- */
+.ab3{position:relative;height:330vh}
+.ab3-pin{position:sticky;top:0;height:100vh;display:flex;align-items:center;justify-content:center;overflow:hidden;padding-top:40px}
+.ab3-dev{width:min(1120px,88vw,calc((100vh - 200px) * 1.74));transform-origin:50% 60%;will-change:transform,opacity}
+.ab3-bezel{background:#0F1014;border-radius:18px;padding:12px;box-shadow:0 60px 90px -50px rgba(40,30,110,.55),inset 0 0 0 1px rgba(255,255,255,.06)}
+.ab3-screen{position:relative;aspect-ratio:16/9.2;background:#F7F8FC;border-radius:6px;overflow:hidden;display:grid;grid-template-columns:42% 1fr}
+.ab3-stand{width:17%;height:clamp(50px,8vh,110px);margin:0 auto;background:linear-gradient(90deg,#8E949C,#D8DCE1 32%,#B9BEC5 68%,#868B93)}
+.ab3-base{width:32%;height:9px;margin:0 auto;border-radius:0 0 10px 10px;background:linear-gradient(#CFD3D9,#8E939A);box-shadow:0 18px 30px -12px rgba(30,40,70,.35)}
+/* left of the screen */
+.ab3-l{position:relative;overflow:hidden;background:linear-gradient(160deg,#EEF1F8,#DCE1EE);opacity:0;filter:blur(14px);transform:translate3d(-4%,0,0);transition:opacity 1s ease,filter 1.1s ease,transform 1.2s cubic-bezier(.2,.75,.2,1)}
+.ab3-l.on{opacity:1;filter:none;transform:none}
+.ab3-orb{position:absolute;left:-12%;top:8%;width:115%;aspect-ratio:1;border-radius:50%;filter:blur(18px);
+  background:radial-gradient(circle at 38% 34%,#fff 0%,rgba(226,220,250,.95) 22%,rgba(150,128,232,.65) 55%,rgba(91,63,208,.0) 74%)}
+.ab3-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.ab3-facts{position:absolute;left:9%;right:9%;bottom:9%;margin:0;display:grid;gap:14px}
+.ab3-facts div{display:grid;gap:2px}
+html body .page .ab3-facts dt:not(#_a):not(#_b):not(#_c):not(#_d){font-family:var(--f-mono);font-size:clamp(8px,.72vw,11px);letter-spacing:.18em;text-transform:uppercase;color:var(--pu)!important}
+.ab3-facts dd{margin:0;font-size:clamp(13px,1.35vw,22px);font-weight:300;letter-spacing:-.01em}
+.ab3-plus{position:absolute;left:5%;top:6%;width:12px;height:12px;opacity:.5;background:linear-gradient(#5d6f80,#5d6f80) 50%/1px 100% no-repeat,linear-gradient(#5d6f80,#5d6f80) 50%/100% 1px no-repeat}
+/* right of the screen */
+.ab3-r{display:flex;flex-direction:column;justify-content:center;padding:4% 7% 4% 6%;gap:clamp(8px,1.1vw,16px)}
+.ab3-k{margin:0;font-size:clamp(8px,.72vw,11px)!important;letter-spacing:.2em;text-transform:uppercase}
+html body .page .ab3-k:not(#_a):not(#_b):not(#_c):not(#_d){color:var(--pu)!important}
+.ab3-h{margin:0 0 .2em;font-size:clamp(24px,3.6vw,58px);line-height:.98;letter-spacing:-.04em;font-weight:300}
+html body .page .ab3-pu:not(#_a):not(#_b):not(#_c):not(#_d){color:var(--pu)!important}
+.ab3-hw{display:inline-block;opacity:0;transform:translate3d(0,.35em,0);filter:blur(6px);transition:opacity .6s ease,transform .7s cubic-bezier(.2,.75,.2,1),filter .6s ease}
+.ab3-k{opacity:0;transition:opacity .6s}
+.ab3-hw.on,.ab3-k.on{opacity:1;transform:none;filter:none}
+.ab3-p{margin:0;font-size:clamp(11px,1.02vw,15.5px);line-height:1.6;font-weight:300}
+.ab3-w{opacity:.1;transition:opacity .35s ease}
+.ab3-w.on{opacity:1}
+.ab3-cv{opacity:.1;transition:opacity .4s;align-self:flex-start}
+.ab3-cv.on{opacity:1}
+.ab3-static .ab3-l,.ab3-static .ab3-hw,.ab3-static .ab3-k,.ab3-static .ab3-w,.ab3-static .ab3-cv{opacity:1;filter:none;transform:none}
+/* phones: a tall tablet-like screen, picture on top, words below */
+@media (max-width:760px){
+  .ab3{height:300vh}
+  .ab3-pin{padding-top:56px}
+  .ab3-dev{width:92vw}
+  .ab3-bezel{border-radius:16px;padding:8px}
+  .ab3-screen{aspect-ratio:auto;height:min(74vh,640px);grid-template-columns:1fr;grid-template-rows:30% 1fr}
+  .ab3-facts{left:7%;right:7%;bottom:8%;grid-template-columns:repeat(3,1fr);gap:8px}
+  .ab3-facts dd{font-size:12.5px}
+  .ab3-orb{left:10%;top:-35%;width:80%}
+  .ab3-r{justify-content:flex-start;padding:7% 7%;gap:10px}
+  .ab3-h{font-size:30px}
+  .ab3-p{font-size:12.5px;line-height:1.55}
+  .ab3-stand{height:28px}
+}

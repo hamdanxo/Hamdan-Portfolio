@@ -84,7 +84,7 @@ export default function JourneyMotion() {
         const x = p.x + p.vx * e + Math.sin(p.w + q * 5) * 10 * q;
         const y = p.y + p.vy * e;
         const a = p.a * Math.min(1, q * 8) * Math.pow(1 - q, 1.3);
-        ctx.fillStyle = p.blue ? `rgba(140,190,242,${a.toFixed(3)})` : `rgba(232,238,245,${a.toFixed(3)})`;
+        ctx.fillStyle = p.blue ? `rgba(46,74,120,${a.toFixed(3)})` : `rgba(14,22,32,${a.toFixed(3)})`;
         ctx.fillRect(x, y, p.r, p.r);
       }
     };

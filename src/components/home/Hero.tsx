@@ -7,6 +7,9 @@ export default function Hero() {
     <>
 <section className="flip" id="card" aria-label="Business card">
 <div className="flip-pin">
+<div className="ice-deco ice-ring" aria-hidden="true"></div>
+<div className="ice-deco ice-orb" aria-hidden="true"></div>
+<i className="ice-deco ice-plus ice-p1" aria-hidden="true"></i><i className="ice-deco ice-plus ice-p2" aria-hidden="true"></i><i className="ice-deco ice-plus ice-p3" aria-hidden="true"></i>
 <div className="hero-text hx" id="heroText">
 <h1 className="s-9eabf6 hx-name"><span className="hl"><span>Muhammad</span></span><span className="hl"><span className="s-33dd4a"><em className="serif">Hamdan</em></span></span></h1>
 <p className="mono hx-roles"><span>Web</span><span>Design</span><span>Marketing</span></p>

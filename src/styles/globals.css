@@ -572,6 +572,70 @@ html.hero-stack .wv-scrim{background:radial-gradient(90% 34% at 30% 20%,rgba(3,2
 .cursor-light.on{opacity:1}
 @media (hover:none),(pointer:coarse){.cursor-light{display:none}}
 
-/* ---------- Plain solid black background everywhere (fresh start) ---------- */
-html,body,.page{background:#000!important}
+/* =====================================================================
+   Light "ice" theme: frosted blue-grey background, dark navy text,
+   frosted white glass panels. Applies to every page.
+   ===================================================================== */
+:root{--ink:#0E1620;--ink2:#4F6070;--ice:#DCE4EC}
+html,body{background:#DCE4EC!important;color:var(--ink)}
 .page::before,.page::after{content:none!important;display:none!important}
+html body .page{color:var(--ink);background:
+  radial-gradient(40% 30% at 70% 12%,rgba(255,255,255,.95),transparent 70%),
+  radial-gradient(50% 35% at 15% 40%,rgba(160,184,206,.55),transparent 70%),
+  radial-gradient(45% 30% at 85% 70%,rgba(140,166,192,.5),transparent 70%),
+  linear-gradient(180deg,#E8EEF3 0%,#CFDAE4 50%,#DCE4EC 100%)!important;
+  background-size:100% 1800px!important;background-repeat:repeat-y!important}
+
+/* Text */
+html body .page *:not(#_a):not(#_b):not(.flip-card):not(.flip-card *):not(.pj-photo:not(.pj-desk) *){color:var(--ink)!important;-webkit-text-fill-color:currentColor!important;text-shadow:none!important}
+html body .page :is(.cat-desc,.wk-sub,.hx-roles,.cs-kicker,dt,small,.mono,.jr-note,.jr-when,.pj-sub,.cat-count):not(#_a):not(#_b):not(#_c):not(.flip-card *){color:var(--ink2)!important}
+html body .page .pj-photo:not(.pj-desk) *:not(#_a):not(#_b):not(#_c){color:#fff!important}
+html body .page .wordmark{background:linear-gradient(180deg,rgba(14,22,32,.9),rgba(14,22,32,.15) 90%)!important;-webkit-background-clip:text!important;background-clip:text!important;-webkit-text-fill-color:transparent!important}
+
+/* Frosted glass panels instead of dark ones */
+html body .page :is(.glass,article.pj,.pj-img.pj-big:not(.pj-photo),.pj-soon,.flow,.flow>div,.wid-grid,.sk-grid,.sk-grid li,#contactBand,.ct,article.cs,.browser-bar,#contactCard,.node,.draft){
+  background:rgba(255,255,255,.42)!important;border-color:rgba(255,255,255,.8)!important;box-shadow:0 30px 60px -34px rgba(40,70,100,.35)!important}
+html body .page .glass::before{display:none!important}
+html body .page .pj-desk{background:radial-gradient(90% 80% at 50% 35%,#F4F7FA,#C9D5E0)!important}
+html body .page .pj-desk .pj-dim{display:none!important}
+html body .page .pj-desk .pj-cat{background:none!important}
+html body .page :is(.chip,.pj-link,.bk-btn,.cs-links a,.hx-links a){border-color:rgba(14,22,32,.25)!important}
+.site-header,.site-header.scrolled,header.glass{background:rgba(240,245,249,.7)!important;border-color:rgba(255,255,255,.8)!important;-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px)}
+.site-header *{color:var(--ink)!important}
+
+/* Timeline */
+.jr-line{background:rgba(14,22,32,.12)!important}
+.jr-fill{background:linear-gradient(90deg,rgba(40,70,120,0) 0%,rgba(40,70,120,.5) 30%,#2E4A78 72%,#0E1620 100%)!important;box-shadow:none!important}
+.jr-dot{background:#E8EEF3!important;border-color:rgba(14,22,32,.35)!important}
+.jr-item.on .jr-dot,.on .jr-dot{background:#0E1620!important;border-color:#0E1620!important;box-shadow:0 0 0 6px rgba(14,22,32,.08)!important}
+
+/* Design page */
+.dg-stage{background:transparent!important;border-color:rgba(255,255,255,.6)!important}
+.dg-vig{background:linear-gradient(180deg,rgba(220,228,236,.9),transparent 10%,transparent 90%,rgba(220,228,236,.9))!important}
+
+/* Intro, cursor, scrollbar */
+#intro{background:radial-gradient(70% 60% at 50% 45%,#F2F6F9 0%,#D3DEE8 75%)!important;color:var(--ink)!important}
+.intro-q em{color:#2E4A78!important}
+.intro-line{background:linear-gradient(90deg,transparent,#0E1620,transparent)!important}
+.cur{border-color:rgba(14,22,32,.45)!important;background:radial-gradient(circle,rgba(14,22,32,.08),transparent 70%)!important;mix-blend-mode:normal!important}
+html{scrollbar-color:rgba(14,22,32,.4) transparent}
+::-webkit-scrollbar-track{background:#DCE4EC!important}
+::-webkit-scrollbar-thumb{background:#8A9AAA!important;border-color:#DCE4EC!important}
+::selection{background:rgba(46,74,120,.25)!important;color:var(--ink)!important}
+.palm-glow{opacity:.2!important}
+
+/* Hero: soft glass sphere, one thin circle line, small plus marks */
+.ice-deco{position:absolute;z-index:0;pointer-events:none}
+.ice-ring{left:30%;top:-40%;width:90vw;height:90vw;border:1px solid rgba(255,255,255,.85);border-radius:50%}
+.ice-orb{left:42%;top:8%;width:46vw;height:46vw;border-radius:50%;filter:blur(6px);
+  background:radial-gradient(circle at 35% 30%,#fff 0%,rgba(230,238,245,.9) 25%,rgba(150,176,200,.55) 60%,rgba(120,150,180,0) 75%)}
+.ice-plus{width:14px;height:14px;opacity:.6;background:linear-gradient(#5d6f80,#5d6f80) 50%/1px 100% no-repeat,linear-gradient(#5d6f80,#5d6f80) 50%/100% 1px no-repeat}
+.ice-p1{left:3%;top:88%}.ice-p2{right:3%;top:14%}.ice-p3{right:3%;top:88%}
+html.hero-stack .ice-orb{left:20%;top:40%;width:110vw;height:110vw}
+html.hero-stack .ice-ring{left:-20%;top:-30%;width:160vw;height:160vw}
+html body .page .dg-tile{background:#F3F6F9!important;border-color:rgba(14,22,32,.08)!important}
+html body .page .dg-tile:hover{background:#FFFFFF!important;border-color:rgba(46,74,120,.35)!important}
+html body .page .dg-tile .r span:not(#_a):not(#_b):not(#_c){color:#4F6070!important}
+html body .page .dg-tile .r span:first-child:not(#_a):not(#_b):not(#_c){color:#0E1620!important}
+html body .page .dg-tags i{background:rgba(14,22,32,.05)!important;border-color:rgba(14,22,32,.1)!important}
+html body .page .dg-art.dg-wide{background:radial-gradient(90% 80% at 50% 45%,#F4F7FA,#C9D5E0)!important}

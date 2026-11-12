@@ -130,19 +130,19 @@ export async function buildAtlas(items: Design[], images: (HTMLImageElement | nu
     ctx.scale(cw / W, ch / H);
 
     // card
-    ctx.fillStyle = '#0A0B0C';
+    ctx.fillStyle = '#F3F6F9';
     ctx.fillRect(0, 0, W, H);
-    ctx.strokeStyle = 'rgba(255,255,255,0.08)';
+    ctx.strokeStyle = 'rgba(14,22,32,0.10)';
     ctx.lineWidth = 1;
     ctx.strokeRect(0.5, 0.5, W - 1, H - 1);
 
     const pad = 14, small = W < 240;
     // top row
     ctx.textBaseline = 'middle';
-    ctx.fillStyle = '#FFFFFF';
+    ctx.fillStyle = '#0E1620';
     ctx.font = `300 ${small ? 11 : 12}px ${sans}`;
     letterSpaced(ctx, d.client, pad, pad + 7, 0.24, 'left');
-    ctx.fillStyle = '#C9D0D6';
+    ctx.fillStyle = '#4F6070';
     ctx.font = `300 ${small ? 8.5 : 9.5}px ${mono}`;
     letterSpaced(ctx, d.title.toUpperCase(), W - pad, pad + 7, 1.1, 'right');
 
@@ -156,18 +156,18 @@ export async function buildAtlas(items: Design[], images: (HTMLImageElement | nu
     if (img && img.naturalWidth > img.naturalHeight * 1.1) {
       // A landscape book or board in a tall tile: show the whole image, lying in the middle with a soft shadow.
       const bg = ctx.createRadialGradient(ax + aw / 2, top + ah * 0.45, 0, ax + aw / 2, top + ah * 0.45, ah * 0.8);
-      bg.addColorStop(0, '#18212B');
-      bg.addColorStop(1, '#07090C');
+      bg.addColorStop(0, '#F4F7FA');
+      bg.addColorStop(1, '#C9D5E0');
       ctx.fillStyle = bg;
       ctx.fillRect(ax, top, aw, ah);
       const s = (aw * 0.88) / img.naturalWidth;
       const iw = img.naturalWidth * s, ih = img.naturalHeight * s;
       const x = ax + (aw - iw) / 2, y = top + (ah - ih) / 2;
       ctx.save();
-      ctx.shadowColor = 'rgba(0,0,0,0.6)';
+      ctx.shadowColor = 'rgba(40,70,100,0.35)';
       ctx.shadowBlur = 22;
       ctx.shadowOffsetY = 12;
-      ctx.fillStyle = d.book ? '#B9BFC6' : '#0A0B0C';
+      ctx.fillStyle = d.book ? '#B9BFC6' : '#F3F6F9';
       ctx.fillRect(x + (d.book ? 2 : 0), y + (d.book ? 2 : 0), iw, ih); // page edges under a book cover
       ctx.restore();
       ctx.drawImage(img, x, y, iw, ih);
@@ -194,15 +194,15 @@ export async function buildAtlas(items: Design[], images: (HTMLImageElement | nu
       const tw = ctx.measureText(t).width + 14;
       ctx.letterSpacing = '0px';
       roundRect(ctx, tx, by - 9, tw, 18, 2);
-      ctx.fillStyle = 'rgba(255,255,255,0.07)';
+      ctx.fillStyle = 'rgba(14,22,32,0.05)';
       ctx.fill();
-      ctx.strokeStyle = 'rgba(255,255,255,0.08)';
+      ctx.strokeStyle = 'rgba(14,22,32,0.10)';
       ctx.stroke();
-      ctx.fillStyle = '#B4BCC4';
+      ctx.fillStyle = '#4F6070';
       letterSpaced(ctx, t, tx + 7, by + 0.5, 1, 'left');
       tx += tw + 5;
     }
-    ctx.fillStyle = '#C9D0D6';
+    ctx.fillStyle = '#4F6070';
     ctx.font = `300 ${small ? 8.5 : 9.5}px ${mono}`;
     letterSpaced(ctx, d.year, W - pad, by, 1.1, 'right');
 

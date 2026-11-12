@@ -63,8 +63,8 @@ void main() {
   vec2 e = min(vUv, 1.0 - vUv);
   float border = 1.0 - step(0.006, min(e.x, e.y * 0.83));
   col.rgb += vHover * (0.05 + border * vec3(0.24, 0.42, 0.66));
-  // soft edge fade, like the CSS vignette
-  col.rgb *= 1.0 - smoothstep(0.85, 1.45, vEdge) * 0.55;
+  // soft edge fade into the light page colour
+  col.rgb = mix(col.rgb, vec3(0.863, 0.894, 0.925), smoothstep(0.85, 1.45, vEdge) * 0.6);
   gl_FragColor = col;
 }`;
 

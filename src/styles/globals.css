@@ -642,3 +642,5 @@ html body .page .dg-art.dg-wide{background:radial-gradient(90% 80% at 50% 45%,#F
 /* Stacking project cards must be solid, or the card underneath shows through */
 html body .page article.pj:not(#_a):not(#_b){background:linear-gradient(160deg,#F5F8FA 0%,#E6EDF3 100%)!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
 html body .page :is(.draft>div,.draft-btn):not(#_a):not(#_b){background:rgba(255,255,255,.75)!important;border-color:rgba(14,22,32,.1)!important}
+/* Skills lists: plain rows with thin dividers, no boxes */
+html body .page .sk-grid li:not(#_a):not(#_b){background:transparent!important;box-shadow:none!important;border-color:rgba(14,22,32,.1)!important}

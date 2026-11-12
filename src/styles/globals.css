@@ -546,3 +546,34 @@ header{view-transition-name:site-header}
 html:not(.hero-stack) .hero-text{justify-content:flex-end;padding-bottom:11vh}
 html.hero-stack .wv-art{left:38%}
 html.hero-stack .wv-scrim{background:radial-gradient(90% 34% at 30% 20%,rgba(3,2,4,.8),rgba(3,2,4,.4) 60%,rgba(3,2,4,0) 90%)}
+
+/* ---------- Dark red-purple accents through the page, matching the hero waves ---------- */
+#glows .vg{background:radial-gradient(closest-side,rgba(122,28,84,.85),rgba(74,24,120,.35) 50%,transparent)!important}
+.page::after{background:
+    radial-gradient(38% 42% at 24% 52%,rgba(122,26,72,.42),transparent 72%),
+    radial-gradient(34% 38% at 52% 44%,rgba(86,30,140,.34),transparent 72%),
+    radial-gradient(36% 40% at 78% 54%,rgba(140,30,64,.30),transparent 72%),
+    radial-gradient(60% 30% at 50% 62%,rgba(65,130,224,.10),transparent 75%)!important}
+@media (pointer:coarse){
+  .page{background:
+    radial-gradient(60% 30% at 18% 24%,rgba(122,26,72,.13),transparent 70%),
+    radial-gradient(55% 34% at 82% 58%,rgba(74,24,120,.22),transparent 70%),
+    radial-gradient(70% 30% at 40% 76%,rgba(81,138,184,.05),transparent 70%),
+    radial-gradient(120% 80% at 50% 50%,#0e0b12,#010102 75%);
+    background-size:100% 100lvh;background-repeat:repeat-y}
+}
+
+/* ---------- The hero light carries through the whole site ---------- */
+#glows{opacity:.9!important}
+#glows .echo{position:absolute;display:block;height:auto;max-width:none;pointer-events:none;mix-blend-mode:screen;
+  -webkit-mask-image:radial-gradient(60% 55% at 50% 50%,#000 30%,transparent 75%);mask-image:radial-gradient(70% 60% at 50% 50%,#000 40%,transparent 80%)}
+/* Cards catch the light: a red-purple rim on the far edge and a soft spill of light underneath */
+.glass::before{background:linear-gradient(140deg,rgba(255,255,255,.26),rgba(255,255,255,.05) 38%,rgba(255,255,255,0) 58%,rgba(214,58,128,.5) 86%,rgba(120,60,220,.55))!important}
+.glass{box-shadow:0 40px 90px -40px rgba(122,26,72,.55),0 0 0 1px rgba(255,255,255,.02),inset 0 1px 0 rgba(255,170,210,.07)}
+/* Mouse light (computers only) */
+.cursor-light{position:fixed;left:0;top:0;width:900px;height:900px;z-index:2;pointer-events:none;opacity:0;transition:opacity .6s ease;
+  background:radial-gradient(closest-side,rgba(168,40,110,.16),rgba(90,30,160,.08) 45%,transparent 70%);mix-blend-mode:screen;will-change:transform}
+.cursor-light.on{opacity:1}
+@media (hover:none),(pointer:coarse){.cursor-light{display:none}}
+/* Phones: the echoes are drawn too but kept lighter */
+@media (pointer:coarse){#glows .echo{opacity:.6!important}}

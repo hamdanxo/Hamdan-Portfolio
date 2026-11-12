@@ -4,6 +4,7 @@ import { site } from '@/lib/site';
 import { heroModeScript } from '@/components/effects/HeroLayoutScript';
 import ScrollRail from '@/components/layout/ScrollRail';
 import PageTransitions from '@/components/effects/PageTransitions';
+import CursorLight from '@/components/effects/CursorLight';
 import '@/styles/components.css';
 import '@/styles/globals.css';
 
@@ -37,6 +38,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <div id="intro" aria-hidden="true" dangerouslySetInnerHTML={{ __html: introHtml }} />
         {children}
         <PageTransitions />
+        <CursorLight />
         <ScrollRail />
       </body>
     </html>

@@ -12,7 +12,9 @@ export default function AboutMotion() {
     const sec = document.getElementById('about');
     const dev = sec?.querySelector<HTMLElement>('.ab3-dev');
     const left = sec?.querySelector<HTMLElement>('.ab3-l');
-    if (!sec || !dev || !left) return;
+    const box = sec?.querySelector<HTMLElement>('.ab3-r');
+    const rin = sec?.querySelector<HTMLElement>('.ab3-rin');
+    if (!sec || !dev || !left || !box || !rin) return;
     const heads = Array.from(sec.querySelectorAll<HTMLElement>('.ab3-hw, .ab3-k'));
     const ws = Array.from(sec.querySelectorAll<HTMLElement>('.ab3-w, .ab3-cv'));
     if (prefersReducedMotion()) { sec.classList.add('ab3-static'); return; }
@@ -35,7 +37,16 @@ export default function AboutMotion() {
       const h = Math.round(Math.min(1, Math.max(0, (p - 0.3) / 0.12)) * heads.length);
       if (h !== lastH) { lastH = h; heads.forEach((e, i) => e.classList.toggle('on', i < h)); }
       const w = Math.round(Math.min(1, Math.max(0, (p - 0.42) / 0.48)) * ws.length);
-      if (w !== lastW) { lastW = w; ws.forEach((e, i) => e.classList.toggle('on', i < w)); }
+      if (w !== lastW) {
+        lastW = w; ws.forEach((e, i) => e.classList.toggle('on', i < w));
+        // Small screens: the text scrolls up inside the monitor so the line being written stays in view.
+        const extra = rin.scrollHeight - box.clientHeight;
+        if (extra > 4 && w > 0) {
+          const cur = ws[Math.min(w, ws.length) - 1];
+          const y = Math.min(extra, Math.max(0, cur.offsetTop - box.clientHeight * 0.55));
+          rin.style.transform = `translate3d(0,${-y}px,0)`;
+        } else rin.style.transform = '';
+      }
     };
     const io = new IntersectionObserver((es) => {
       if (es[0].isIntersecting && !live) { live = true; raf = requestAnimationFrame(frame); }

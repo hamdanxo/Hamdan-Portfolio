@@ -19,6 +19,7 @@ export default function About() {
   return (
     <section className="ab3" id="about" aria-label="About">
       <div className="ab3-pin">
+        <i className="ab3-arc ab3-a1" aria-hidden="true" /><i className="ab3-arc ab3-a2" aria-hidden="true" />
         <div className="ab3-dev">
           <div className="ab3-bezel">
             <div className="ab3-screen">
@@ -33,6 +34,7 @@ export default function About() {
                 <i className="ab3-plus" aria-hidden="true" />
               </div>
               <div className="ab3-r">
+<div className="ab3-rin">
                 <p className="mono ab3-k">About</p>
                 <h2 className="ab3-h">
                   <span className="ab3-hw">Developer,</span> <span className="ab3-hw">designer</span>{' '}
@@ -41,11 +43,17 @@ export default function About() {
                 <p className="ab3-p">{words(P1)}</p>
                 <p className="ab3-p">{words(P2)}</p>
                 {hasCv && <a className="cv-btn ab3-cv" href="/cv.pdf" download="Muhammad Hamdan CV.pdf">Download CV</a>}
+</div>
               </div>
             </div>
           </div>
           <div className="ab3-stand" aria-hidden="true" />
           <div className="ab3-base" aria-hidden="true" />
+          <div className="ab3-desk" aria-hidden="true">
+            <i className="ab3-top" />
+            <i className="ab3-clamp ab3-cl"><b /><b /></i>
+            <i className="ab3-clamp ab3-cr"><b /><b /></i>
+          </div>
         </div>
       </div>
       <AboutMotion />

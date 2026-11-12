@@ -725,18 +725,60 @@ html body .page .ab3-pu:not(#_a):not(#_b):not(#_c):not(#_d){color:var(--pu)!impo
 .ab3-cv{opacity:.1;transition:opacity .4s;align-self:flex-start}
 .ab3-cv.on{opacity:1}
 .ab3-static .ab3-l,.ab3-static .ab3-hw,.ab3-static .ab3-k,.ab3-static .ab3-w,.ab3-static .ab3-cv{opacity:1;filter:none;transform:none}
-/* phones: a tall tablet-like screen, picture on top, words below */
+/* phones: same wide monitor, smaller type; the text scrolls inside the screen as it is written */
+.ab3-r{position:relative;overflow:hidden}
+.ab3-rin{display:flex;flex-direction:column;gap:inherit;transition:transform .5s cubic-bezier(.2,.75,.2,1)}
+@media (min-width:761px){.ab3-r{justify-content:center}}
 @media (max-width:760px){
   .ab3{height:300vh}
-  .ab3-pin{padding-top:56px}
-  .ab3-dev{width:92vw}
-  .ab3-bezel{border-radius:16px;padding:8px}
-  .ab3-screen{aspect-ratio:auto;height:min(74vh,640px);grid-template-columns:1fr;grid-template-rows:30% 1fr}
-  .ab3-facts{left:7%;right:7%;bottom:8%;grid-template-columns:repeat(3,1fr);gap:8px}
-  .ab3-facts dd{font-size:12.5px}
-  .ab3-orb{left:10%;top:-35%;width:80%}
-  .ab3-r{justify-content:flex-start;padding:7% 7%;gap:10px}
-  .ab3-h{font-size:30px}
-  .ab3-p{font-size:12.5px;line-height:1.55}
-  .ab3-stand{height:28px}
+  .ab3-dev{width:94vw}
+  .ab3-bezel{border-radius:12px;padding:6px}
+  .ab3-screen{aspect-ratio:16/11;grid-template-columns:36% 1fr}
+  .ab3-facts{left:9%;right:6%;bottom:8%;gap:7px}
+  .ab3-facts dt{font-size:6.5px!important}
+  .ab3-facts dd{font-size:10px}
+  .ab3-plus{width:8px;height:8px}
+  .ab3-r{justify-content:flex-start;padding:9% 6% 6% 6%;gap:6px}
+  .ab3-k{font-size:6.5px!important}
+  .ab3-h{font-size:19px}
+  .ab3-p{font-size:10.5px;line-height:1.5}
+  .ab3-stand{height:30px}
+  .ab3-base{height:6px}
 }
+
+/* Desk with clamps under the monitor, faint circle lines behind (like the reference) */
+.ab3-arc{position:absolute;left:50%;top:50%;border-radius:50%;border:1px solid rgba(14,22,32,.09);pointer-events:none;transform:translate(-50%,-50%)}
+.ab3-a1{width:min(150vw,1900px);height:min(150vw,1900px);top:62%}
+.ab3-a2{width:min(118vw,1500px);height:min(46vw,580px);top:46%;border-color:rgba(14,22,32,.07)}
+.ab3-dev{position:relative;z-index:1}
+.ab3-stand{width:15%;height:clamp(60px,10vh,120px);background:linear-gradient(90deg,#7E848C 0%,#C9CDD3 22%,#E4E7EB 40%,#B8BDC4 70%,#80868E 100%)}
+.ab3-base{width:24%;height:7px;border-radius:2px 2px 0 0;background:linear-gradient(#B9BEC5,#8C9198);box-shadow:none;position:relative;z-index:2}
+.ab3-desk{position:relative;width:100vw;margin-left:calc(50% - 50vw);height:clamp(150px,22vh,240px)}
+.ab3-top{position:absolute;left:-2%;right:-2%;top:0;height:clamp(14px,1.8vw,24px);
+  background:
+    repeating-linear-gradient(90deg,rgba(255,255,255,.035) 0 1px,transparent 1px 3px),
+    linear-gradient(180deg,#5A5E64 0%,#3A3D42 18%,#2A2C30 60%,#1C1D20 100%);
+  box-shadow:0 2px 0 rgba(255,255,255,.18) inset,0 22px 40px -14px rgba(20,24,40,.45)}
+.ab3-top::before{content:"";position:absolute;left:0;right:0;top:-3px;height:3px;background:linear-gradient(90deg,#9AA0A8,#C8CCD2 50%,#9AA0A8)}
+.ab3-clamp{position:absolute;top:-34px;width:clamp(90px,10vw,150px);height:clamp(130px,19vh,210px)}
+.ab3-cl{left:max(0px,calc(50% - 50vw - 10px))}
+.ab3-cr{right:max(0px,calc(50% - 50vw - 10px));transform:scaleX(-1)}
+.ab3-clamp::before{content:"";position:absolute;left:0;right:20%;top:20px;height:22px;border-radius:3px;
+  background:linear-gradient(180deg,#4A4D52,#26282C);box-shadow:inset 0 1px 0 rgba(255,255,255,.18)}
+.ab3-clamp::after{content:"";position:absolute;left:14%;width:30%;top:50px;bottom:0;border-radius:0 0 6px 6px;
+  background:linear-gradient(90deg,#2B2D31,#55595F 45%,#2B2D31);box-shadow:inset 0 1px 0 rgba(255,255,255,.12)}
+.ab3-clamp b{position:absolute;top:0;width:26%;height:24px;border-radius:7px 7px 3px 3px;background:radial-gradient(60% 40% at 50% 25%,#5C6066,#1E2023 80%);box-shadow:0 2px 4px rgba(0,0,0,.3)}
+.ab3-clamp b:first-child{left:2%}.ab3-clamp b:last-child{left:36%}
+@media (max-width:760px){
+  .ab3-stand{height:34px}
+  .ab3-base{height:5px}
+  .ab3-desk{height:120px}
+  .ab3-top{height:12px}
+  .ab3-clamp{width:62px;height:110px;top:-24px}
+  .ab3-clamp b{height:16px}
+  .ab3-clamp::before{top:14px;height:16px}
+  .ab3-clamp::after{top:34px}
+}
+.ab3-dev{width:min(1060px,84vw,calc((100vh - 120px - clamp(150px,22vh,240px) - clamp(60px,10vh,120px)) * 1.68))}
+.ab3-pin{padding-top:70px;align-items:flex-end}
+@media (max-width:760px){.ab3-dev{width:94vw}.ab3-pin{align-items:center}}

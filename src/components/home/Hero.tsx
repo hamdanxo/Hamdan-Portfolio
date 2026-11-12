@@ -1,12 +1,14 @@
 import Image from 'next/image';
 import hand from '@/assets/hand.webp';
 import HeroLayoutScript from '@/components/effects/HeroLayoutScript';
+import HeroWaves from './HeroWaves';
 
 export default function Hero() {
   return (
     <>
 <section className="flip" id="card" aria-label="Business card">
 <div className="flip-pin">
+<HeroWaves />
 <div className="hero-text hx" id="heroText">
 <h1 className="s-9eabf6 hx-name"><span className="hl"><span>Muhammad</span></span><span className="hl"><span className="s-33dd4a"><em className="serif">Hamdan</em></span></span></h1>
 <p className="mono hx-roles"><span>Web</span><span>Design</span><span>Marketing</span></p>

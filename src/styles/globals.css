@@ -517,3 +517,28 @@ header{view-transition-name:site-header}
   .page::after{animation:auroraDrift 22s ease-in-out infinite alternate}
 }
 @keyframes auroraDrift{from{transform:translate3d(-4%,0,0) scaleY(1)}to{transform:translate3d(4%,2vh,0) scaleY(1.08)}}
+
+/* ---------- Hero light waves ----------
+   The art keeps a 16:10 shape and covers the screen; each layer draws in from the side, one after another. */
+.page:has(.wv)::after{display:none}
+.wv{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden;background:#030204;
+  -webkit-mask-image:linear-gradient(180deg,#000 82%,transparent);mask-image:linear-gradient(180deg,#000 82%,transparent)}
+.wv-art{position:absolute;left:50%;top:50%;width:max(100%,160vh);aspect-ratio:16/10;transform:translate(-50%,-50%)}
+.wv-l{position:absolute;display:block;max-width:none}
+.wv-hot{mix-blend-mode:screen}
+.wv-scrim{position:absolute;inset:0;background:radial-gradient(44% 40% at 20% 76%,rgba(3,2,4,.86),rgba(3,2,4,.5) 55%,rgba(3,2,4,0) 85%)}
+@media (prefers-reduced-motion:no-preference){
+  .wv-l{animation-duration:1.5s;animation-timing-function:cubic-bezier(.22,.7,.18,1);animation-fill-mode:both;animation-delay:calc(var(--d) + .25s)}
+  html:not(.intro-seen) .wv-l{animation-delay:calc(var(--d) + 3.3s)}
+  .wv-main,.wv-glow,.wv-low,.wv-up{-webkit-mask-image:linear-gradient(90deg,#000 40%,transparent 60%);mask-image:linear-gradient(90deg,#000 40%,transparent 60%);-webkit-mask-size:260% 100%;mask-size:260% 100%;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;animation-name:wvGrow}
+  .wv-up{-webkit-mask-image:linear-gradient(270deg,#000 40%,transparent 60%);mask-image:linear-gradient(270deg,#000 40%,transparent 60%);animation-name:wvGrowL}
+  .wv-main,.wv-glow{animation-duration:1.9s}
+  .wv-hot{animation-name:wvHot;animation-duration:1.6s}
+}
+@keyframes wvGrow{from{-webkit-mask-position:100% 0;mask-position:100% 0}to{-webkit-mask-position:0 0;mask-position:0 0}}
+@keyframes wvGrowL{from{-webkit-mask-position:0 0;mask-position:0 0}to{-webkit-mask-position:100% 0;mask-position:100% 0}}
+@keyframes wvHot{from{opacity:0;transform:scale(.6)}to{opacity:1;transform:none}}
+/* Text sits low on the left, over the darker part */
+html:not(.hero-stack) .hero-text{justify-content:flex-end;padding-bottom:11vh}
+html.hero-stack .wv-art{left:38%}
+html.hero-stack .wv-scrim{background:radial-gradient(90% 34% at 30% 20%,rgba(3,2,4,.8),rgba(3,2,4,.4) 60%,rgba(3,2,4,0) 90%)}

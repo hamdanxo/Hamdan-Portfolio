@@ -1,3 +1,7 @@
+'use client';
+
+import { useEffect, useRef } from 'react';
+
 /** The hero's light waves: each layer is its own image so they can draw in one after another when the page opens. */
 type Layer = { src: string; x: number; y: number; w: number; h: number; k: 'up' | 'low' | 'glow' | 'main' | 'hot'; d: number };
 
@@ -21,8 +25,20 @@ const LAYERS: Layer[] = [
 ];
 
 export default function HeroWaves() {
+  const ref = useRef<HTMLDivElement>(null);
+  // Start only once every layer has loaded and decoded, so nothing pops in late.
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    let done = false;
+    const go = () => { if (!done) { done = true; requestAnimationFrame(() => el.classList.add('wv-go')); } };
+    const imgs = Array.from(el.querySelectorAll('img'));
+    Promise.all(imgs.map((im) => (im.complete && im.naturalWidth ? im.decode?.().catch(() => {}) : new Promise<void>((r) => { im.onload = im.onerror = () => r(); })))).then(go);
+    const t = window.setTimeout(go, 3000);
+    return () => window.clearTimeout(t);
+  }, []);
   return (
-    <div className="wv" aria-hidden="true">
+    <div className="wv" ref={ref} aria-hidden="true">
       <div className="wv-art">
         {LAYERS.map((l) => (
           // eslint-disable-next-line @next/next/no-img-element
@@ -32,6 +48,7 @@ export default function HeroWaves() {
             src={l.src}
             alt=""
             decoding="async"
+            loading="eager"
             fetchPriority={l.k === 'main' ? 'high' : 'auto'}
             style={{ left: `${l.x}%`, top: `${l.y}%`, width: `${l.w}%`, height: `${l.h}%`, ['--d' as string]: `${l.d}s` }}
           />

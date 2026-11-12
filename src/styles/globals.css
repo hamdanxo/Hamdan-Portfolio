@@ -527,19 +527,20 @@ header{view-transition-name:site-header}
 .wv-l{position:absolute;display:block;max-width:none}
 .wv-hot{mix-blend-mode:screen}
 .wv-scrim{position:absolute;inset:0;background:radial-gradient(44% 40% at 20% 76%,rgba(3,2,4,.86),rgba(3,2,4,.5) 55%,rgba(3,2,4,0) 85%)}
-/* Layers wait hidden until all are loaded, then grow out one after another. Only opacity and transform move,
-   so the graphics chip does the work and it stays smooth. */
+/* Layers wait hidden until all are loaded, then each one opens from the middle outwards to both edges,
+   through a soft-edged mask, one after another. When it is over the masks are removed. */
 @media (prefers-reduced-motion:no-preference){
-  .wv-l{opacity:0;transform-origin:0 50%}
-  .wv-up{transform-origin:100% 50%}
-  .wv-go .wv-l{animation:wvIn 2.2s cubic-bezier(.16,1,.3,1) both;animation-delay:calc(var(--d) * 1.15 + .1s);will-change:transform,opacity}
-  html:not(.intro-seen) .wv-go .wv-l{animation-delay:calc(var(--d) * 1.15 + 3.2s)}
-  .wv-go .wv-up{animation-name:wvInL}
-  .wv-go .wv-main,.wv-go .wv-glow{animation-duration:2.6s}
-  .wv-go .wv-hot{animation-name:wvHot;animation-duration:2s;transform-origin:50% 50%}
+  .wv-l{opacity:0}
+  .wv-go .wv-l:not(.wv-hot){
+    -webkit-mask-image:linear-gradient(90deg,transparent 0%,#000 32%,#000 68%,transparent 100%);mask-image:linear-gradient(90deg,transparent 0%,#000 32%,#000 68%,transparent 100%);
+    -webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-position:50% 50%;mask-position:50% 50%;
+    animation:wvOpen 2.6s cubic-bezier(.25,.7,.2,1) both;animation-delay:calc(var(--d) * 1.1 + .1s)}
+  html:not(.intro-seen) .wv-go .wv-l{animation-delay:calc(var(--d) * 1.1 + 3.2s)}
+  .wv-go .wv-main,.wv-go .wv-glow{animation-duration:3s}
+  .wv-go .wv-hot{animation:wvHot 2.2s cubic-bezier(.25,.7,.2,1) both;animation-delay:calc(var(--d) * 1.1 + .1s)}
+  .wv-done .wv-l{-webkit-mask-image:none!important;mask-image:none!important;animation:none!important;opacity:1}
 }
-@keyframes wvIn{from{opacity:0;transform:translate3d(-6%,0,0) scaleX(.78)}35%{opacity:1}to{opacity:1;transform:none}}
-@keyframes wvInL{from{opacity:0;transform:translate3d(6%,0,0) scaleX(.78)}35%{opacity:1}to{opacity:1;transform:none}}
+@keyframes wvOpen{from{opacity:0;-webkit-mask-size:0% 100%;mask-size:0% 100%}12%{opacity:1}to{opacity:1;-webkit-mask-size:420% 100%;mask-size:420% 100%}}
 @keyframes wvHot{from{opacity:0;transform:scale(.5)}to{opacity:1;transform:none}}
 /* Text sits low on the left, over the darker part */
 html:not(.hero-stack) .hero-text{justify-content:flex-end;padding-bottom:11vh}

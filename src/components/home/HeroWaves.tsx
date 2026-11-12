@@ -31,7 +31,14 @@ export default function HeroWaves() {
     const el = ref.current;
     if (!el) return;
     let done = false;
-    const go = () => { if (!done) { done = true; requestAnimationFrame(() => el.classList.add('wv-go')); } };
+    const go = () => {
+      if (done) return;
+      done = true;
+      requestAnimationFrame(() => el.classList.add('wv-go'));
+      // Once every layer has finished opening, drop the masks so the page has nothing extra to draw.
+      const wait = document.documentElement.classList.contains('intro-seen') ? 6500 : 9600;
+      window.setTimeout(() => el.classList.add('wv-done'), wait);
+    };
     const imgs = Array.from(el.querySelectorAll('img'));
     Promise.all(imgs.map((im) => (im.complete && im.naturalWidth ? im.decode?.().catch(() => {}) : new Promise<void>((r) => { im.onload = im.onerror = () => r(); })))).then(go);
     const t = window.setTimeout(go, 3000);

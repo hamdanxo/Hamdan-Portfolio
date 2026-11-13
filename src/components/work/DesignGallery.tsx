@@ -75,8 +75,6 @@ export default function DesignGallery({ fullscreen = false }: { fullscreen?: boo
   const [dims, setDims] = useState<Dims | null>(null);
   const wrapRef = useRef<HTMLDivElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
-  const globeRef = useRef<HTMLDivElement>(null);
-  const globeVal = useRef(-1);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const glRef = useRef<GalleryGL | null>(null);
   const tilesRef = useRef<(HTMLDivElement | null)[]>([]);
@@ -171,8 +169,7 @@ export default function DesignGallery({ fullscreen = false }: { fullscreen?: boo
   const draw = useCallback(() => {
     const { ox, oy } = pos.current;
     const gl = glRef.current;
-    const g = globeVal.current < 0 ? 0 : globeVal.current;
-    if (gl) { gl.setGlobe(g); gl.setOffset(ox, oy); gl.render(); return; }
+    if (gl) { gl.setOffset(ox, oy); gl.render(); return; }
     const stage = stageRef.current;
     if (!stage || !dims) return;
     const { W, H, G, cols, rows } = dims;
@@ -268,20 +265,7 @@ export default function DesignGallery({ fullscreen = false }: { fullscreen?: boo
       const dt = Math.min(3, (now - last) / 16.667);
       last = now;
       if (!visible || document.hidden) return;
-      const gw = globeRef.current;
-      if (gw) {
-        // Scroll in: small globe grows to full screen. Keep scrolling: full screen. Further: back to a globe.
-        const r = gw.getBoundingClientRect(), vh = window.innerHeight;
-        const q = Math.min(1, Math.max(0, -r.top / Math.max(1, r.height - vh)));
-        const ease = (t: number) => t * t * (3 - 2 * t);
-        const g = q < 0.3 ? 1 - ease(q / 0.3) : q > 0.72 ? ease((q - 0.72) / 0.28) : 0;
-        if (Math.abs(g - globeVal.current) > 0.0005) {
-          globeVal.current = g; dirty = true;
-          gw.style.setProperty('--g', g.toFixed(4));
-          if (g > 0.03) { glRef.current?.setMouse(null, null); glRef.current?.hover(-1); stage.classList.remove('dg-pick'); }
-        }
-      }
-      if (!down && now < scrollingUntil && globeVal.current <= 0 && Math.abs(p.vx) < 0.05 && Math.abs(p.vy) < 0.05) { if (dirty) { dirty = false; draw(); } return; }
+      if (!down && now < scrollingUntil && Math.abs(p.vx) < 0.05 && Math.abs(p.vy) < 0.05) { if (dirty) { dirty = false; draw(); } return; }
       if (!down) {
         if (Math.abs(p.vx) > 0.05 || Math.abs(p.vy) > 0.05) {
           p.ox += p.vx * dt; p.oy += p.vy * dt;
@@ -331,8 +315,6 @@ export default function DesignGallery({ fullscreen = false }: { fullscreen?: boo
         </div>
 
         {view === 'grid' && (
-          <div className="dg-globe" ref={globeRef}>
-          <div className="dg-globe-pin">
           <div className={`dg-stage dg-${mode}`} ref={stageRef} tabIndex={0} role="region" aria-label="Design gallery. Drag or use the arrow keys to move around." data-lenis-prevent="">
             <canvas ref={canvasRef} className="dg-canvas" aria-hidden="true" />
             {mode === 'dom' && (
@@ -350,8 +332,6 @@ export default function DesignGallery({ fullscreen = false }: { fullscreen?: boo
                 <li key={d.title}><button type="button" onClick={() => setOpen(d)}>Open {d.title}, {d.client}, {d.year}</button></li>
               ))}
             </ul>
-          </div>
-          </div>
           </div>
         )}
 

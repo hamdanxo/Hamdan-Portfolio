@@ -774,3 +774,24 @@ html body .page{background:
   .ab3-facts dd{font-size:1.9cqw}
   .ab3-rin{transform:none!important}
 }
+
+/* Card follows the mouse: bring back the moving shine */
+.sheen{display:block!important;opacity:.55!important}
+.flip-box{transition:transform .15s linear}
+
+/* About: a blinking red typing cursor after the last word written */
+.ab3-w.on:has(+ .ab3-w:not(.on))::after{content:"";display:inline-block;width:.14em;height:1.1em;margin-left:.05em;vertical-align:-.15em;background:var(--rd);box-shadow:0 0 8px rgba(223,37,49,.7);animation:caret .9s steps(1) infinite}
+@keyframes caret{50%{opacity:0}}
+
+/* Timeline: the line glows harder, and each dot pulses with a ring when the line reaches it */
+.jr-fill{filter:drop-shadow(0 0 6px rgba(223,37,49,.8)) drop-shadow(0 0 16px rgba(223,37,49,.4))}
+
+.jr-item.on .jr-dot{animation:jrPulse 1s cubic-bezier(.2,.75,.2,1) 1}
+.jr-item.on .jr-dot::after{content:"";position:absolute;inset:-2px;border-radius:50%;border:1px solid var(--rd);animation:jrRing 1.2s cubic-bezier(.2,.75,.2,1) 1 forwards;pointer-events:none}
+@keyframes jrPulse{0%{transform:scale(1)}35%{transform:scale(1.7)}100%{transform:scale(1)}}
+@keyframes jrRing{from{transform:scale(1);opacity:1}to{transform:scale(4.5);opacity:0}}
+
+/* Scroll line on the right (computers) and the red phone scroll bar */
+.sline{position:fixed;top:0;right:0;width:2px;height:100vh;z-index:90;pointer-events:none;background:rgba(255,255,255,.05)}
+.sline i{position:absolute;inset:0;display:block;background:linear-gradient(180deg,rgba(223,37,49,.4),#df2531);transform-origin:50% 0;transform:scaleY(0);box-shadow:0 0 10px rgba(223,37,49,.6)}
+.srail-thumb{background:rgba(223,37,49,.85)!important;box-shadow:0 0 12px rgba(223,37,49,.45)!important}

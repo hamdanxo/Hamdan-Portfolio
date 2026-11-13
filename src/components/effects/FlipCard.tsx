@@ -73,7 +73,8 @@ export default function FlipCard() {
       last = cur;
       // One transform write per frame; no CSS variables, so the card's children never restyle.
       const fy = fine ? Math.sin(performance.now() / 1400) * 6 : 0;
-      inner.style.transform = `translate3d(0,${fy.toFixed(2)}px,0) rotateZ(-9deg) rotateX(${(16 - my * 9).toFixed(2)}deg) rotateY(${(cur * 540 + mx * 14).toFixed(2)}deg)`;
+      inner.style.transform = `translate3d(0,${fy.toFixed(2)}px,0) rotateZ(-9deg) rotateX(${(16 - my * 16).toFixed(2)}deg) rotateY(${(cur * 540 + mx * 24).toFixed(2)}deg)`;
+      if (fine) box.style.transform = `translate3d(${(mx * 10).toFixed(1)}px,${(my * 8).toFixed(1)}px,0)`;
       if (fine) {
         const sh = `${(100 - ((cur * 3) % 1) * 100 - mx * 28).toFixed(1)}% 0`;
         for (const el of sheens) el.style.backgroundPosition = sh;

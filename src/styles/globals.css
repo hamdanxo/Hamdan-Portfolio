@@ -573,124 +573,69 @@ html.hero-stack .wv-scrim{background:radial-gradient(90% 34% at 30% 20%,rgba(3,2
 @media (hover:none),(pointer:coarse){.cursor-light{display:none}}
 
 /* =====================================================================
-   Light "ice" theme: frosted blue-grey background, dark navy text,
-   frosted white glass panels. Applies to every page.
+   Red, white and black theme (#df2531). Black page, white text, red accents.
+   The About monitor keeps its own light screen and purple.
    ===================================================================== */
-:root{--ink:#0E1620;--ink2:#4F6070;--ice:#DCE4EC}
-html,body{background:#DCE4EC!important;color:var(--ink)}
+:root{--rd:#df2531;--rd65:rgba(223,37,49,.65);--rd45:rgba(223,37,49,.45);--rdl:rgba(223,37,49,.14);--pu:#5B3FD0}
+html,body{background:#000!important;color:#fff}
 .page::before,.page::after{content:none!important;display:none!important}
-html body .page{color:var(--ink);background:
-  radial-gradient(40% 30% at 70% 12%,rgba(255,255,255,.95),transparent 70%),
-  radial-gradient(50% 35% at 15% 40%,rgba(160,184,206,.55),transparent 70%),
-  radial-gradient(45% 30% at 85% 70%,rgba(140,166,192,.5),transparent 70%),
-  linear-gradient(180deg,#E8EEF3 0%,#CFDAE4 50%,#DCE4EC 100%)!important;
+html body .page{color:#fff;background:
+  radial-gradient(60% 34% at 50% 0%,rgba(223,37,49,.22),transparent 70%),
+  radial-gradient(42% 30% at 92% 38%,rgba(223,37,49,.16),transparent 70%),
+  radial-gradient(42% 30% at 6% 72%,rgba(140,18,26,.22),transparent 70%),
+  linear-gradient(180deg,#050303 0%,#000 40%,#0a0304 100%)!important;
   background-size:100% 1800px!important;background-repeat:repeat-y!important}
 
-/* Text */
-html body .page *:not(#_a):not(#_b):not(.flip-card):not(.flip-card *):not(.pj-photo:not(.pj-desk) *){color:var(--ink)!important;-webkit-text-fill-color:currentColor!important;text-shadow:none!important}
-html body .page :is(.cat-desc,.wk-sub,.hx-roles,.cs-kicker,dt,small,.mono,.jr-note,.jr-when,.pj-sub,.cat-count):not(#_a):not(#_b):not(#_c):not(.flip-card *){color:var(--ink2)!important}
-html body .page .pj-photo:not(.pj-desk) *:not(#_a):not(#_b):not(#_c){color:#fff!important}
-html body .page .wordmark{background:linear-gradient(180deg,rgba(14,22,32,.9),rgba(14,22,32,.15) 90%)!important;-webkit-background-clip:text!important;background-clip:text!important;-webkit-text-fill-color:transparent!important}
+/* Hero: one faint ring, a red glow behind the hand, small plus marks */
+.ice-deco{position:absolute;z-index:0;pointer-events:none}
+.ice-ring{left:30%;top:-40%;width:90vw;height:90vw;border:1px solid rgba(255,255,255,.08);border-radius:50%}
+.ice-orb{left:44%;top:12%;width:44vw;height:44vw;border-radius:50%;filter:blur(40px);
+  background:radial-gradient(circle at 50% 50%,rgba(223,37,49,.55) 0%,rgba(223,37,49,.22) 40%,rgba(120,10,20,0) 70%)}
+.ice-plus{width:14px;height:14px;opacity:.45;background:linear-gradient(#fff,#fff) 50%/1px 100% no-repeat,linear-gradient(#fff,#fff) 50%/100% 1px no-repeat}
+.ice-p1{left:3%;top:88%}.ice-p2{right:3%;top:14%}.ice-p3{right:3%;top:88%}
+html.hero-stack .ice-orb{left:10%;top:42%;width:90vw;height:90vw}
+html.hero-stack .ice-ring{left:-20%;top:-30%;width:160vw;height:160vw}
 
-/* Frosted glass panels instead of dark ones */
-html body .page :is(.glass,article.pj,.pj-img.pj-big:not(.pj-photo),.pj-soon,.flow,.flow>div,.wid-grid,.sk-grid,.sk-grid li,#contactBand,.ct,article.cs,.browser-bar,#contactCard,.node,.draft){
-  background:rgba(255,255,255,.42)!important;border-color:rgba(255,255,255,.8)!important;box-shadow:0 30px 60px -34px rgba(40,70,100,.35)!important}
-html body .page .glass::before{display:none!important}
-html body .page .pj-desk{background:radial-gradient(90% 80% at 50% 35%,#F4F7FA,#C9D5E0)!important}
-html body .page .pj-desk .pj-dim{display:none!important}
-html body .page .pj-desk .pj-cat{background:none!important}
-html body .page :is(.chip,.pj-link,.bk-btn,.cs-links a,.hx-links a){border-color:rgba(14,22,32,.25)!important}
-.site-header,.site-header.scrolled,header.glass{background:rgba(240,245,249,.7)!important;border-color:rgba(255,255,255,.8)!important;-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px)}
-.site-header *{color:var(--ink)!important}
+/* Accent text */
+html body .page :is(p.mono.s-f0b806,.jr-label,.ct-label,.wk-label,.cl-label,.cs-kicker,.pj-client,.node-k,.cs-block h4,.cs-steps span):not(#_a):not(#_b):not(#_c):not(#_d){color:var(--rd)!important}
+html body .page :is(.hx-name em,.hx-name .serif,.s-f032f1):not(#_a):not(#_b):not(#_c):not(#_d){color:var(--rd)!important;-webkit-text-fill-color:var(--rd)!important}
+html body .page :is(.hx-links a,.see-all,.cs-links a):not(#_a):not(#_b):not(#_c):not(#_d){color:#fff!important;border-color:var(--rd)!important;text-decoration-color:var(--rd)!important}
+
+/* Panels: black with a faint red edge */
+html body .page :is(.glass,article.cs,#contactCard,.ct):not(#_a):not(#_b){background:linear-gradient(160deg,rgba(28,8,10,.85),rgba(6,2,3,.9))!important;border-color:rgba(223,37,49,.22)!important;box-shadow:0 40px 80px -40px rgba(223,37,49,.35)!important}
+html body .page article.pj:not(#_a):not(#_b){background:linear-gradient(160deg,#170607 0%,#050203 100%)!important;border-color:rgba(223,37,49,.25)!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+html body .page .glass::before{background:linear-gradient(140deg,rgba(255,255,255,.18),rgba(255,255,255,.03) 40%,rgba(223,37,49,0) 60%,rgba(223,37,49,.55))!important}
+html body .page :is(article.pj,article.cs,.dg-tile):hover{border-color:var(--rd65)!important}
+
+/* Buttons */
+html body .page :is(.pj-link,.chip,.dv-btn,.bk-btn):not(#_a):not(#_b):not(#_c){border-color:var(--rd45)!important}
+html body .page :is(.pj-link,.chip):hover{background:var(--rdl)!important;border-color:var(--rd)!important}
+html body .page .cta.mail:not(#_a):not(#_b):not(#_c){background:var(--rd)!important;border-color:var(--rd)!important}
+html body .page .cta.mail *:not(#_a):not(#_b):not(#_c):not(#_d){color:#fff!important}
+.nav-cta{border-color:var(--rd65)!important}
+.nav-cta:hover{background:var(--rdl)!important}
+header nav a:not(:last-child)::after{background:var(--rd)!important}
+.site-header.scrolled,header.glass{background:rgba(0,0,0,.72)!important;border-color:rgba(223,37,49,.18)!important}
 
 /* Timeline */
-.jr-line{background:rgba(14,22,32,.12)!important}
-.jr-fill{background:linear-gradient(90deg,rgba(40,70,120,0) 0%,rgba(40,70,120,.5) 30%,#2E4A78 72%,#0E1620 100%)!important;box-shadow:none!important}
-.jr-dot{background:#E8EEF3!important;border-color:rgba(14,22,32,.35)!important}
-.jr-item.on .jr-dot,.on .jr-dot{background:#0E1620!important;border-color:#0E1620!important;box-shadow:0 0 0 6px rgba(14,22,32,.08)!important}
+.jr-fill{background:linear-gradient(90deg,rgba(223,37,49,0) 0%,rgba(223,37,49,.6) 30%,#df2531 72%,#ff8a90 93%,#fff 100%)!important;box-shadow:0 0 12px rgba(223,37,49,.55)!important}
+.jr-item.on .jr-dot,.on .jr-dot{background:var(--rd)!important;border-color:var(--rd)!important;box-shadow:0 0 0 6px rgba(223,37,49,.15),0 0 16px rgba(223,37,49,.6)!important}
 
-/* Design page */
-.dg-stage{background:transparent!important;border-color:rgba(255,255,255,.6)!important}
-.dg-vig{background:linear-gradient(180deg,rgba(220,228,236,.9),transparent 10%,transparent 90%,rgba(220,228,236,.9))!important}
+/* Intro, cursor, scrollbar, selection */
+#intro{background:radial-gradient(70% 60% at 50% 45%,#1a0507 0%,#000 75%)!important;color:#fff!important}
+.intro-q em{color:var(--rd)!important}
+.intro-line{background:linear-gradient(90deg,transparent,var(--rd),transparent)!important}
+.cur{border-color:rgba(223,37,49,.7)!important;background:radial-gradient(circle,rgba(223,37,49,.15),transparent 70%)!important}
+html{scrollbar-color:rgba(223,37,49,.6) #000}
+::-webkit-scrollbar-track{background:#000!important}
+::-webkit-scrollbar-thumb{background:#7a141b!important;border-color:#000!important}
+::selection{background:rgba(223,37,49,.4)!important;color:#fff!important}
+html body .page .wordmark{background:linear-gradient(180deg,rgba(223,37,49,.55),rgba(223,37,49,0) 85%)!important;-webkit-background-clip:text!important;background-clip:text!important;-webkit-text-fill-color:transparent!important}
+.palm-glow{opacity:.35!important;filter:hue-rotate(140deg)}
 
-/* Intro, cursor, scrollbar */
-#intro{background:radial-gradient(70% 60% at 50% 45%,#F2F6F9 0%,#D3DEE8 75%)!important;color:var(--ink)!important}
-.intro-q em{color:#2E4A78!important}
-.intro-line{background:linear-gradient(90deg,transparent,#0E1620,transparent)!important}
-.cur{border-color:rgba(14,22,32,.45)!important;background:radial-gradient(circle,rgba(14,22,32,.08),transparent 70%)!important;mix-blend-mode:normal!important}
-html{scrollbar-color:rgba(14,22,32,.4) transparent}
-::-webkit-scrollbar-track{background:#DCE4EC!important}
-::-webkit-scrollbar-thumb{background:#8A9AAA!important;border-color:#DCE4EC!important}
-::selection{background:rgba(46,74,120,.25)!important;color:var(--ink)!important}
-.palm-glow{opacity:.2!important}
-
-/* Hero: soft glass sphere, one thin circle line, small plus marks */
-.ice-deco{position:absolute;z-index:0;pointer-events:none}
-.ice-ring{left:30%;top:-40%;width:90vw;height:90vw;border:1px solid rgba(255,255,255,.85);border-radius:50%}
-.ice-orb{left:42%;top:8%;width:46vw;height:46vw;border-radius:50%;filter:blur(6px);
-  background:radial-gradient(circle at 35% 30%,#fff 0%,rgba(230,238,245,.9) 25%,rgba(150,176,200,.55) 60%,rgba(120,150,180,0) 75%)}
-.ice-plus{width:14px;height:14px;opacity:.6;background:linear-gradient(#5d6f80,#5d6f80) 50%/1px 100% no-repeat,linear-gradient(#5d6f80,#5d6f80) 50%/100% 1px no-repeat}
-.ice-p1{left:3%;top:88%}.ice-p2{right:3%;top:14%}.ice-p3{right:3%;top:88%}
-html.hero-stack .ice-orb{left:20%;top:40%;width:110vw;height:110vw}
-html.hero-stack .ice-ring{left:-20%;top:-30%;width:160vw;height:160vw}
-html body .page .dg-tile{background:#F3F6F9!important;border-color:rgba(14,22,32,.08)!important}
-html body .page .dg-tile:hover{background:#FFFFFF!important;border-color:rgba(46,74,120,.35)!important}
-html body .page .dg-tile .r span:not(#_a):not(#_b):not(#_c){color:#4F6070!important}
-html body .page .dg-tile .r span:first-child:not(#_a):not(#_b):not(#_c){color:#0E1620!important}
-html body .page .dg-tags i{background:rgba(14,22,32,.05)!important;border-color:rgba(14,22,32,.1)!important}
-html body .page .dg-art.dg-wide{background:radial-gradient(90% 80% at 50% 45%,#F4F7FA,#C9D5E0)!important}
-/* Stacking project cards must be solid, or the card underneath shows through */
-html body .page article.pj:not(#_a):not(#_b){background:linear-gradient(160deg,#F5F8FA 0%,#E6EDF3 100%)!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
-html body .page :is(.draft>div,.draft-btn):not(#_a):not(#_b){background:rgba(255,255,255,.75)!important;border-color:rgba(14,22,32,.1)!important}
-/* Skills lists: plain rows with thin dividers, no boxes */
-html body .page .sk-grid li:not(#_a):not(#_b){background:transparent!important;box-shadow:none!important;border-color:rgba(14,22,32,.1)!important}
-
-/* ---------- Purple accents (matches the business card) ---------- */
-:root{--pu:#5B3FD0;--pu2:#7E62E8;--pul:rgba(110,80,220,.14)}
-/* a little lilac light in the background */
-html body .page{background:
-  radial-gradient(40% 30% at 70% 12%,rgba(255,255,255,.95),transparent 70%),
-  radial-gradient(45% 32% at 88% 34%,rgba(150,120,235,.28),transparent 70%),
-  radial-gradient(50% 35% at 12% 44%,rgba(160,184,206,.55),transparent 70%),
-  radial-gradient(42% 30% at 30% 78%,rgba(140,110,230,.22),transparent 70%),
-  radial-gradient(45% 30% at 85% 70%,rgba(140,166,192,.5),transparent 70%),
-  linear-gradient(180deg,#E8EEF3 0%,#D3D8EA 50%,#DCE2EE 100%)!important;
-  background-size:100% 1800px!important;background-repeat:repeat-y!important}
-.ice-orb{background:radial-gradient(circle at 35% 30%,#fff 0%,rgba(236,232,250,.9) 25%,rgba(160,145,220,.5) 60%,rgba(130,110,210,0) 75%)!important}
-
-/* small section labels, numbers, kickers */
-html body .page :is(p.mono.s-f0b806,.jr-label,.ct-label,.wk-label,.cl-label,.cs-kicker,.pj-client,.node-k,.cs-block h4,.cs-steps span,.pj-num):not(#_a):not(#_b):not(#_c):not(#_d){color:var(--pu)!important}
-html body .page .pj-num:not(#_a):not(#_b):not(#_c):not(#_d){-webkit-text-fill-color:var(--pu)!important;background:none!important}
-html body .page .hx-name em:not(#_a):not(#_b):not(#_c):not(#_d),html body .page .hx-name .serif:not(#_a):not(#_b):not(#_c):not(#_d){color:var(--pu)!important}
-
-/* links and buttons */
-html body .page :is(.hx-links a,.see-all,.cs-links a):not(#_a):not(#_b):not(#_c):not(#_d){color:var(--pu)!important;border-color:var(--pu)!important;text-decoration-color:var(--pu)!important}
-html body .page :is(.pj-link,.chip,.dv-btn,.bk-btn):not(#_a):not(#_b):not(#_c){border-color:rgba(91,63,208,.35)!important}
-html body .page .pj-link:not(#_a):not(#_b):not(#_c):not(#_d),html body .page .pj-link *:not(#_a):not(#_b):not(#_c):not(#_d){color:var(--pu)!important}
-html body .page :is(.pj-link,.chip):hover{background:var(--pul)!important;border-color:var(--pu)!important}
-html body .page .cta.mail:not(#_a):not(#_b):not(#_c){background:var(--pu)!important;border-color:var(--pu)!important}
-html body .page .cta.mail *:not(#_a):not(#_b):not(#_c):not(#_d){color:#fff!important}
-.nav-cta{border-color:rgba(91,63,208,.45)!important}
-.nav-cta:hover{background:var(--pul)!important}
-header nav a:not(:last-child)::after{background:linear-gradient(90deg,var(--pu),var(--pu2))!important}
-.site-header .nl.on,.site-header a[aria-current]{color:var(--pu)!important}
-
-/* cards: purple edge on hover */
-html body .page :is(article.pj,article.cs,.dg-tile):hover{border-color:rgba(91,63,208,.35)!important}
-
-/* timeline in purple */
-.jr-fill{background:linear-gradient(90deg,rgba(91,63,208,0) 0%,rgba(91,63,208,.5) 30%,#5B3FD0 72%,#7E62E8 100%)!important;box-shadow:0 0 10px rgba(110,80,220,.35)!important}
-.jr-item.on .jr-dot,.on .jr-dot{background:var(--pu)!important;border-color:var(--pu)!important;box-shadow:0 0 0 6px rgba(91,63,208,.12)!important}
-
-/* intro, cursor, scrollbar, selection */
-.intro-q em{color:var(--pu)!important}
-.intro-line{background:linear-gradient(90deg,transparent,var(--pu),transparent)!important}
-.cur{border-color:rgba(91,63,208,.55)!important;background:radial-gradient(circle,rgba(91,63,208,.10),transparent 70%)!important}
-::-webkit-scrollbar-thumb{background:#9C8BE0!important}
-html{scrollbar-color:rgba(91,63,208,.5) transparent}
-::selection{background:rgba(91,63,208,.22)!important}
-html body .page .wordmark{background:linear-gradient(180deg,#2A1E6E,rgba(91,63,208,.15) 90%)!important;-webkit-background-clip:text!important;background-clip:text!important}
-
+/* About monitor keeps its light screen: dark text inside it */
+html body .page .ab3-screen *:not(#_a):not(#_b):not(#_c){color:#0E1620}
+.ab3-arc{border-color:rgba(255,255,255,.08)!important}
 /* ---------- About on a screen ---------- */
 .ab3{position:relative;height:330vh}
 .ab3-pin{position:sticky;top:0;height:100vh;display:flex;align-items:center;justify-content:center;overflow:hidden;padding-top:40px}

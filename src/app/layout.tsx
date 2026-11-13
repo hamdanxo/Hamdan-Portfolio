@@ -22,7 +22,7 @@ const introScript = "try{if(localStorage.getItem('mh-intro'))document.documentEl
 const introHtml = '<p class="intro-q"><span>Ideas,</span> <span>made</span> <em>visible.</em></p><i class="intro-line"></i>';
 
 export const viewport: Viewport = {
-  themeColor: '#DCE4EC',
+  themeColor: '#060708',
   colorScheme: 'dark',
 };
 

@@ -19,7 +19,7 @@ export default function Hero() {
 </div>
 </div>
 <div className="flip-box" id="flipBox" suppressHydrationWarning>
-<Image className="hand" src={hand} alt="" aria-hidden="true" priority fetchPriority="high" sizes="(max-width: 900px) 140vw, 64vw" />
+<Image quality={92} className="hand" src={hand} alt="" aria-hidden="true" priority fetchPriority="high" sizes="(max-width: 900px) 140vw, 64vw" />
 <div className="palm-glow" aria-hidden="true"></div>
 <div className="flip-card" id="flipCard" suppressHydrationWarning>
 <div className="flip-inner" id="flipInner">

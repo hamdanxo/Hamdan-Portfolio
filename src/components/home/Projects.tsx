@@ -40,13 +40,13 @@ export default function Projects() {
 <div className="pj-img pj-big pj-photo pj-desk">
 <div className="pj-plane" aria-hidden="true">
 {DESK.map((d) => (
-<div className={`bk bk-${d.k}`} key={d.k}><Image src={d.src} alt="" fill sizes="(max-width: 900px) 30vw, 16vw" /></div>
+<div className={`bk bk-${d.k}`} key={d.k}><Image quality={92} src={d.src} alt="" fill sizes="(max-width: 900px) 30vw, 16vw" /></div>
 ))}
 </div>
 <span className="pj-cat"><em>{countLabel('profile')}</em>Company Profiles and Catalogues</span>
 </div>
-<div className="pj-img pj-photo"><Image src="/designs/fuga-shock/01.webp" alt="Fuga-Shock launch ad for Lapiz Blue" fill sizes="(max-width: 900px) 46vw, 30vw" /><span className="pj-cat"><em>{countLabel('ad')}</em>Ad Creatives</span></div>
-<div className="pj-img pj-photo"><Image src="/designs/stone-collections/01.webp" alt="Stone Collections post for Global Classic" fill sizes="(max-width: 900px) 46vw, 30vw" /><span className="pj-cat"><em>{countLabel('social')}</em>Social Media</span></div>
+<div className="pj-img pj-photo"><Image quality={92} src="/designs/fuga-shock/01.webp" alt="Fuga-Shock launch ad for Lapiz Blue" fill sizes="(max-width: 900px) 46vw, 30vw" /><span className="pj-cat"><em>{countLabel('ad')}</em>Ad Creatives</span></div>
+<div className="pj-img pj-photo"><Image quality={92} src="/designs/stone-collections/01.webp" alt="Stone Collections post for Global Classic" fill sizes="(max-width: 900px) 46vw, 30vw" /><span className="pj-cat"><em>{countLabel('social')}</em>Social Media</span></div>
 </a>
 <span className="pj-dim" aria-hidden="true" />
 </article>
@@ -56,7 +56,7 @@ export default function Projects() {
 <a className="pj-link" href="https://castedluxe.com" target="_blank" rel="noopener noreferrer">Visit site <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M7 17 17 7" /><path d="M8 7h9v9" /></svg></a>
 </div>
 <a className="pj-grid" data-cursor="view" href="https://castedluxe.com" target="_blank" rel="noopener noreferrer" aria-label="Open the Casted Luxe website">
-<div className="pj-img pj-big"><Image src={siteShot} alt="Casted Luxe website home page" sizes="(max-width: 900px) 92vw, 62vw" /></div>
+<div className="pj-img pj-big"><Image quality={92} src={siteShot} alt="Casted Luxe website home page" sizes="(max-width: 900px) 92vw, 62vw" /></div>
 <div className="pj-img pj-soon">Next site</div>
 <div className="pj-img pj-soon">Next site</div>
 </a>

@@ -19,7 +19,7 @@ export default function Websites() {
 <div className="cs-body">
 <div className="cs-visual"><div className="browser">
 <div className="browser-bar"><i></i><i></i><i></i><span>castedluxe.com</span></div>
-<Image src={castedShot} alt="Casted Luxe home page: Eternally Yours over a white relief artwork of birds and flowers" sizes="(max-width: 900px) 92vw, 58vw" />
+<Image quality={92} src={castedShot} alt="Casted Luxe home page: Eternally Yours over a white relief artwork of birds and flowers" sizes="(max-width: 900px) 92vw, 58vw" />
 </div></div>
 <div className="cs-text">
 <div className="cs-block"><h4>Overview</h4><p>The website for Casted Luxe by Ashrat, a Dubai atelier making custom resin art, Arabic calligraphy and luxury wall art. Built to feel like the pieces themselves: calm, handmade and high end.</p></div>

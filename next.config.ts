@@ -3,7 +3,7 @@ import type { NextConfig } from 'next';
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
-  images: { formats: ['image/avif', 'image/webp'] },
+  images: { formats: ['image/avif', 'image/webp'], qualities: [75, 92] },
   async redirects() {
     return [
       { source: '/index.html', destination: '/', permanent: true },

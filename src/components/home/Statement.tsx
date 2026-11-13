@@ -8,8 +8,10 @@ export default function Statement() {
   return (
     <section className="stmt" id="statement" aria-label="What I do">
       <div className="stmt-pin">
-        <i className="stmt-glow" aria-hidden="true" />
-        <i className="stmt-ring" aria-hidden="true" />
+        <div className="stmt-fx" aria-hidden="true">
+          <i className="stmt-glow" />
+          <i className="stmt-ring" />
+        </div>
         <p className="mono stmt-k"><span className="stmt-n">00</span> / What I do</p>
         <p className="stmt-text">
           {text.split(' ').map((w, i) => (

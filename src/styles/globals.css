@@ -760,3 +760,17 @@ html body .page{background:
   radial-gradient(34% 18% at 92% 55%,rgba(223,37,49,.12),transparent 100%),
   radial-gradient(34% 18% at 8% 78%,rgba(140,18,26,.16),transparent 100%),
   #030102!important;background-size:100% 1800px!important;background-repeat:repeat-y!important}
+/* Hero fades out at the bottom instead of cutting the hand and glow off in a straight line */
+.flip-pin{-webkit-mask-image:linear-gradient(180deg,#000 0%,#000 86%,transparent 100%);mask-image:linear-gradient(180deg,#000 0%,#000 86%,transparent 100%)}
+/* Computer screen: text sizes follow the screen's own width, so everything always fits on any monitor size */
+@media (min-width:761px){
+  .ab3-screen{container-type:inline-size}
+  .ab3-r{padding:4.5cqw 4.5cqw 4.5cqw 4cqw;gap:1.1cqw}
+  .ab3-k{font-size:.85cqw!important}
+  .ab3-h{font-size:4.4cqw}
+  .ab3-p{font-size:1.42cqw}
+  .ab3-facts{gap:1.3cqw}
+  html body .page .ab3-facts dt:not(#_a):not(#_b):not(#_c):not(#_d){font-size:.85cqw}
+  .ab3-facts dd{font-size:1.9cqw}
+  .ab3-rin{transform:none!important}
+}

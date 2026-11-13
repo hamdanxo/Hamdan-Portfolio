@@ -24,7 +24,11 @@ uniform vec2 uMouse;    // pointer in stage px, centred; far away when not hover
 uniform float uBend;    // curvature strength
 uniform float uCam;     // camera distance (px), to match hover to the projected tile
 uniform float uHoverT;  // seconds since the pointer reached a new card
+uniform float uGlobe;   // 0 = flat curved wall, 1 = small spinning globe
+uniform float uGlobeD;  // globe diameter on screen (px)
 varying vec2 vUv;
+varying float vFront;
+varying float vPole;
 varying vec2 vCell;
 varying float vHover;
 varying float vEdge;
@@ -45,7 +49,16 @@ void main() {
   vUv = uv;
   vCell = aCell;
   vEdge = clamp(length(n * vec2(0.75, 0.85)), 0.0, 1.6);
-  gl_Position = projectionMatrix * modelViewMatrix * vec4(p.x, -p.y, z, 1.0);
+  // Globe: wrap the whole band around a sphere, then shrink it to uGlobeD.
+  float R = uSpan.x / 6.2831853;
+  float lon = p.x / R;
+  float lat = clamp(p.y / R, -1.5, 1.5);
+  float S = uGlobeD / (2.0 * R);
+  vec3 sp = vec3(R * sin(lon) * cos(lat), -R * sin(lat), R * cos(lon) * cos(lat) - R) * S;
+  vFront = cos(lon) * cos(lat);
+  vPole = abs(p.y / R);
+  vec3 wall = vec3(p.x, -p.y, z);
+  gl_Position = projectionMatrix * modelViewMatrix * vec4(mix(wall, sp, uGlobe), 1.0);
 }`;
 
 const fragment = /* glsl */ `
@@ -55,6 +68,9 @@ varying vec2 vUv;
 varying vec2 vCell;
 varying float vHover;
 varying float vEdge;
+varying float vFront;
+varying float vPole;
+uniform float uGlobe;
 
 void main() {
   vec2 uv = (vCell + vec2(vUv.x, 1.0 - vUv.y)) / uGrid;
@@ -64,7 +80,12 @@ void main() {
   float border = 1.0 - step(0.006, min(e.x, e.y * 0.83));
   col.rgb += vHover * (0.05 + border * vec3(0.24, 0.42, 0.66));
   // soft edge fade, like the CSS vignette
-  col.rgb *= 1.0 - smoothstep(0.85, 1.45, vEdge) * 0.55;
+  col.rgb *= 1.0 - smoothstep(0.85, 1.45, vEdge) * 0.55 * (1.0 - uGlobe);
+  // Globe: hide the far side and the crowded poles, shade towards the rim so it reads as a ball.
+  float vis = mix(1.0, smoothstep(-0.02, 0.22, vFront) * (1.0 - smoothstep(1.15, 1.45, vPole)), uGlobe);
+  if (vis < 0.01) discard;
+  col.rgb *= mix(1.0, 0.25 + 0.75 * clamp(vFront, 0.0, 1.0), uGlobe);
+  col.a *= vis;
   gl_FragColor = col;
 }`;
 
@@ -72,6 +93,8 @@ export type GalleryGL = {
   /** True when WebGL runs in software (no GPU): animate only while the user interacts. */
   software: boolean;
   setOffset: (x: number, y: number) => void;
+  /** 0 = full-screen wall, 1 = small globe. */
+  setGlobe: (g: number) => void;
   setMouse: (x: number | null, y: number | null) => void;
   /** Which design (index into the list) is under this stage point, or -1. */
   pick: (x: number, y: number) => number;
@@ -124,6 +147,8 @@ export function createGalleryGL(
     uAtlas: { value: texture },
     uGrid: { value: new Vector2(atlas.cols, atlas.rows) },
     uHoverT: { value: 99 },
+    uGlobe: { value: 0 },
+    uGlobeD: { value: 500 },
   };
   let hoverStart = -1e9, hovered = -1;
   const material = new ShaderMaterial({ vertexShader: vertex, fragmentShader: fragment, uniforms, transparent: true, depthTest: false, depthWrite: false });
@@ -154,6 +179,7 @@ export function createGalleryGL(
     uniforms.uSpan.value.set(cols * (W + G), rows * (H + G));
     uniforms.uView.value.set(sw, sh);
     uniforms.uBend.value = sw < 700 ? 110 : 150;
+    uniforms.uGlobeD.value = Math.min(sw * 0.86, sh * 0.72);
   };
 
   const resize = () => {
@@ -176,11 +202,13 @@ export function createGalleryGL(
   return {
     software,
     setOffset: (x, y) => uniforms.uOffset.value.set(x, y),
+    setGlobe: (g) => { uniforms.uGlobe.value = g; },
     setMouse: (x, y) => {
       if (x === null || y === null) uniforms.uMouse.value.set(1e6, 1e6);
       else uniforms.uMouse.value.set(x - canvas.clientWidth / 2, y - canvas.clientHeight / 2);
     },
     pick: (x, y) => {
+      if (uniforms.uGlobe.value > 0.03) return -1;
       // Same maths as the vertex shader: wrap, sink into the bowl, then project.
       const mx = x - canvas.clientWidth / 2, my = y - canvas.clientHeight / 2;
       const sx = uniforms.uSpan.value.x, sy = uniforms.uSpan.value.y;

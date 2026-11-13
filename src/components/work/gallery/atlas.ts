@@ -130,9 +130,9 @@ export async function buildAtlas(items: Design[], images: (HTMLImageElement | nu
     ctx.scale(cw / W, ch / H);
 
     // card
-    ctx.fillStyle = '#0A0B0C';
+    ctx.fillStyle = '#16060A';
     ctx.fillRect(0, 0, W, H);
-    ctx.strokeStyle = 'rgba(255,255,255,0.08)';
+    ctx.strokeStyle = 'rgba(223,37,49,0.22)';
     ctx.lineWidth = 1;
     ctx.strokeRect(0.5, 0.5, W - 1, H - 1);
 
@@ -156,8 +156,8 @@ export async function buildAtlas(items: Design[], images: (HTMLImageElement | nu
     if (img && img.naturalWidth > img.naturalHeight * 1.1) {
       // A landscape book or board in a tall tile: show the whole image, lying in the middle with a soft shadow.
       const bg = ctx.createRadialGradient(ax + aw / 2, top + ah * 0.45, 0, ax + aw / 2, top + ah * 0.45, ah * 0.8);
-      bg.addColorStop(0, '#18212B');
-      bg.addColorStop(1, '#07090C');
+      bg.addColorStop(0, '#3A0B12');
+      bg.addColorStop(1, '#0E0306');
       ctx.fillStyle = bg;
       ctx.fillRect(ax, top, aw, ah);
       const s = (aw * 0.88) / img.naturalWidth;
@@ -167,7 +167,7 @@ export async function buildAtlas(items: Design[], images: (HTMLImageElement | nu
       ctx.shadowColor = 'rgba(0,0,0,0.6)';
       ctx.shadowBlur = 22;
       ctx.shadowOffsetY = 12;
-      ctx.fillStyle = d.book ? '#B9BFC6' : '#0A0B0C';
+      ctx.fillStyle = d.book ? '#B9BFC6' : '#16060A';
       ctx.fillRect(x + (d.book ? 2 : 0), y + (d.book ? 2 : 0), iw, ih); // page edges under a book cover
       ctx.restore();
       ctx.drawImage(img, x, y, iw, ih);
@@ -194,9 +194,9 @@ export async function buildAtlas(items: Design[], images: (HTMLImageElement | nu
       const tw = ctx.measureText(t).width + 14;
       ctx.letterSpacing = '0px';
       roundRect(ctx, tx, by - 9, tw, 18, 2);
-      ctx.fillStyle = 'rgba(255,255,255,0.07)';
+      ctx.fillStyle = 'rgba(223,37,49,0.10)';
       ctx.fill();
-      ctx.strokeStyle = 'rgba(255,255,255,0.08)';
+      ctx.strokeStyle = 'rgba(223,37,49,0.25)';
       ctx.stroke();
       ctx.fillStyle = '#B4BCC4';
       letterSpaced(ctx, t, tx + 7, by + 0.5, 1, 'left');

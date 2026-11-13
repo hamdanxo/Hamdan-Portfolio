@@ -254,3 +254,13 @@ button.dg-row:last-child{border-bottom:0}
 @keyframes bvRise{from{opacity:0;transform:translate3d(0,34px,0) scale(.97)}to{opacity:1;transform:none}}
 @keyframes bvDrop{from{opacity:0;transform:translate3d(0,-46px,0)}to{opacity:1;transform:none}}
 @media (prefers-reduced-motion:reduce){.bv-slide.go .bv-bg,.bv-slide.go .bv-l{animation:bvFade .2s both!important;animation-delay:0s!important}}
+
+/* ---------- Design gallery: dark red, and a globe that opens to full screen as you scroll ---------- */
+.dg-globe{position:relative;height:340vh;height:340svh}
+.dg-globe-pin{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden}
+.dg-full .dg-globe .dg-stage{height:100%;border:0;
+  background:radial-gradient(70% 60% at 50% 45%,rgba(70,10,18,calc(1 - var(--g,1))) 0%,rgba(10,2,4,calc(1 - var(--g,1))) 75%) transparent!important}
+.dg-globe .dg-vig{opacity:calc(1 - var(--g,1))}
+.dg-globe-pin::before{content:"";position:absolute;left:50%;top:50%;width:min(86vw,72vh);aspect-ratio:1;border-radius:50%;transform:translate(-50%,-50%) scale(calc(.6 + .4 * var(--g,1)));opacity:var(--g,1);pointer-events:none;
+  background:radial-gradient(circle,rgba(223,37,49,.38) 0%,rgba(223,37,49,.12) 45%,transparent 70%);filter:blur(30px)}
+.dg-vig{background:radial-gradient(ellipse at center,transparent 55%,rgba(10,2,4,.85) 100%)!important}

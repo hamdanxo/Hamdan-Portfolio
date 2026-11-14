@@ -3,9 +3,21 @@
 import { useEffect } from 'react';
 import { prefersReducedMotion, scrollAnim, type ScrollAnim } from '@/lib/motion';
 
-type Dust = { x: number; y: number; vx: number; vy: number; d: number; r: number; a: number; w: number; blue: boolean };
+/**
+ * Drives the pinned horizontal timeline: a sideways glide with a slow zoom, then the letters turn to dust.
+ *
+ * The dust is built from the real letters: when the dissolve starts, the visible text, the line and the dots
+ * are drawn into a hidden canvas and every lit pixel becomes a grain. The page text is then hidden and the
+ * canvas shows the same picture, so a sweep from left to right can lift the grains off one by one, exactly
+ * where each letter was, and blow them away.
+ */
+type Grain = { x: number; y: number; r: number; g: number; b: number; a: number; d: number; vx: number; vy: number; w: number; s: number };
+type Snap = { img: HTMLCanvasElement; live: HTMLCanvasElement; lc: CanvasRenderingContext2D; grains: Grain[]; spread: number; lastB: number };
 
-/** Drives the pinned horizontal timeline: sideways glide with a slow zoom, then a dissolve into rising dust. */
+const SWEEP = 0.62;   // share of the dissolve the sweep takes to cross the screen
+const JITTER = 0.07;  // how ragged the breaking edge is
+const LIFE = 0.34;    // how long each grain takes to blow away
+
 export default function JourneyMotion() {
   useEffect(() => {
     const sec = document.getElementById('journey');
@@ -26,81 +38,163 @@ export default function JourneyMotion() {
     const A = 0.8; // share of the scroll spent gliding; the rest is the dust
     const coarse = window.matchMedia('(pointer: coarse)').matches;
     let vw = 0, vh = 0, S = 0, dpr = 1, lastW = -1;
-    let dust: Dust[] | null = null;
+    let snap: Snap | null = null;
 
     const layout = () => {
       vw = pin.clientWidth; vh = pin.clientHeight;
-      // Spacing so the first screen shows only the first two stops.
       S = Math.round(vw < 700 ? vw * 0.46 : Math.min(Math.max(vw * 0.48, 300), 760));
       track.style.setProperty('--s', `${S}px`);
       track.style.width = `${S * n}px`;
-      // Scroll length grows with the line, plus room for the dust at the end.
       sec.style.height = `${Math.round(vh + (n - 1) * S * (coarse ? 1.25 : 1.5) + vh * 0.9)}px`;
-      dpr = Math.min(window.devicePixelRatio || 1, coarse ? 1 : 1.5);
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
       canvas.width = Math.round(vw * dpr); canvas.height = Math.round(vh * dpr);
       canvas.style.width = `${vw}px`; canvas.style.height = `${vh}px`;
-      dust = null;
+      snap = null;
     };
 
-    // Sample dust from whatever is on screen when the dissolve starts: the line, the dots and the text.
-    const makeDust = (): Dust[] => {
+    /** Draws what is on screen (text, line, dots) into a canvas, then turns its lit pixels into grains. */
+    const takeSnap = (): Snap => {
       const box = pin.getBoundingClientRect();
-      const out: Dust[] = [];
-      const total = coarse ? 650 : 1500;
-      const rects: DOMRect[] = [];
-      sec.querySelectorAll<HTMLElement>('.jr-when, .jr-name, .jr-note, .jr-dot, .jr-title, .jr-label').forEach((el) => {
-        const r = el.getBoundingClientRect();
-        if (r.right > box.left && r.left < box.right && r.bottom > box.top && r.top < box.bottom && r.width > 0) rects.push(r);
-      });
-      const line = track.querySelector<HTMLElement>('.jr-line')?.getBoundingClientRect();
-      const area = rects.reduce((s, r) => s + r.width * r.height, 0) || 1;
-      const add = (x: number, y: number, big: boolean) => {
-        out.push({
-          x: x - box.left, y: y - box.top,
-          vx: (Math.random() - 0.5) * 60, vy: -(vh * (0.25 + Math.random() * 0.55)),
-          d: Math.min(0.62, Math.max(0, ((x - box.left) / vw + 0.12) / 1.35 - 0.04 + Math.random() * 0.06)),
-          r: big ? 1.1 + Math.random() * 1.7 : 0.6 + Math.random() * 1.2,
-          a: 0.45 + Math.random() * 0.55, w: Math.random() * 6.28, blue: Math.random() < 0.35,
-        });
-      };
-      const lineCount = Math.round(total * 0.3);
-      if (line) for (let k = 0; k < lineCount; k++) add(box.left + Math.random() * vw, line.top + line.height / 2 + (Math.random() - 0.5) * 2, false);
-      for (const r of rects) {
-        const c = Math.round(((total - lineCount) * r.width * r.height) / area);
-        for (let k = 0; k < c; k++) add(r.left + Math.random() * r.width, r.top + Math.random() * r.height, true);
+      const img = document.createElement('canvas');
+      img.width = canvas.width; img.height = canvas.height;
+      const c = img.getContext('2d', { willReadFrequently: true })!;
+      c.setTransform(dpr, 0, 0, dpr, 0, 0);
+      const inView = (r: DOMRect) => r.right > box.left && r.left < box.right && r.bottom > box.top && r.top < box.bottom && r.width > 0;
+
+      // the line and its red fill
+      const lr = track.querySelector<HTMLElement>('.jr-line')?.getBoundingClientRect();
+      const fr = fill.getBoundingClientRect();
+      if (lr) {
+        c.fillStyle = 'rgba(238,241,243,.14)';
+        c.fillRect(lr.left - box.left, lr.top - box.top, lr.width, Math.max(1.5, lr.height));
+        const g = c.createLinearGradient(fr.left - box.left, 0, fr.right - box.left, 0);
+        g.addColorStop(0, 'rgba(223,37,49,0)'); g.addColorStop(0.3, 'rgba(223,37,49,.6)'); g.addColorStop(0.75, '#df2531'); g.addColorStop(1, '#ffd0d3');
+        c.fillStyle = g;
+        c.fillRect(fr.left - box.left, fr.top - box.top, fr.width, Math.max(2, fr.height));
       }
-      return out;
+      // the dots
+      sec.querySelectorAll<HTMLElement>('.jr-dot').forEach((d) => {
+        const r = d.getBoundingClientRect();
+        if (!inView(r)) return;
+        const cx = r.left - box.left + r.width / 2, cy = r.top - box.top + r.height / 2;
+        const g = c.createRadialGradient(cx, cy, 0, cx, cy, r.width * 1.8);
+        g.addColorStop(0, 'rgba(223,37,49,.55)'); g.addColorStop(1, 'rgba(223,37,49,0)');
+        c.fillStyle = g; c.beginPath(); c.arc(cx, cy, r.width * 1.8, 0, Math.PI * 2); c.fill();
+        c.fillStyle = '#df2531'; c.beginPath(); c.arc(cx, cy, r.width / 2, 0, Math.PI * 2); c.fill();
+      });
+      // the words, drawn word by word in their real font, colour and position
+      sec.querySelectorAll<HTMLElement>('.jr-label, .jr-title, .jr-when, .jr-name, .jr-note').forEach((el) => {
+        const cs = getComputedStyle(el);
+        if (cs.visibility === 'hidden' || Number(cs.opacity) < 0.05) return;
+        c.font = `${cs.fontStyle} ${cs.fontWeight} ${cs.fontSize} ${cs.fontFamily}`;
+        c.fillStyle = cs.color;
+        c.letterSpacing = cs.letterSpacing === 'normal' ? '0px' : cs.letterSpacing;
+        c.textBaseline = 'alphabetic';
+        const upper = cs.textTransform === 'uppercase';
+        const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
+        for (let t = walker.nextNode() as Text | null; t; t = walker.nextNode() as Text | null) {
+          const s = t.data;
+          const re = /\S+/g;
+          for (let m = re.exec(s); m; m = re.exec(s)) {
+            const range = document.createRange();
+            range.setStart(t, m.index); range.setEnd(t, m.index + m[0].length);
+            const r = range.getBoundingClientRect();
+            if (!inView(r)) continue;
+            const word = upper ? m[0].toUpperCase() : m[0];
+            const mt = c.measureText(word);
+            const sc = mt.width > 0 ? r.width / mt.width : 1; // the track is zoomed, so match the drawn size
+            const asc = mt.fontBoundingBoxAscent || parseFloat(cs.fontSize) * 0.8;
+            const desc = mt.fontBoundingBoxDescent || parseFloat(cs.fontSize) * 0.2;
+            const base = r.top - box.top + (r.height - (asc + desc) * sc) / 2 + asc * sc;
+            c.save();
+            c.translate(r.left - box.left, base);
+            c.scale(sc, sc);
+            c.fillText(word, 0, 0);
+            c.restore();
+          }
+        }
+      });
+
+      // every lit pixel (on a small grid) becomes a grain
+      const data = c.getImageData(0, 0, img.width, img.height).data;
+      const max = coarse ? 5000 : 14000;
+      let lit = 0;
+      for (let i = 3; i < data.length; i += 4 * 3) if (data[i] > 60) lit++;
+      const stepCss = Math.max(1.2, Math.sqrt((lit * 3) / max) / dpr * 1.05);
+      const step = Math.max(1, Math.round(stepCss * dpr));
+      const grains: Grain[] = [];
+      for (let py = 0; py < img.height; py += step) {
+        for (let px = 0; px < img.width; px += step) {
+          const k = (py * img.width + px) * 4;
+          const a = data[k + 3];
+          if (a < 60) continue;
+          const x = px / dpr, y = py / dpr;
+          grains.push({
+            x, y, r: data[k], g: data[k + 1], b: data[k + 2], a: a / 255,
+            d: (x / vw) * SWEEP + Math.random() * JITTER,
+            vx: 30 + Math.random() * 110,
+            vy: -(vh * (0.08 + Math.random() * 0.3)),
+            w: Math.random() * 6.28,
+            s: (step / dpr) * (0.8 + Math.random() * 0.6),
+          });
+        }
+      }
+      grains.sort((p, q) => p.d - q.d);
+      const live = document.createElement('canvas');
+      live.width = img.width; live.height = img.height;
+      const lc = live.getContext('2d')!;
+      lc.drawImage(img, 0, 0);
+      return { img, live, lc, grains, spread: step / dpr, lastB: 0 };
     };
 
     const drawDust = (b: number) => {
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      if (b <= 0) return;
+      if (!snap) snap = takeSnap();
+      const sn = snap;
+      // The picture of the text loses a tiny square for every grain that has lifted off, so the letters
+      // crumble exactly where the grains came from. Scrolling back up puts the picture back together.
+      const sp = Math.ceil(sn.spread * dpr) + 1;
+      if (b < sn.lastB) { sn.lc.globalCompositeOperation = 'source-over'; sn.lc.clearRect(0, 0, sn.live.width, sn.live.height); sn.lc.drawImage(sn.img, 0, 0); sn.lastB = 0; }
+      sn.lc.globalCompositeOperation = 'destination-out';
+      for (const p of sn.grains) {
+        if (p.d > b) break;
+        if (p.d <= sn.lastB) continue;
+        sn.lc.fillRect(Math.floor(p.x * dpr), Math.floor(p.y * dpr), sp, sp);
+      }
+      sn.lc.globalCompositeOperation = 'source-over';
+      // Behind the ragged edge everything has gone, faint edge pixels included.
+      const done = ((b - JITTER) / SWEEP) * vw;
+      if (done > 0) sn.lc.clearRect(0, 0, Math.ceil(done * dpr), sn.live.height);
+      sn.lastB = b;
+      ctx.drawImage(sn.live, 0, 0);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      ctx.clearRect(0, 0, vw, vh);
-      if (b <= 0 || b >= 1) return;
-      if (!dust) dust = makeDust();
-      for (const p of dust) {
-        const q = Math.min(1, Math.max(0, (b - p.d) / 0.42));
-        if (q <= 0 || q >= 1) continue;
-        const e = q * q * (3 - 2 * q);
-        const x = p.x + p.vx * e + Math.sin(p.w + q * 5) * 10 * q;
-        const y = p.y + p.vy * e;
-        const a = p.a * Math.min(1, q * 8) * Math.pow(1 - q, 1.3);
-        ctx.fillStyle = p.blue ? `rgba(140,190,242,${a.toFixed(3)})` : `rgba(232,238,245,${a.toFixed(3)})`;
-        ctx.fillRect(x, y, p.r, p.r);
+      for (const p of sn.grains) {
+        if (p.d > b) break;
+        const q = (b - p.d) / LIFE;
+        if (q >= 1) continue;
+        const e = q * q;                      // starts slow, picks up speed like it is caught by wind
+        const x = p.x + p.vx * e + Math.sin(p.w + q * 7) * 6 * q;
+        const y = p.y + p.vy * e - q * 4;
+        const size = p.s * (1 - q * 0.55);
+        const alpha = p.a * Math.pow(1 - q, 1.4);
+        // fresh grains keep the letter's colour, older ones fade towards a warm ash
+        const mix = Math.min(1, q * 1.6) * 0.5;
+        const r = Math.round(p.r + (150 - p.r) * mix), g = Math.round(p.g + (120 - p.g) * mix), bl = Math.round(p.b + (120 - p.b) * mix);
+        ctx.fillStyle = `rgba(${r},${g},${bl},${alpha.toFixed(3)})`;
+        ctx.fillRect(x, y, size, size);
       }
     };
 
-    // Ease used by the glide (gentle, still tied to the scroll).
     const easeA = (a: number) => a * a * (3 - 2 * a) * 0.35 + a * 0.65;
     const f0 = () => (vw < 700 ? 1.16 : 1); // phones start a touch further along so the second card fits
 
-    // Phones: every moving part is a keyframe animation tied to the scroll position. Where the browser supports
-    // scroll-driven animations the graphics chip plays them, so nothing lags behind the finger. The dissolve is a
-    // staggered fade (left to right) instead of a moving mask, which phones would have to repaint every frame.
+    // Phones: the glide is a keyframe animation tied to the scroll, so the graphics chip plays it smoothly.
     let anims: ScrollAnim[] = [];
     const build = () => {
       anims.forEach((a) => a.anim.cancel());
       anims = [];
-      const off = (b: number) => A + (1 - A) * Math.min(1, Math.max(0, b));
       const K = 40;
       const tf: Keyframe[] = [], ff: Keyframe[] = [];
       for (let k = 0; k <= K; k++) {
@@ -112,43 +206,16 @@ export default function JourneyMotion() {
       tf.push({ ...tf[K], offset: 1 }); ff.push({ ...ff[K], offset: 1 });
       track.style.transformOrigin = '0 0';
       anims.push(scrollAnim(track, sec, tf), scrollAnim(fill, sec, ff));
-
-      // Where everything sits on screen once the glide has finished.
-      const focusE = S * (n - 0.5), scE = 1.1;
-      const X = (t: number) => vw / 2 + scE * (t - focusE);
-      // A thing spanning u0..u1 (share of the screen width) starts fading as the sweep reaches its left side
-      // and is gone once it passes its right side.
-      const fade = (el: Element, u0: number, u1: number) => {
-        const bS = Math.max(0, u0 / 1.35), bE = Math.max(bS + 0.04, (u1 + 0.12) / 1.35);
-        anims.push(scrollAnim(el, sec, [
-          { offset: 0, opacity: 1 }, { offset: off(bS), opacity: 1 }, { offset: off(bE), opacity: 0 }, { offset: 1, opacity: 0 },
-        ]));
-      };
-      items.forEach((it, i) => {
-        const cw = it.querySelector<HTMLElement>('.jr-card')?.offsetWidth ?? S;
-        const x0 = S * (i + 0.5) - 14;
-        fade(it, X(x0) / vw, X(x0 + cw) / vw);
-      });
-      const pb = pin.getBoundingClientRect();
-      head.querySelectorAll('.jr-label, .jr-w').forEach((el) => {
-        const r = el.getBoundingClientRect();
-        fade(el, (r.left - pb.left) / vw, (r.right - pb.left) / vw);
-      });
-      // The line shrinks from the left so its end follows the sweep.
-      const line = track.querySelector<HTMLElement>('.jr-line');
-      if (line) {
-        const L = X(0), R = X(S * n), lf: Keyframe[] = [{ offset: 0, transform: 'scaleX(1)' }];
-        for (let k = 0; k <= 24; k++) {
-          const b = k / 24, edge = (b * 1.35 - 0.06) * vw;
-          lf.push({ offset: off(b), transform: `scaleX(${Math.min(1, Math.max(0, (R - Math.max(L, edge)) / (R - L))).toFixed(4)})` });
-        }
-        lf.push({ offset: 1, transform: 'scaleX(0)' });
-        line.style.transformOrigin = '100% 50%';
-        anims.push(scrollAnim(line, sec, lf));
-      }
     };
 
-    let raf = 0, live = false, lastP = -1;
+    let raf = 0, live = false, lastP = -1, dusting = false;
+    const setDusting = (on: boolean) => {
+      if (on === dusting) return;
+      dusting = on;
+      // The canvas takes over from the page text for as long as the dust is on screen.
+      sec.classList.toggle('jr-snap', on);
+      if (!on) snap = null;
+    };
     const frame = () => {
       raf = requestAnimationFrame(frame);
       const r = sec.getBoundingClientRect();
@@ -159,24 +226,16 @@ export default function JourneyMotion() {
       const a = Math.min(1, p / A);
       const b = Math.max(0, (p - A) / (1 - A));
       const focus = S * (f0() + easeA(a) * (n - 0.5 - f0()));
-      if (coarse) {
-        anims.forEach((x) => x.set(p));
-        items.forEach((it, i) => it.classList.toggle('on', S * (i + 0.5) <= focus + S * 0.3));
-        if (b <= 0) dust = null;
-        drawDust(b);
-        return;
+      if (coarse) anims.forEach((x) => x.set(p));
+      else {
+        const scale = 0.92 + 0.18 * easeA(a);
+        track.style.transformOrigin = `${focus.toFixed(1)}px 0`;
+        track.style.transform = `translate3d(${(vw / 2 - focus).toFixed(1)}px,0,0) scale(${scale.toFixed(4)})`;
+        fill.style.transform = `scaleX(${(focus / (S * n)).toFixed(4)})`;
       }
-      const scale = 0.92 + 0.18 * easeA(a);
-      track.style.transformOrigin = `${focus.toFixed(1)}px 0`;
-      track.style.transform = `translate3d(${(vw / 2 - focus).toFixed(1)}px,0,0) scale(${scale.toFixed(4)})`;
-      fill.style.transform = `scaleX(${(focus / (S * n)).toFixed(4)})`;
       items.forEach((it, i) => it.classList.toggle('on', S * (i + 0.5) <= focus + S * 0.3));
-      // The dissolve sweeps from left to right; the dust picks up exactly where the text disappears.
-      const edge = (b * 1.35 - 0.12) * 100;
-      const mask = b > 0 ? `linear-gradient(90deg,transparent ${edge.toFixed(1)}%,#000 ${(edge + 12).toFixed(1)}%)` : 'none';
-      stage.style.webkitMaskImage = mask; stage.style.maskImage = mask;
-      head.style.webkitMaskImage = mask; head.style.maskImage = mask;
-      if (b <= 0) dust = null;
+      if (b > 0 && !dusting) { snap = takeSnap(); setDusting(true); }
+      else if (b <= 0) setDusting(false);
       drawDust(b);
     };
     const start = () => { if (!live) { live = true; lastP = -1; raf = requestAnimationFrame(frame); } };
@@ -186,6 +245,7 @@ export default function JourneyMotion() {
     const onResize = () => {
       if (coarse && window.innerWidth === lastW) return; // phones: ignore address-bar height changes
       lastW = window.innerWidth;
+      setDusting(false);
       layout(); if (coarse) build(); lastP = -1;
     };
     layout(); lastW = window.innerWidth;

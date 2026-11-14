@@ -1,5 +1,4 @@
 import { tools } from './toolIcons';
-import { designTools } from './designTools';
 
 const strengths = [
   { name: 'Team work', note: 'Comfortable leading a group or getting on with it on my own.' },
@@ -36,17 +35,6 @@ export default function Skills() {
     <h3 className="sk-h">Tech and tools</h3>
     <ul className="sk-tools">
       {tools.map((t) => (
-        <li key={t.name} style={{ '--c': t.color } as React.CSSProperties}>
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d={t.path} fillRule="evenodd" /></svg>
-          <span>{t.name}</span>
-        </li>
-      ))}
-    </ul>
-  </div>
-  <div className="sk-cell sk-wide">
-    <h3 className="sk-h">Design and marketing</h3>
-    <ul className="sk-tools sk-dtools">
-      {designTools.map((t) => (
         <li key={t.name} style={{ '--c': t.color } as React.CSSProperties}>
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d={t.path} fillRule="evenodd" /></svg>
           <span>{t.name}</span>

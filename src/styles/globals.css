@@ -851,3 +851,8 @@ html body .page .ck-n:not(#_a):not(#_b):not(#_c):not(#_d){color:var(--rd)!import
 .ck-static .ck-cell{transform:none}
 .ck-static{height:auto}.ck-static .ck-pin{position:relative;height:auto;min-height:100vh}
 @media (pointer:coarse){.ck-tool{-webkit-backdrop-filter:none;backdrop-filter:none;background:linear-gradient(145deg,#1d1416,#0d0809)}}
+
+/* Creative kit: the coloured glow fades out at the top and bottom, so no hard edge when the section arrives or leaves */
+.ck-fx{position:absolute;inset:0;pointer-events:none;
+  -webkit-mask-image:linear-gradient(180deg,transparent 0%,#000 32%,#000 68%,transparent 100%);mask-image:linear-gradient(180deg,transparent 0%,#000 32%,#000 68%,transparent 100%)}
+.ck-pin{-webkit-mask-image:linear-gradient(180deg,transparent 0%,#000 6%,#000 94%,transparent 100%);mask-image:linear-gradient(180deg,transparent 0%,#000 6%,#000 94%,transparent 100%)}

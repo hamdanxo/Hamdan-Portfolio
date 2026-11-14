@@ -9,7 +9,7 @@ export default function CreativeKit() {
   return (
     <section className="ck" id="toolkit" aria-label="Design and marketing toolkit">
       <div className="ck-pin">
-        <div className="ck-glow" aria-hidden="true" />
+        <div className="ck-fx" aria-hidden="true"><div className="ck-glow" /></div>
         <div className="ck-names" aria-hidden="true">
           {designTools.map((t) => <span key={t.name} className="ck-name" style={{ '--c': t.color } as React.CSSProperties}>{t.name}</span>)}
         </div>

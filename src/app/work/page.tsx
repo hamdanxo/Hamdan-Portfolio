@@ -8,6 +8,11 @@ import Automations from '@/components/work/Automations';
 import Websites from '@/components/work/Websites';
 import WorkCta from '@/components/work/WorkCta';
 import ContactSpotlight from '@/components/effects/ContactSpotlight';
+import SectionLines from '@/components/effects/SectionLines';
+import SignatureLight from '@/components/effects/SignatureLight';
+import WordLight from '@/components/effects/WordLight';
+
+const LINES = ['automations', 'websites'];
 import '@/styles/work.css';
 
 export const metadata: Metadata = {
@@ -31,6 +36,9 @@ export default function WorkPage() {
       <SmoothScroll />
       <Reveal selector=".wk-hero, .cat-head, .cs, .empty, .wk-cta-box" className="rv2" />
       <ContactSpotlight />
+      <SectionLines ids={LINES} />
+      <SignatureLight />
+      <WordLight selector=".wk-sub, .cs-block > p, .cat-desc" />
       <Cursor magnetic=".wk-hero a, header nav a:last-child, .cs-links a" />
     </div>
   );

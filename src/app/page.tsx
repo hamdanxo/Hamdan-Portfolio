@@ -3,6 +3,10 @@ import Reveal from '@/components/effects/Reveal';
 import Cursor from '@/components/effects/Cursor';
 import FlipCard from '@/components/effects/FlipCard';
 import ContactSpotlight from '@/components/effects/ContactSpotlight';
+import SectionLines from '@/components/effects/SectionLines';
+import SignatureLight from '@/components/effects/SignatureLight';
+
+const LINES = ['projects', 'about', 'journey', 'skills', 'toolkit', 'contact'];
 import ProjectStack from '@/components/effects/ProjectStack';
 import SiteHeader from '@/components/layout/SiteHeader';
 import Hero from '@/components/home/Hero';
@@ -43,6 +47,8 @@ export default function HomePage() {
       <Cursor magnetic="#heroText a, header nav a:last-child" />
       <FlipCard />
       <ContactSpotlight />
+      <SectionLines ids={LINES} />
+      <SignatureLight />
       <ProjectStack />
       <ScrollFill id="statement" />
     </div>

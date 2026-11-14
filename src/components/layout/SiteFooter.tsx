@@ -12,7 +12,7 @@ export default function SiteFooter() {
 </nav>
 <span className="mono c-9c s-bb9c3d">© 2026 Muhammad Hamdan</span>
 </footer>
-<p className="wordmark" aria-hidden="true">MMV</p>
+<p className="wordmark sig" aria-hidden="true"><span>Hamdan</span></p>
     </>
   );
 }

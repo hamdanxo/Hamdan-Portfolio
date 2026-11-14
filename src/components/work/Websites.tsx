@@ -9,10 +9,10 @@ export default function Websites() {
   return (
     <>
 <section className="cat" id="websites" data-cat="websites">
-<div className="cat-head"><div><h2 className="cat-name">Websites</h2><p className="cat-desc">Sites I design and build, from first sketch to live link.</p></div><span className="cat-count">01 project</span></div>
+<div className="cat-head"><div><p className="mono cat-k">02 / Websites</p><h2 className="cat-name">Sites I <em>build</em></h2><p className="cat-desc">Sites I design and build, from first sketch to live link.</p></div><span className="cat-count">01 project</span></div>
 <div className="cat-list"><article className="cs glass">
 <div className="cs-top">
-<span className="cs-num">01</span>
+<span className="cs-num">02</span>
 <div className="cs-name"><span className="cs-kicker">Casted Luxe · 2026</span><h3 className="cs-title">Casted Luxe website</h3></div>
 <div className="cs-tags"><span className="chip">Web design</span><span className="chip">Front end</span></div>
 </div>

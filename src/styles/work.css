@@ -269,3 +269,23 @@ button.dg-row:last-child{border-bottom:0}
 .dg-cap span{font-size:13px;color:#df2531;letter-spacing:.14em;text-transform:uppercase;font-family:var(--f-mono)}
 .dg-cap i{font-style:normal;font-size:12px;color:rgba(238,241,243,.5);font-family:var(--f-mono);letter-spacing:.08em}
 .dg-cap{position:fixed!important;bottom:32px!important}
+
+/* ---------- Work page refresh: same look as the home page ---------- */
+html body .page .wk-k:not(#_a):not(#_b):not(#_c),html body .page .cat-k:not(#_a):not(#_b):not(#_c){margin:0 0 14px;font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:#df2531!important}
+.wk-title{font-size:clamp(64px,10vw,150px)!important;letter-spacing:-.05em!important;font-weight:300!important;line-height:.92!important}
+.wk-title em,.cat-name em{font-family:var(--font-cormorant),Georgia,serif;font-style:italic;font-weight:400;color:#df2531;letter-spacing:-.01em;padding-right:.04em}
+.cat-name{font-size:clamp(34px,4.4vw,64px)!important;font-weight:300!important;letter-spacing:-.035em!important;line-height:1!important}
+.wk-hero{padding-bottom:clamp(60px,10vh,120px)!important}
+.cat{padding-top:clamp(70px,10vh,130px)!important}
+.cat-head{align-items:flex-end!important;margin-bottom:clamp(28px,4vh,48px)!important}
+html body .page .cs-num:not(#_a):not(#_b):not(#_c){font-size:clamp(46px,5vw,76px)!important;font-weight:200!important;line-height:1;color:transparent!important;-webkit-text-fill-color:transparent!important;-webkit-text-stroke:1px rgba(223,37,49,.75)}
+.cs-title{font-size:clamp(30px,3.6vw,52px)!important;letter-spacing:-.035em!important;font-weight:300!important}
+html body .page .cs:not(#_a):not(#_b){border-radius:20px!important;background:linear-gradient(160deg,#160608 0%,#060203 70%)!important;border-color:rgba(223,37,49,.22)!important;box-shadow:0 60px 120px -60px rgba(223,37,49,.45)!important;transition:border-color .4s,transform .6s cubic-bezier(.2,.75,.2,1)}
+html body .page .cs:hover{border-color:rgba(223,37,49,.5)!important}
+.cs-visual .browser{border-radius:12px!important;overflow:hidden;box-shadow:0 40px 80px -30px rgba(0,0,0,.9),0 0 0 1px rgba(255,255,255,.06)!important;transition:transform .8s cubic-bezier(.2,.75,.2,1)}
+.cs:hover .cs-visual .browser{transform:translateY(-6px) scale(1.01)}
+.cs-steps li span{color:#df2531!important}
+.cs-status i{background:#df2531!important;box-shadow:0 0 10px rgba(223,37,49,.8)!important}
+/* words light up as they come into view */
+.wl{opacity:.12;transition:opacity .6s ease}
+.wl-on .wl{opacity:1}

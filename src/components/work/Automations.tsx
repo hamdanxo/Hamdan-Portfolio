@@ -4,7 +4,7 @@ export default function Automations() {
   return (
     <>
 <section className="cat" id="automations" data-cat="automations">
-<div className="cat-head"><div><h2 className="cat-name">Automations &amp; Systems</h2><p className="cat-desc">Tools that remove repetitive work and keep business data clean.</p></div><span className="cat-count">01 project</span></div>
+<div className="cat-head"><div><p className="mono cat-k">01 / Automations</p><h2 className="cat-name">Tools and <em>systems</em></h2><p className="cat-desc">Tools that remove repetitive work and keep business data clean.</p></div><span className="cat-count">01 project</span></div>
 <div className="cat-list"><article className="cs glass">
 <div className="cs-top">
 <span className="cs-num">01</span>

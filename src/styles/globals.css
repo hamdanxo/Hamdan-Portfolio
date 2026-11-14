@@ -885,3 +885,21 @@ html body .page .ck-n:not(#_a):not(#_b):not(#_c):not(#_d){color:var(--rd)!import
 .palm-glow{filter:none!important}
 /* only paint what is on screen */
 #journey,#about,#toolkit,#statement,#skills,#contact{contain:layout paint}
+
+/* ---------- Section lines: a thin red line draws across where each section starts ---------- */
+.sec-line{position:relative;height:1px;width:min(1180px,calc(100% - 2 * clamp(20px,5vw,64px)));margin:0 auto;pointer-events:none}
+.sec-line i{position:absolute;inset:0;display:block;background:linear-gradient(90deg,rgba(223,37,49,0),#df2531 18%,#ff6b74 50%,#df2531 82%,rgba(223,37,49,0));transform:scaleX(0);transform-origin:0 50%;transition:transform 1.4s cubic-bezier(.65,0,.15,1);box-shadow:0 0 12px rgba(223,37,49,.6)}
+.sec-line::after{content:"";position:absolute;left:0;top:-3px;width:7px;height:7px;border-radius:50%;background:#fff;box-shadow:0 0 14px 4px rgba(223,37,49,.8);opacity:0;transform:translateX(0);transition:transform 1.4s cubic-bezier(.65,0,.15,1),opacity .4s ease 1.2s}
+.sec-line.on i{transform:scaleX(1)}
+.sec-line.on::after{opacity:0;transform:translateX(calc(min(1180px,100vw - 40px)))}
+@keyframes secDot{0%{opacity:1}85%{opacity:1}100%{opacity:0}}
+.sec-line.on::after{animation:secDot 1.4s ease}
+
+/* ---------- Footer signature instead of MMV ---------- */
+.wordmark.sig{position:relative;margin:70px 0 -0.08em;font-family:var(--font-cormorant),Georgia,serif!important;font-style:italic;font-weight:400!important;letter-spacing:-.02em!important;
+  font-size:clamp(110px,26vw,400px)!important;line-height:.9;padding:0 0 .08em;text-transform:none;
+  background:radial-gradient(28% 60% at var(--sx,50%) var(--sy,40%),rgba(255,120,128,var(--lit,0)) 0%,rgba(223,37,49,0) 100%),linear-gradient(180deg,rgba(223,37,49,.65) 10%,rgba(223,37,49,.06) 92%)!important;
+  -webkit-background-clip:text!important;background-clip:text!important;-webkit-text-fill-color:transparent!important;color:transparent!important;transition:--lit .4s}
+.wordmark.sig.lit{--lit:1}
+@property --lit{syntax:'<number>';inherits:false;initial-value:0}
+.wordmark.sig span{display:inline-block}

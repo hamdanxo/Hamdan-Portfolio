@@ -75,6 +75,7 @@ export default function DesignGallery({ fullscreen = false }: { fullscreen?: boo
   const [dims, setDims] = useState<Dims | null>(null);
   const wrapRef = useRef<HTMLDivElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
+  const capRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const glRef = useRef<GalleryGL | null>(null);
   const tilesRef = useRef<(HTMLDivElement | null)[]>([]);
@@ -207,6 +208,12 @@ export default function DesignGallery({ fullscreen = false }: { fullscreen?: boo
           const i = glRef.current.pick(e.clientX - r.left, e.clientY - r.top);
           stage.classList.toggle('dg-pick', i >= 0 && !!designs[i].img);
           glRef.current.hover(i);
+          // the details live in one caption at the bottom instead of on every tile
+          const cap = capRef.current;
+          if (cap) {
+            if (i >= 0) { const d = designs[i]; cap.innerHTML = `<b>${d.client}</b><span>${d.title}</span><i>${d.tags.join(' · ')} · ${d.year}</i>`; cap.classList.add('on'); }
+            else cap.classList.remove('on');
+          }
         }
         dirty = true;
       }
@@ -216,7 +223,7 @@ export default function DesignGallery({ fullscreen = false }: { fullscreen?: boo
       p.ox += dx; p.oy += dy; p.vx = dx; p.vy = dy; dirty = true;
     };
     const up = () => { if (!down) return; down = false; stage.classList.remove('drag'); if (rm) p.vx = p.vy = 0; };
-    const leave = () => { glRef.current?.setMouse(null, null); glRef.current?.hover(-1); stage.classList.remove('dg-pick'); dirty = true; };
+    const leave = () => { glRef.current?.setMouse(null, null); glRef.current?.hover(-1); stage.classList.remove('dg-pick'); capRef.current?.classList.remove('on'); dirty = true; };
     const click = (e: MouseEvent) => {
       if (moved > 6) { e.preventDefault(); e.stopPropagation(); return; }
       const gl = glRef.current;
@@ -327,6 +334,7 @@ export default function DesignGallery({ fullscreen = false }: { fullscreen?: boo
               </div>
             )}
             <div className="dg-vig" aria-hidden="true" />
+            <div className="dg-cap" ref={capRef} aria-hidden="true" />
             <ul className="sr-only">
               {work.map((d) => (
                 <li key={d.title}><button type="button" onClick={() => setOpen(d)}>Open {d.title}, {d.client}, {d.year}</button></li>

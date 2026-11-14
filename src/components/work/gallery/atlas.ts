@@ -118,7 +118,6 @@ export async function buildAtlas(items: Design[], images: (HTMLImageElement | nu
   if (!ctx) throw new Error('2d context unavailable');
 
   const sans = fontFamily('--font-geist', 'system-ui, sans-serif');
-  const mono = fontFamily('--font-dm-mono', 'ui-monospace, monospace');
 
   for (let i = 0; i < items.length; i++) {
     const d = items[i];
@@ -129,83 +128,37 @@ export async function buildAtlas(items: Design[], images: (HTMLImageElement | nu
     ctx.translate(ox, oy);
     ctx.scale(cw / W, ch / H);
 
-    // card
-    ctx.fillStyle = '#16060A';
-    ctx.fillRect(0, 0, W, H);
-    ctx.strokeStyle = 'rgba(223,37,49,0.22)';
-    ctx.lineWidth = 1;
-    ctx.strokeRect(0.5, 0.5, W - 1, H - 1);
+    // card: no frame and no background, just the design floating with the client's name underneath
 
     const pad = 14, small = W < 240;
-    // top row
-    ctx.textBaseline = 'middle';
-    ctx.fillStyle = '#FFFFFF';
-    ctx.font = `300 ${small ? 11 : 12}px ${sans}`;
-    letterSpaced(ctx, d.client, pad, pad + 7, 0.24, 'left');
-    ctx.fillStyle = '#C9D0D6';
-    ctx.font = `300 ${small ? 8.5 : 9.5}px ${mono}`;
-    letterSpaced(ctx, d.title.toUpperCase(), W - pad, pad + 7, 1.1, 'right');
-
-    // art
-    const top = pad + 14 + 10, bottom = H - pad - 20 - 10;
-    const ax = W * 0.08 + pad, aw = W - 2 * ax, ah = bottom - top;
+    const top = pad, bottom = H - pad - 26;
+    const ax = pad, aw = W - 2 * pad, ah = bottom - top;
     ctx.save();
-    roundRect(ctx, ax, top, aw, ah, 3);
+    roundRect(ctx, ax, top, aw, ah, 4);
     ctx.clip();
     const img = images[i];
-    if (img && img.naturalWidth > img.naturalHeight * 1.1) {
-      // A landscape book or board in a tall tile: show the whole image, lying in the middle with a soft shadow.
-      const bg = ctx.createRadialGradient(ax + aw / 2, top + ah * 0.45, 0, ax + aw / 2, top + ah * 0.45, ah * 0.8);
-      bg.addColorStop(0, '#3A0B12');
-      bg.addColorStop(1, '#0E0306');
-      ctx.fillStyle = bg;
-      ctx.fillRect(ax, top, aw, ah);
-      const s = (aw * 0.88) / img.naturalWidth;
+    if (img) {
+      // the whole design, centred, never cropped, with a soft shadow
+      const s = Math.min((aw * 0.9) / img.naturalWidth, (ah * 0.92) / img.naturalHeight);
       const iw = img.naturalWidth * s, ih = img.naturalHeight * s;
       const x = ax + (aw - iw) / 2, y = top + (ah - ih) / 2;
       ctx.save();
-      ctx.shadowColor = 'rgba(0,0,0,0.6)';
-      ctx.shadowBlur = 22;
-      ctx.shadowOffsetY = 12;
-      ctx.fillStyle = d.book ? '#B9BFC6' : '#16060A';
-      ctx.fillRect(x + (d.book ? 2 : 0), y + (d.book ? 2 : 0), iw, ih); // page edges under a book cover
+      ctx.shadowColor = 'rgba(0,0,0,0.75)';
+      ctx.shadowBlur = 26;
+      ctx.shadowOffsetY = 14;
+      ctx.fillStyle = '#111';
+      ctx.fillRect(x, y, iw, ih);
       ctx.restore();
       ctx.drawImage(img, x, y, iw, ih);
-    } else if (img) {
-      const s = Math.max(aw / img.naturalWidth, ah / img.naturalHeight);
-      const iw = img.naturalWidth * s, ih = img.naturalHeight * s;
-      ctx.drawImage(img, ax + (aw - iw) / 2, top + (ah - ih) / 2, iw, ih);
     } else {
       drawArt(ctx, i, ax, top, aw, ah);
-      ctx.fillStyle = i % 8 === 2 || i % 8 === 4 ? 'rgba(0,0,0,0.5)' : 'rgba(255,255,255,0.55)';
-      ctx.font = `300 10px ${mono}`;
-      ctx.textBaseline = 'middle';
-      letterSpaced(ctx, d.title.toUpperCase(), ax + aw / 2, top + ah / 2, 1.8, 'center');
     }
     ctx.restore();
 
-    // bottom row: tags + year
-    const by = H - pad - 10;
-    ctx.font = `300 ${small ? 8 : 8.5}px ${mono}`;
     ctx.textBaseline = 'middle';
-    let tx = pad;
-    for (const t of d.tags) {
-      ctx.letterSpacing = '1px';
-      const tw = ctx.measureText(t).width + 14;
-      ctx.letterSpacing = '0px';
-      roundRect(ctx, tx, by - 9, tw, 18, 2);
-      ctx.fillStyle = 'rgba(223,37,49,0.10)';
-      ctx.fill();
-      ctx.strokeStyle = 'rgba(223,37,49,0.25)';
-      ctx.stroke();
-      ctx.fillStyle = '#B4BCC4';
-      letterSpaced(ctx, t, tx + 7, by + 0.5, 1, 'left');
-      tx += tw + 5;
-    }
-    ctx.fillStyle = '#C9D0D6';
-    ctx.font = `300 ${small ? 8.5 : 9.5}px ${mono}`;
-    letterSpaced(ctx, d.year, W - pad, by, 1.1, 'right');
-
+    ctx.fillStyle = 'rgba(238,241,243,0.72)';
+    ctx.font = `300 ${small ? 11 : 12.5}px ${sans}`;
+    letterSpaced(ctx, d.client, W / 2, H - pad - 10, 0.3, 'center');
     ctx.restore();
   }
 

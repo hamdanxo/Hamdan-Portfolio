@@ -37,7 +37,7 @@ void main() {
   vec2 d = abs(uMouse - c * k) - uTile * 0.5 * k;
   vHover = step(max(d.x, d.y), 0.0);
   // hovered card grows very slightly, easing in over a third of a second
-  float grow = 1.0 + 0.025 * vHover * smoothstep(0.0, 1.0, clamp(uHoverT / 0.35, 0.0, 1.0));
+  float grow = 1.0 + 0.07 * vHover * smoothstep(0.0, 1.0, clamp(uHoverT / 0.35, 0.0, 1.0));
   vec2 p = c + vec2(position.x, -position.y) * grow; // screen space, y down
   // Bowl: points sink away from the camera the further they are from the centre.
   vec2 n = p / (uView * 0.5);
@@ -51,6 +51,7 @@ void main() {
 const fragment = /* glsl */ `
 uniform sampler2D uAtlas;
 uniform vec2 uGrid;     // atlas columns, rows
+uniform float uFocus;   // 0..1: how much the other designs dim while one is hovered
 varying vec2 vUv;
 varying vec2 vCell;
 varying float vHover;
@@ -62,7 +63,9 @@ void main() {
   // hover: lift the card and add a thin violet edge
   vec2 e = min(vUv, 1.0 - vUv);
   float border = 1.0 - step(0.006, min(e.x, e.y * 0.83));
-  col.rgb += vHover * (0.05 + border * vec3(0.24, 0.42, 0.66));
+  col.rgb += vHover * border * vec3(0.87, 0.15, 0.19);
+  // focus: everything except the hovered design steps back into the dark
+  col.rgb *= mix(1.0, 0.38, uFocus * (1.0 - vHover));
   // soft edge fade, like the CSS vignette
   col.rgb *= 1.0 - smoothstep(0.85, 1.45, vEdge) * 0.55;
   gl_FragColor = col;
@@ -124,6 +127,7 @@ export function createGalleryGL(
     uAtlas: { value: texture },
     uGrid: { value: new Vector2(atlas.cols, atlas.rows) },
     uHoverT: { value: 99 },
+    uFocus: { value: 0 },
   };
   let hoverStart = -1e9, hovered = -1;
   const material = new ShaderMaterial({ vertexShader: vertex, fragmentShader: fragment, uniforms, transparent: true, depthTest: false, depthWrite: false });
@@ -203,6 +207,8 @@ export function createGalleryGL(
     resize,
     render: () => {
       uniforms.uHoverT.value = (performance.now() - hoverStart) / 1000;
+      const want = hovered >= 0 ? 1 : 0;
+      uniforms.uFocus.value += (want - uniforms.uFocus.value) * 0.14;
       renderer.render(scene, camera);
     },
     dispose: () => { plane.dispose(); geometry.dispose(); material.dispose(); texture.dispose(); renderer.dispose(); },

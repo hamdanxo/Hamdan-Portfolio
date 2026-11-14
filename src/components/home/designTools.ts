@@ -1,5 +1,6 @@
-/** Design and marketing tools. Logos from Simple Icons (CC0); CapCut and AI generation use plain drawn marks. 24 by 24 view box. */
-export const designTools: { name: string; color: string; path: string }[] = [
+/** Design and marketing tools. Logos from Simple Icons (CC0); CapCut from Arcticons (CC BY-SA 4.0), drawn as lines; AI generation is a plain sparkle mark. */
+export type DesignTool = { name: string; color: string; path: string; vb?: string; stroke?: boolean };
+export const designTools: DesignTool[] = [
  {
   "name": "Canva",
   "color": "#00C4CC",
@@ -18,7 +19,9 @@ export const designTools: { name: string; color: string; path: string }[] = [
  {
   "name": "CapCut",
   "color": "#FFFFFF",
-  "path": "M3 6.5 12 2l9 4.5v11L12 22l-9-4.5zM7 9v6l5 2.5 5-2.5V9l-5-2.5zm2.2 1.4L12 9l2.8 1.4v3.2L12 15l-2.8-1.4z"
+  "path": "M43.5 35.9L4.505 16.242v-1.383a3.717 3.717 0 0 1 3.722-3.728h21.998a3.717 3.717 0 0 1 3.722 3.728v1.695M43.5 11.836l-39 19.66l.005 1.645a3.717 3.717 0 0 0 3.723 3.728h21.996a3.717 3.717 0 0 0 3.723-3.728v-1.948",
+  "vb": "0 0 48 48",
+  "stroke": true
  },
  {
   "name": "DaVinci Resolve",

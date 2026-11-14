@@ -805,3 +805,49 @@ html body .page{background:
 .sk-dtools span{font-size:12.5px;line-height:1.3}
 @media (max-width:1100px){.sk-dtools{grid-template-columns:repeat(5,1fr)}}
 @media (max-width:760px){.sk-wide{grid-column:auto}.sk-dtools{grid-template-columns:repeat(3,1fr)}}
+
+/* ---------- The creative kit: logos fly out of the dark at you ---------- */
+.ck{position:relative;height:520vh;margin:0 calc(50% - 50vw);width:100vw}
+.ck-pin{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;perspective:900px;perspective-origin:50% 50%}
+.ck-glow{position:absolute;left:50%;top:50%;width:min(110vw,1300px);aspect-ratio:1;border-radius:50%;transform:translate(-50%,-50%);pointer-events:none;
+  background:radial-gradient(circle,color-mix(in srgb,var(--c,#df2531) 34%,transparent) 0%,color-mix(in srgb,var(--c,#df2531) 10%,transparent) 35%,transparent 65%);transition:background .7s ease}
+.ck-names{position:absolute;inset:0;display:grid;place-items:center;pointer-events:none}
+.ck-name{grid-area:1/1;max-width:96vw;text-align:center;font-size:clamp(56px,13vw,220px);line-height:.9;letter-spacing:-.05em;font-weight:300;white-space:nowrap;
+  color:transparent!important;-webkit-text-fill-color:transparent!important;-webkit-text-stroke:1px color-mix(in srgb,var(--c) 55%,transparent);
+  opacity:0;transform:scale(.9);filter:blur(10px);transition:opacity .6s,transform .9s cubic-bezier(.2,.75,.2,1),filter .6s}
+.ck-name.on{opacity:.75;transform:none;filter:none}
+@media (max-width:760px){.ck-name{white-space:normal;font-size:16vw}}
+.ck-space{position:absolute;left:50%;top:50%;width:0;height:0;transform-style:preserve-3d}
+.ck-tool{position:absolute;left:0;top:0;width:clamp(110px,15vw,210px);aspect-ratio:1;margin:calc(clamp(110px,15vw,210px) / -2) 0 0 calc(clamp(110px,15vw,210px) / -2);
+  display:grid;place-items:center;border-radius:28%;opacity:0;will-change:transform,opacity;
+  background:linear-gradient(145deg,rgba(255,255,255,.09),rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.1);
+  -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);box-shadow:0 30px 70px -20px rgba(0,0,0,.8)}
+.ck-tool svg{width:52%;height:52%;fill:rgba(255,255,255,.55);transition:fill .5s,filter .5s}
+.ck-tool.on{border-color:color-mix(in srgb,var(--c) 60%,transparent);box-shadow:0 0 80px -10px color-mix(in srgb,var(--c) 70%,transparent),0 30px 70px -20px rgba(0,0,0,.8)}
+.ck-tool.on svg{fill:var(--c);filter:drop-shadow(0 0 18px color-mix(in srgb,var(--c) 70%,transparent))}
+.ck-stroke svg{fill:none!important;stroke:rgba(255,255,255,.55);stroke-width:3.4;stroke-linecap:round;stroke-linejoin:round}
+.ck-tool.on.ck-stroke svg{stroke:#fff}
+.ck-head{position:absolute;left:max(clamp(20px,5vw,64px),calc((100% - 1180px) / 2));top:clamp(90px,14vh,140px);transition:opacity .6s}
+html body .page .ck-k:not(#_a):not(#_b):not(#_c):not(#_d){margin:0 0 10px;font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--rd)!important}
+.ck-h{margin:0;font-size:clamp(30px,4vw,56px);font-weight:300;letter-spacing:-.03em}
+.ck-count{position:absolute;right:max(clamp(20px,5vw,64px),calc((100% - 1180px) / 2));bottom:clamp(30px,6vh,60px);margin:0;font-size:12px;letter-spacing:.2em;color:rgba(255,255,255,.5);transition:opacity .6s}
+html body .page .ck-n:not(#_a):not(#_b):not(#_c):not(#_d){color:var(--rd)!important}
+.ck-list{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+/* the end: every tool together in one glowing grid */
+.ck-grid{position:absolute;left:50%;top:55%;width:min(1100px,92vw);transform:translate(-50%,-50%) scale(.94);display:grid;grid-template-columns:repeat(5,1fr);gap:clamp(8px,1.2vw,16px);opacity:0;pointer-events:none;transition:opacity .8s ease,transform 1s cubic-bezier(.2,.75,.2,1)}
+.ck-cell{display:flex;flex-direction:column;align-items:center;gap:12px;padding:clamp(16px,2.2vw,30px) 8px;border-radius:18px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);opacity:0;transform:translateY(24px);transition:opacity .6s,transform .8s cubic-bezier(.2,.75,.2,1),border-color .3s,box-shadow .3s}
+.ck-cell svg{width:clamp(30px,3.4vw,46px);height:clamp(30px,3.4vw,46px);fill:var(--c)}
+.ck-cell.ck-stroke svg{fill:none!important;stroke:#fff}
+.ck-cell span{font-size:13px;color:rgba(255,255,255,.75);text-align:center}
+.ck-cell:hover{border-color:color-mix(in srgb,var(--c) 60%,transparent);box-shadow:0 0 40px -12px var(--c)}
+.ck-all .ck-grid{opacity:1;transform:translate(-50%,-50%);pointer-events:auto}
+.ck-all .ck-cell{opacity:1;transform:none}
+.ck-all .ck-cell:nth-child(n){transition-delay:calc(var(--d,0) * 1ms)}
+.ck-all .ck-count{opacity:0}
+.ck-cell:nth-child(1){--d:0}.ck-cell:nth-child(2){--d:50}.ck-cell:nth-child(3){--d:100}.ck-cell:nth-child(4){--d:150}.ck-cell:nth-child(5){--d:200}
+.ck-cell:nth-child(6){--d:250}.ck-cell:nth-child(7){--d:300}.ck-cell:nth-child(8){--d:350}.ck-cell:nth-child(9){--d:400}.ck-cell:nth-child(10){--d:450}
+@media (max-width:760px){.ck-grid{grid-template-columns:repeat(3,1fr);top:58%}.ck{height:460vh}}
+.ck-static .ck-grid,.ck-static .ck-cell{opacity:1;transform:translate(-50%,-50%)}
+.ck-static .ck-cell{transform:none}
+.ck-static{height:auto}.ck-static .ck-pin{position:relative;height:auto;min-height:100vh}
+@media (pointer:coarse){.ck-tool{-webkit-backdrop-filter:none;backdrop-filter:none;background:linear-gradient(145deg,#1d1416,#0d0809)}}

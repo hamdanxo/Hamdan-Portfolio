@@ -13,6 +13,7 @@ import About from '@/components/home/About';
 import Journey from '@/components/home/Journey';
 import WhatIDo from '@/components/home/WhatIDo';
 import Skills from '@/components/home/Skills';
+import CreativeKit from '@/components/home/CreativeKit';
 import Languages from '@/components/home/Languages';
 import Contact from '@/components/home/Contact';
 
@@ -32,6 +33,7 @@ export default function HomePage() {
           <Journey />
           <WhatIDo />
           <Skills />
+          <CreativeKit />
           <Languages />
           <Contact />
         </main>

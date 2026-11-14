@@ -903,3 +903,39 @@ html body .page .ck-n:not(#_a):not(#_b):not(#_c):not(#_d){color:var(--rd)!import
 .wordmark.sig.lit{--lit:1}
 @property --lit{syntax:'<number>';inherits:false;initial-value:0}
 .wordmark.sig span{display:inline-block}
+
+/* ---------- About monitor polish ---------- */
+/* bigger, more readable type on the screen */
+@media (min-width:761px){
+  .ab3-r{padding:5cqw 5.5cqw 5cqw 5cqw!important;gap:1.3cqw!important}
+  .ab3-k{font-size:1.05cqw!important;letter-spacing:.3em!important}
+  .ab3-h{font-size:5.6cqw!important;line-height:.96!important;margin-bottom:.15em!important}
+  .ab3-p{font-size:1.62cqw!important;line-height:1.62!important;color:#3B4452}
+  html body .page .ab3-facts dt:not(#_a):not(#_b):not(#_c):not(#_d){font-size:1.05cqw!important}
+  .ab3-facts dd{font-size:2.3cqw!important}
+  .ab3-facts{gap:1.8cqw!important;left:8%!important;bottom:8%!important}
+}
+/* the monitor: a softer bezel with a lit top edge, and the screen's light spilling around it */
+.ab3-bezel{background:linear-gradient(180deg,#24252b,#0d0e12 30%)!important;border-radius:20px!important;padding:11px!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.14),0 0 0 1px rgba(255,255,255,.05),0 50px 80px -40px rgba(0,0,0,.9)!important}
+.ab3-screen{border-radius:9px!important}
+.ab3-dev::before{content:"";position:absolute;left:-12%;right:-12%;top:-14%;height:110%;z-index:-1;pointer-events:none;
+  background:radial-gradient(48% 46% at 50% 45%,rgba(150,120,255,.22),rgba(223,37,49,.10) 45%,transparent 72%)}
+/* stand and desk: slimmer metal, the screen's light reflected on the desk top */
+.ab3-stand{width:13%!important;background:linear-gradient(90deg,#55595f 0%,#b9bdc3 18%,#e9ebee 42%,#9da2a8 75%,#4d5157 100%)!important;box-shadow:inset 0 10px 14px -8px rgba(0,0,0,.6)}
+.ab3-base{width:22%!important;height:6px!important;border-radius:3px 3px 0 0!important;background:linear-gradient(180deg,#d6d9dd,#7d8288)!important}
+.ab3-top{height:clamp(12px,1.4vw,18px)!important;background:linear-gradient(180deg,#3a3d43 0%,#1d1f23 45%,#0f1013 100%)!important;
+  box-shadow:0 1px 0 rgba(255,255,255,.22) inset,0 30px 60px -20px rgba(0,0,0,.9)!important}
+.ab3-top::before{height:2px!important;top:-2px!important;background:linear-gradient(90deg,transparent,rgba(200,190,255,.55) 35%,rgba(255,255,255,.8) 50%,rgba(200,190,255,.55) 65%,transparent)!important}
+.ab3-top::after{content:"";position:absolute;left:30%;right:30%;top:-34px;height:34px;pointer-events:none;background:radial-gradient(50% 100% at 50% 100%,rgba(160,130,255,.28),transparent 70%)}
+/* clamps: small, rounded, out of the way; no chunky legs */
+.ab3-clamp{width:clamp(56px,6vw,90px)!important;height:clamp(40px,6vh,64px)!important;top:-22px!important;opacity:.85}
+.ab3-clamp::after{display:none!important}
+.ab3-clamp::before{top:16px!important;height:14px!important;right:0!important;border-radius:4px!important;background:linear-gradient(180deg,#3d4046,#1b1c20)!important}
+.ab3-clamp b{height:16px!important;width:30%!important;border-radius:8px 8px 4px 4px!important;background:radial-gradient(70% 50% at 50% 25%,#62666c,#1c1d21 85%)!important}
+.ab3-desk{height:clamp(80px,12vh,140px)!important;
+  background:linear-gradient(180deg,rgba(255,255,255,.025),transparent 40%)!important}
+/* background rings: one faint circle only */
+.ab3-a2{display:none}
+.ab3-a1{border-color:rgba(255,255,255,.05)!important}
+@media (min-width:761px){.ab3-dev{width:min(1180px,86vw,calc((100vh - 110px - clamp(80px,12vh,140px) - clamp(60px,10vh,120px)) * 1.72))!important}}

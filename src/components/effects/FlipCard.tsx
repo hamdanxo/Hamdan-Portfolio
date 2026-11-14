@@ -76,8 +76,10 @@ export default function FlipCard() {
       inner.style.transform = `translate3d(0,${fy.toFixed(2)}px,0) rotateZ(-9deg) rotateX(${(16 - my * 16).toFixed(2)}deg) rotateY(${(cur * 540 + mx * 24).toFixed(2)}deg)`;
       if (fine) box.style.transform = `translate3d(${(mx * 10).toFixed(1)}px,${(my * 8).toFixed(1)}px,0)`;
       if (fine) {
-        const sh = `${(100 - ((cur * 3) % 1) * 100 - mx * 28).toFixed(1)}% 0`;
-        for (const el of sheens) el.style.backgroundPosition = sh;
+        // Moving the shine with transform keeps it on the graphics chip; changing background-position repainted the card every frame.
+        const x = (100 - ((cur * 3) % 1) * 100 - mx * 28) / 100;
+        const sh = `translate3d(${(-x * 66.667).toFixed(2)}%,0,0)`;
+        for (const el of sheens) el.style.transform = sh;
         if (foil) foil.style.backgroundPosition = `${(50 + mx * 40 + cur * 70 - my * 10).toFixed(1)}% 50%`;
       }
     };

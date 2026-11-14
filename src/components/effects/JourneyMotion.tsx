@@ -11,7 +11,7 @@ import { prefersReducedMotion, scrollAnim, type ScrollAnim } from '@/lib/motion'
  * canvas shows the same picture, so a sweep from left to right can lift the grains off one by one, exactly
  * where each letter was, and blow them away.
  */
-type Grain = { x: number; y: number; r: number; g: number; b: number; a: number; d: number; vx: number; vy: number; w: number; s: number };
+type Grain = { x: number; y: number; r: number; g: number; b: number; a: number; d: number; vx: number; vy: number; w: number; s: number; c: string };
 type Snap = { img: HTMLCanvasElement; live: HTMLCanvasElement; lc: CanvasRenderingContext2D; grains: Grain[]; spread: number; lastB: number };
 
 const SWEEP = 0.62;   // share of the dissolve the sweep takes to cross the screen
@@ -117,7 +117,7 @@ export default function JourneyMotion() {
 
       // every lit pixel (on a small grid) becomes a grain
       const data = c.getImageData(0, 0, img.width, img.height).data;
-      const max = coarse ? 5000 : 14000;
+      const max = coarse ? 3200 : 11000;
       let lit = 0;
       for (let i = 3; i < data.length; i += 4 * 3) if (data[i] > 60) lit++;
       const stepCss = Math.max(1.2, Math.sqrt((lit * 3) / max) / dpr * 1.05);
@@ -135,6 +135,8 @@ export default function JourneyMotion() {
             vx: 30 + Math.random() * 110,
             vy: -(vh * (0.08 + Math.random() * 0.3)),
             w: Math.random() * 6.28,
+            // a slightly ashen version of the letter's colour, worked out once instead of every frame
+            c: `rgb(${Math.round(data[k] * 0.8 + 30)},${Math.round(data[k + 1] * 0.8 + 24)},${Math.round(data[k + 2] * 0.8 + 24)})`,
             s: (step / dpr) * (0.8 + Math.random() * 0.6),
           });
         }
@@ -171,20 +173,19 @@ export default function JourneyMotion() {
       ctx.drawImage(sn.live, 0, 0);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       for (const p of sn.grains) {
-        if (p.d > b) break;
+        if (p.d > b) { break; }
         const q = (b - p.d) / LIFE;
         if (q >= 1) continue;
         const e = q * q;                      // starts slow, picks up speed like it is caught by wind
         const x = p.x + p.vx * e + Math.sin(p.w + q * 7) * 6 * q;
         const y = p.y + p.vy * e - q * 4;
         const size = p.s * (1 - q * 0.55);
-        const alpha = p.a * Math.pow(1 - q, 1.4);
-        // fresh grains keep the letter's colour, older ones fade towards a warm ash
-        const mix = Math.min(1, q * 1.6) * 0.5;
-        const r = Math.round(p.r + (150 - p.r) * mix), g = Math.round(p.g + (120 - p.g) * mix), bl = Math.round(p.b + (120 - p.b) * mix);
-        ctx.fillStyle = `rgba(${r},${g},${bl},${alpha.toFixed(3)})`;
+        const f1 = 1 - q;
+        ctx.globalAlpha = p.a * f1 * Math.sqrt(f1);
+        if (ctx.fillStyle !== p.c) ctx.fillStyle = p.c;
         ctx.fillRect(x, y, size, size);
       }
+      ctx.globalAlpha = 1;
     };
 
     const easeA = (a: number) => a * a * (3 - 2 * a) * 0.35 + a * 0.65;

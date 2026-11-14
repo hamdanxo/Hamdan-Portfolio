@@ -856,3 +856,32 @@ html body .page .ck-n:not(#_a):not(#_b):not(#_c):not(#_d){color:var(--rd)!import
 .ck-fx{position:absolute;inset:0;pointer-events:none;
   -webkit-mask-image:linear-gradient(180deg,transparent 0%,#000 32%,#000 68%,transparent 100%);mask-image:linear-gradient(180deg,transparent 0%,#000 32%,#000 68%,transparent 100%)}
 .ck-pin{-webkit-mask-image:linear-gradient(180deg,transparent 0%,#000 6%,#000 94%,transparent 100%);mask-image:linear-gradient(180deg,transparent 0%,#000 6%,#000 94%,transparent 100%)}
+
+/* ---------- Performance pass ---------- */
+/* card shine: a wide strip that slides with transform instead of repainting */
+.sheen{inset:0 auto 0 0!important;width:300%!important;background-size:100% 100%!important;background-position:0 0!important;will-change:transform}
+.flip-box{transition:none!important}
+/* hero: no full-screen mask; a gradient overlay does the same fade for free */
+.flip-pin{-webkit-mask-image:none!important;mask-image:none!important}
+.flip-pin::after{content:"";position:absolute;left:0;right:0;bottom:0;height:16%;z-index:5;pointer-events:none;background:linear-gradient(180deg,rgba(3,1,2,0),#030102)}
+/* statement: the moving light is a plain gradient (no blur, no mask), only its transform changes */
+.stmt-fx{-webkit-mask-image:none!important;mask-image:none!important;inset:0!important;overflow:visible!important}
+.stmt-fx .stmt-glow{margin-top:0!important;filter:none!important;background:radial-gradient(closest-side,rgba(223,37,49,.32),rgba(223,37,49,.1) 45%,rgba(223,37,49,0))!important}
+.stmt-text .fw{filter:none!important}
+/* creative kit: no masks, no frosted glass on moving tiles; fades done with overlays */
+.ck-pin,.ck-fx{-webkit-mask-image:none!important;mask-image:none!important}
+.ck-tool{-webkit-backdrop-filter:none!important;backdrop-filter:none!important;background:linear-gradient(145deg,#211618,#0d0809)!important}
+.ck-pin::before,.ck-pin::after{content:"";position:absolute;left:0;right:0;height:22%;z-index:4;pointer-events:none}
+.ck-pin::before{top:0;background:linear-gradient(180deg,#030102,rgba(3,1,2,0))}
+.ck-pin::after{bottom:0;background:linear-gradient(0deg,#030102,rgba(3,1,2,0))}
+.ck-head,.ck-count,.ck-grid{z-index:5}
+.ck-name{filter:none!important}
+.ck-tool.on svg{filter:none!important}
+/* frosted glass is expensive while scrolling: solid tinted panels instead */
+.glass,#contactCard,.site-header,.site-header.scrolled,header.glass{-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+.site-header.scrolled,header.glass{background:rgba(3,1,2,.96)!important}
+/* static decorative blurs are pre-softened gradients instead of live filters */
+.ice-orb{filter:none!important;background:radial-gradient(circle,rgba(223,37,49,.45) 0%,rgba(223,37,49,.18) 35%,rgba(120,10,20,0) 68%)!important}
+.palm-glow{filter:none!important}
+/* only paint what is on screen */
+#journey,#about,#toolkit,#statement,#skills,#contact{contain:layout paint}

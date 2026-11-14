@@ -10,15 +10,6 @@ const countLabel = (c: Category) => {
 const pad = (n: number) => String(n).padStart(2, '0');
 
 // Printed profiles lying on a desk: the four covers plus two inside pages.
-const DESK = [
-  { k: 'a', src: '/designs/lapiz-blue-profile/p01.webp' },
-  { k: 'b', src: '/designs/global-classic-profile/p01.webp' },
-  { k: 'c', src: '/designs/sahihi-profile/p06.webp' },
-  { k: 'd', src: '/designs/sixty-newton-profile/p01.webp' },
-  { k: 'e', src: '/designs/global-classic-profile/p02.webp' },
-  { k: 'f', src: '/designs/sahihi-profile/p01.webp' },
-];
-
 export default function Projects() {
   return (
     <>
@@ -38,11 +29,8 @@ export default function Projects() {
 </div>
 <a className="pj-grid pj-cats" data-cursor="view" href="/design" aria-label="Open Graphic Design projects">
 <div className="pj-img pj-big pj-photo pj-desk">
-<div className="pj-plane" aria-hidden="true">
-{DESK.map((d) => (
-<div className={`bk bk-${d.k}`} key={d.k}><Image quality={92} src={d.src} alt="" fill sizes="(max-width: 900px) 30vw, 16vw" /></div>
-))}
-</div>
+{/* The brochures on the desk, rendered once to a single picture: a live 3D scene repainted on every scroll frame. */}
+<Image quality={90} src="/designs/desk.webp" alt="Company profiles for Lapiz Blue, Global Classic, Sahihi and Sixty Newton laid out on a desk" fill sizes="(max-width: 900px) 92vw, 62vw" style={{ objectFit: 'cover' }} />
 <span className="pj-cat"><em>{countLabel('profile')}</em>Company Profiles and Catalogues</span>
 </div>
 <div className="pj-img pj-photo"><Image quality={92} src="/designs/fuga-shock/01.webp" alt="Fuga-Shock launch ad for Lapiz Blue" fill sizes="(max-width: 900px) 46vw, 30vw" /><span className="pj-cat"><em>{countLabel('ad')}</em>Ad Creatives</span></div>

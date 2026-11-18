@@ -939,3 +939,6 @@ html body .page .ck-n:not(#_a):not(#_b):not(#_c):not(#_d){color:var(--rd)!import
 .ab3-a2{display:none}
 .ab3-a1{border-color:rgba(255,255,255,.05)!important}
 @media (min-width:761px){.ab3-dev{width:min(1180px,86vw,calc((100vh - 110px - clamp(80px,12vh,140px) - clamp(60px,10vh,120px)) * 1.72))!important}}
+/* footer line: "Made visible." at a calmer size */
+.wordmark.sig{font-size:clamp(54px,10.5vw,170px)!important;margin:64px 0 -0.06em!important;padding-bottom:.12em!important}
+@media (max-width:760px){.wordmark.sig{font-size:clamp(58px,17vw,84px)!important;margin:48px 0 24px!important}}

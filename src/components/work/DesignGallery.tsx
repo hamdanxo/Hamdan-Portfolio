@@ -15,7 +15,7 @@ const mod = (a: number, b: number) => ((a % b) + b) % b;
 const pad = (n: number) => (n < 10 ? `0${n}` : `${n}`);
 const tileSize = (stageWidth: number, labels = false): TileSize =>
   labels
-    ? (stageWidth < 700 ? { W: 200, H: 214, G: 12 } : { W: 300, H: 304, G: 18 })
+    ? (stageWidth < 700 ? { W: 150, H: 150, G: 22 } : { W: Math.round(Math.max(190, Math.min(240, stageWidth * 0.118))), H: Math.round(Math.max(190, Math.min(240, stageWidth * 0.118)) * 0.98), G: 34 })
     : (stageWidth < 700 ? { W: 190, H: 240, G: 10 } : { W: 290, H: 350, G: 14 });
 
 /** DOM tile, only used when WebGL is not available. */
@@ -137,10 +137,10 @@ export default function DesignGallery({ fullscreen = false, hero }: { fullscreen
         const images = await loadImages(designs);
         if (cancelled) return;
         const size = tileSize(stage.clientWidth, labels);
-        const atlas = await buildAtlas(designs, images, size, Math.min(window.devicePixelRatio || 1, 2), labels);
+        const atlas = await buildAtlas(designs, images, size, labels ? 3 : Math.min(window.devicePixelRatio || 1, 2), labels);
         if (cancelled) return;
         await new Promise((r) => setTimeout(r, 0));
-        glRef.current = createGalleryGL(canvas, atlas, designs.length, size);
+        glRef.current = createGalleryGL(canvas, atlas, designs.length, size, { calm: labels });
         if (labels && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) glRef.current.intro(1.55);
         setMode('gl');
       } catch {

@@ -140,11 +140,11 @@ export async function buildAtlas(items: Design[], images: (HTMLImageElement | nu
     const img = images[i];
     if (labels) {
       // Labelled card: the design fills a rounded frame, with a small mono line and the title underneath.
-      const pad = 10, small = W < 240;
-      const ah = H - pad - (small ? 46 : 58);
+      const pad = 6, small = W < 180;
+      const ah = H - pad - (small ? 40 : 50);
       const ax = pad, aw = W - 2 * pad, top = pad;
       ctx.save();
-      roundRect(ctx, ax, top, aw, ah, 6);
+      roundRect(ctx, ax, top, aw, ah, 3);
       ctx.clip();
       ctx.fillStyle = '#120608';
       ctx.fillRect(ax, top, aw, ah);
@@ -159,13 +159,13 @@ export async function buildAtlas(items: Design[], images: (HTMLImageElement | nu
       ctx.restore();
       ctx.strokeStyle = 'rgba(255,255,255,0.08)';
       ctx.lineWidth = 1;
-      roundRect(ctx, ax + 0.5, top + 0.5, aw - 1, ah - 1, 6);
+      roundRect(ctx, ax + 0.5, top + 0.5, aw - 1, ah - 1, 3);
       ctx.stroke();
 
-      const y1 = top + ah + (small ? 15 : 19), y2 = y1 + (small ? 18 : 22);
+      const y1 = top + ah + (small ? 13 : 16), y2 = y1 + (small ? 15 : 18);
       ctx.textBaseline = 'middle';
       const num = String(i + 1).padStart(2, '0');
-      ctx.font = `500 ${small ? 9.5 : 10.5}px ${mono}`;
+      ctx.font = `500 ${small ? 7.5 : 8.5}px ${mono}`;
       ctx.fillStyle = '#df2531';
       letterSpaced(ctx, num, ax + 2, y1, 1, 'left');
       ctx.fillStyle = 'rgba(238,241,243,0.5)';
@@ -173,7 +173,7 @@ export async function buildAtlas(items: Design[], images: (HTMLImageElement | nu
       const nx = ax + 2 + ctx.measureText(num).width + 14, yw = ctx.measureText(d.year).width + 16;
       ctx.letterSpacing = '1px';
       letterSpaced(ctx, fit(ctx, d.client.toUpperCase(), ax + aw - 2 - yw - nx), nx, y1, 1, 'left');
-      ctx.font = `500 ${small ? 12.5 : 15}px ${mono}`;
+      ctx.font = `500 ${small ? 10 : 12}px ${mono}`;
       ctx.fillStyle = '#ffffff';
       ctx.letterSpacing = '0px';
       letterSpaced(ctx, fit(ctx, d.title, aw - 4), ax + 2, y2, 0, 'left');

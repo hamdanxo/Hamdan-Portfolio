@@ -53,6 +53,7 @@ const fragment = /* glsl */ `
 uniform sampler2D uAtlas;
 uniform vec2 uGrid;     // atlas columns, rows
 uniform float uFocus;   // 0..1: how much the other designs dim while one is hovered
+uniform float uDim;     // 0..1: calm, slightly muted wall (hovered card shows full colour)
 varying vec2 vUv;
 varying vec2 vCell;
 varying float vHover;
@@ -65,6 +66,10 @@ void main() {
   vec2 e = min(vUv, 1.0 - vUv);
   float border = 1.0 - step(0.006, min(e.x, e.y * 0.83));
   col.rgb += vHover * border * vec3(0.87, 0.15, 0.19);
+  // calm wall: muted colour until a card is hovered
+  float g = dot(col.rgb, vec3(0.299, 0.587, 0.114));
+  col.rgb = mix(col.rgb, vec3(g), 0.35 * uDim * (1.0 - vHover));
+  col.rgb *= mix(1.0, 0.78, uDim * (1.0 - vHover));
   // focus: everything except the hovered design steps back into the dark
   col.rgb *= mix(1.0, 0.38, uFocus * (1.0 - vHover));
   // soft edge fade, like the CSS vignette
@@ -99,6 +104,7 @@ export function createGalleryGL(
   atlas: { canvas: HTMLCanvasElement; cols: number; rows: number },
   count: number,
   size: TileSize,
+  opts: { calm?: boolean } = {},
 ): GalleryGL {
   const renderer = new WebGLRenderer({ canvas, antialias: false, alpha: true, powerPreference: 'high-performance' });
   // Phones: cap the pixel ratio a little lower; the cards are textures, so they stay sharp.
@@ -134,6 +140,7 @@ export function createGalleryGL(
     uGrid: { value: new Vector2(atlas.cols, atlas.rows) },
     uHoverT: { value: 99 },
     uFocus: { value: 0 },
+    uDim: { value: opts.calm ? 1 : 0 },
   };
   let hoverStart = -1e9, hovered = -1;
   const material = new ShaderMaterial({ vertexShader: vertex, fragmentShader: fragment, uniforms, transparent: true, depthTest: false, depthWrite: false });
@@ -163,7 +170,7 @@ export function createGalleryGL(
     slots = { base, index };
     uniforms.uSpan.value.set(cols * (W + G), rows * (H + G));
     uniforms.uView.value.set(sw, sh);
-    uniforms.uBend.value = sw < 700 ? 110 : 150;
+    uniforms.uBend.value = opts.calm ? (sw < 700 ? 120 : 175) : (sw < 700 ? 110 : 150);
   };
 
   // Opening move: the camera starts further back and glides in.

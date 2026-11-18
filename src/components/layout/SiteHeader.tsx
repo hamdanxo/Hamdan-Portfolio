@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import HeaderScroll from './HeaderScroll';
 
-type Page = 'home' | 'design' | 'work';
+type Page = 'home' | 'design' | 'work' | 'other';
 
 export default function SiteHeader({ page }: { page: Page }) {
   const home = page === 'home';

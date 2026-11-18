@@ -942,3 +942,38 @@ html body .page .ck-n:not(#_a):not(#_b):not(#_c):not(#_d){color:var(--rd)!import
 /* footer line: "Made visible." at a calmer size */
 .wordmark.sig{font-size:clamp(54px,10.5vw,170px)!important;margin:64px 0 -0.06em!important;padding-bottom:.12em!important}
 @media (max-width:760px){.wordmark.sig{font-size:clamp(58px,17vw,84px)!important;margin:48px 0 24px!important}}
+
+/* ---------- Quick message: tap what you need, WhatsApp opens with the text written ---------- */
+.qm{grid-column:1/-1;position:relative;z-index:1;display:flex;flex-direction:column;gap:16px;padding-top:clamp(24px,3vw,34px);border-top:1px solid rgba(238,241,243,.08)}
+.qm-q{margin:0;font-family:var(--f-mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:rgba(238,241,243,.6)}
+.qm-chips{display:flex;flex-wrap:wrap;gap:8px}
+.qm-chip{all:unset;box-sizing:border-box;cursor:pointer;display:inline-flex;align-items:center;gap:8px;min-height:40px;padding:9px 15px;border-radius:999px;border:1px solid rgba(238,241,243,.16);font-family:var(--f-sans);font-size:14px;color:#D9DEE2;transition:background .25s,border-color .25s,color .25s}
+.qm-chip i{width:7px;height:7px;border-radius:50%;border:1px solid rgba(238,241,243,.4);transition:background .25s,border-color .25s}
+.qm-chip:hover{border-color:rgba(223,37,49,.6);color:#fff}
+.qm-chip.on{background:rgba(223,37,49,.14);border-color:#df2531;color:#fff}
+.qm-chip.on i{background:#df2531;border-color:#df2531}
+.qm-chip:focus-visible,.qm-wa:focus-visible,.qm-mail:focus-visible{outline:2px solid #df2531;outline-offset:2px}
+.qm-in input:focus,.qm-in input:focus-visible{outline:none!important;box-shadow:none!important}
+.qm-row{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.qm-in{flex:1 1 280px;display:flex}
+.qm-in input{all:unset;box-sizing:border-box;width:100%;min-height:46px;padding:12px 2px;border-bottom:1px solid rgba(238,241,243,.18);font-family:var(--f-sans);font-size:15px;color:#fff;transition:border-color .25s}
+.qm-in input::placeholder{color:rgba(238,241,243,.38)}
+.qm-in input:focus{border-color:#df2531}
+.qm-btns{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.qm-wa{all:unset;box-sizing:border-box;cursor:pointer;display:inline-flex;align-items:center;gap:9px;min-height:46px;padding:12px 20px;border-radius:4px;background:#df2531;color:#fff;font-family:var(--f-sans);font-size:15px;font-weight:500;transition:background .25s,transform .3s}
+.qm-wa svg{width:17px;height:17px}
+.qm-wa:hover{background:#ef3340;transform:translateY(-2px)}
+.qm-mail{display:inline-flex;align-items:center;min-height:46px;padding:0 14px;font-family:var(--f-sans);font-size:14px;color:rgba(238,241,243,.7);text-decoration:underline;text-underline-offset:4px;text-decoration-color:rgba(238,241,243,.25)}
+.qm-mail:hover{color:#fff}
+@media (max-width:600px){.qm-btns{width:100%;flex-direction:column;align-items:stretch}.qm-wa{justify-content:center;white-space:nowrap}.qm-mail{justify-content:center}}
+
+/* ---------- 404 ---------- */
+.nf{min-height:calc(100svh - 90px);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:14px;padding:20px 0 60px}
+.nf-dust{width:min(980px,100%);height:clamp(200px,38vh,400px);display:block}
+.nf-eye{margin:0;display:flex;align-items:center;gap:12px;font-family:var(--f-mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:rgba(238,241,243,.6)}
+.nf-eye i{width:28px;height:1px;background:#df2531}
+.nf-line{margin:0;font-family:var(--f-sans);font-size:clamp(26px,3.4vw,44px);letter-spacing:-.03em;color:#fff}
+.nf-btns{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:14px}
+.nf-home,.nf-alt{display:inline-flex;align-items:center;min-height:46px;padding:0 22px;border-radius:4px;font-family:var(--f-sans);font-size:15px;text-decoration:none;transition:background .25s,border-color .25s,transform .3s}
+.nf-home{background:#df2531;color:#fff}.nf-home:hover{background:#ef3340;transform:translateY(-2px)}
+.nf-alt{border:1px solid rgba(238,241,243,.22);color:#EEF1F3}.nf-alt:hover{border-color:rgba(238,241,243,.5)}

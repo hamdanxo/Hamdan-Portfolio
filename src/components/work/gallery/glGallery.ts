@@ -68,8 +68,8 @@ void main() {
   col.rgb += vHover * border * vec3(0.87, 0.15, 0.19);
   // calm wall: muted colour until a card is hovered
   float g = dot(col.rgb, vec3(0.299, 0.587, 0.114));
-  col.rgb = mix(col.rgb, vec3(g), 0.35 * uDim * (1.0 - vHover));
-  col.rgb *= mix(1.0, 0.78, uDim * (1.0 - vHover));
+  col.rgb = mix(col.rgb, vec3(g), 0.25 * uDim * (1.0 - vHover));
+  col.rgb *= mix(1.0, 0.88, uDim * (1.0 - vHover));
   // focus: everything except the hovered design steps back into the dark
   col.rgb *= mix(1.0, 0.38, uFocus * (1.0 - vHover));
   // soft edge fade, like the CSS vignette
@@ -241,7 +241,7 @@ export function createGalleryGL(
     render: () => {
       placeCamera();
       uniforms.uHoverT.value = (performance.now() - hoverStart) / 1000;
-      const want = hovered >= 0 ? 1 : 0;
+      const want = hovered >= 0 && !opts.calm ? 1 : 0;
       uniforms.uFocus.value += (want - uniforms.uFocus.value) * 0.14;
       renderer.render(scene, camera);
     },

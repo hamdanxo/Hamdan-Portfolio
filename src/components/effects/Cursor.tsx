@@ -16,7 +16,8 @@ export default function Cursor({ magnetic }: { magnetic: string }) {
     const move = (e: PointerEvent) => {
       x = e.clientX; y = e.clientY; c.classList.add('on');
       // Over work (images, design tiles, list rows) the circle becomes a "View" label.
-      c.classList.toggle('view', !!(e.target as Element | null)?.closest?.('[data-cursor="view"], .dg-stage.dg-pick'));
+      const t = e.target as Element | null;
+      c.classList.toggle('view', !!t?.closest?.('[data-cursor="view"], .dg-stage.dg-pick') && !t?.closest?.('.dg-heroed'));
     };
     const leave = () => c.classList.remove('on');
     const over = (e: PointerEvent) => c.classList.toggle('big', !!(e.target as Element | null)?.closest?.('a,button'));

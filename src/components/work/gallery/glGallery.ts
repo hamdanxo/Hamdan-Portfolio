@@ -22,7 +22,8 @@ uniform vec2 uView;     // stage size (px)
 uniform vec2 uTile;     // tile size (px)
 uniform vec2 uMouse;    // pointer in stage px, centred; far away when not hovering
 uniform float uBend;    // curvature strength
-uniform float uCam;     // camera distance (px), to match hover to the projected tile
+uniform float uCam;     // camera distance at rest (px), to match hover to the projected tile
+uniform float uCamNow;  // current camera distance (larger during the opening zoom)
 uniform float uHoverT;  // seconds since the pointer reached a new card
 varying vec2 vUv;
 varying vec2 vCell;
@@ -33,7 +34,7 @@ void main() {
   // Endless wrap: every slot stays inside a band centred on the screen.
   vec2 c = mod(aBase + uOffset + uSpan * 0.5, uSpan) - uSpan * 0.5;
   vec2 nc = c / (uView * 0.5);
-  float k = uCam / (uCam + (nc.x * nc.x * 0.9 + nc.y * nc.y * 0.6) * uBend);
+  float k = uCam / (uCamNow + (nc.x * nc.x * 0.9 + nc.y * nc.y * 0.6) * uBend);
   vec2 d = abs(uMouse - c * k) - uTile * 0.5 * k;
   vHover = step(max(d.x, d.y), 0.0);
   // hovered card grows very slightly, easing in over a third of a second
@@ -80,6 +81,10 @@ export type GalleryGL = {
   pick: (x: number, y: number) => number;
   /** Tell the gallery which design is hovered; a new one eases into a slight zoom. */
   hover: (index: number) => void;
+  /** Start the opening zoom (camera starts `from` times further away). */
+  intro: (from?: number) => void;
+  /** True while the opening zoom is still running. */
+  busy: () => boolean;
   resize: () => void;
   render: () => void;
   dispose: () => void;
@@ -124,6 +129,7 @@ export function createGalleryGL(
     uMouse: { value: new Vector2(1e6, 1e6) },
     uBend: { value: 260 },
     uCam: { value: 1000 },
+    uCamNow: { value: 1000 },
     uAtlas: { value: texture },
     uGrid: { value: new Vector2(atlas.cols, atlas.rows) },
     uHoverT: { value: 99 },
@@ -160,14 +166,32 @@ export function createGalleryGL(
     uniforms.uBend.value = sw < 700 ? 110 : 150;
   };
 
+  // Opening move: the camera starts further back and glides in.
+  let introStart = -1, introFrom = 1;
+  const INTRO_MS = 1700;
+  const introF = () => {
+    if (introStart < 0) return 1;
+    const t = Math.min(1, (performance.now() - introStart) / INTRO_MS);
+    if (t >= 1) { introStart = -1; return 1; }
+    return 1 + (introFrom - 1) * Math.pow(1 - t, 4);
+  };
+  let rest = 1000;
+  const placeCamera = () => {
+    const f = introF();
+    camera.position.z = rest * f;
+    uniforms.uCamNow.value = rest * f;
+  };
+
   const resize = () => {
     const sw = canvas.clientWidth, sh = canvas.clientHeight;
     renderer.setSize(sw, sh, false);
     // Camera distance so one world unit is one CSS pixel at depth 0.
     camera.aspect = sw / sh;
-    camera.position.set(0, 0, sh / 2 / Math.tan((camera.fov * Math.PI) / 360));
+    rest = sh / 2 / Math.tan((camera.fov * Math.PI) / 360);
+    camera.position.set(0, 0, rest);
     camera.updateProjectionMatrix();
-    uniforms.uCam.value = camera.position.z;
+    uniforms.uCam.value = rest;
+    placeCamera();
     layout();
   };
   resize();
@@ -189,12 +213,12 @@ export function createGalleryGL(
       const mx = x - canvas.clientWidth / 2, my = y - canvas.clientHeight / 2;
       const sx = uniforms.uSpan.value.x, sy = uniforms.uSpan.value.y;
       const vx = uniforms.uView.value.x / 2, vy = uniforms.uView.value.y / 2;
-      const o = uniforms.uOffset.value, cam = uniforms.uCam.value, bend = uniforms.uBend.value;
+      const o = uniforms.uOffset.value, cam = uniforms.uCam.value, camNow = uniforms.uCamNow.value, bend = uniforms.uBend.value;
       const wrap = (a: number, b: number) => ((((a + b / 2) % b) + b) % b) - b / 2;
       for (let k = 0; k < slots.index.length; k++) {
         const cx = wrap(slots.base[k * 2] + o.x, sx), cy = wrap(slots.base[k * 2 + 1] + o.y, sy);
         const nx = cx / vx, ny = cy / vy;
-        const s = cam / (cam + (nx * nx * 0.9 + ny * ny * 0.6) * bend);
+        const s = cam / (camNow + (nx * nx * 0.9 + ny * ny * 0.6) * bend);
         if (Math.abs(mx - cx * s) <= (W / 2) * s && Math.abs(my - cy * s) <= (H / 2) * s) return slots.index[k];
       }
       return -1;
@@ -205,7 +229,10 @@ export function createGalleryGL(
       if (index >= 0) hoverStart = performance.now();
     },
     resize,
+    intro: (from = 1.6) => { introFrom = from; introStart = performance.now(); placeCamera(); },
+    busy: () => introStart >= 0,
     render: () => {
+      placeCamera();
       uniforms.uHoverT.value = (performance.now() - hoverStart) / 1000;
       const want = hovered >= 0 ? 1 : 0;
       uniforms.uFocus.value += (want - uniforms.uFocus.value) * 0.14;

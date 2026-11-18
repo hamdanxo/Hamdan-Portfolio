@@ -289,3 +289,29 @@ html body .page .cs:hover{border-color:rgba(223,37,49,.5)!important}
 /* words light up as they come into view */
 .wl{opacity:.12;transition:opacity .6s ease}
 .wl-on .wl{opacity:1}
+
+/* ---------- Design page: the wall of designs is the hero, text sits over it (like a work grid) ---------- */
+.design-page .design-wall{margin-top:calc(-1 * var(--hdr-h,72px));margin-bottom:clamp(80px,12vh,140px)}
+.dg-heroed{gap:0}
+.dg-heroed .dg-stage{height:100vh;height:100svh;background:#050102!important;border:0!important}
+.dg-heroed .dg-count,.dg-heroed .dg-hint{display:none}
+.dg-heroed:has(.dg-stage) .dg-bar{position:absolute;right:clamp(16px,3vw,40px);bottom:clamp(20px,4vh,40px);z-index:4}
+.dg-hero{position:absolute;left:0;right:0;bottom:0;z-index:2;pointer-events:none;display:flex;flex-direction:column;gap:18px;
+  padding:clamp(120px,22vh,260px) max(16px,calc((100vw - 1280px) / 2 + 32px)) clamp(32px,6vh,64px);
+  background:linear-gradient(to top,rgba(5,1,2,.97) 0%,rgba(5,1,2,.86) 38%,rgba(5,1,2,.5) 70%,rgba(5,1,2,0) 100%)}
+.dg-top{position:absolute;left:0;right:0;top:0;height:clamp(110px,16vh,170px);z-index:2;pointer-events:none;background:linear-gradient(to bottom,rgba(5,1,2,.85),rgba(5,1,2,0))}
+.dg-hero-flat{position:relative;background:none;padding-top:clamp(110px,16vh,170px);padding-bottom:40px}
+.dh-eye{margin:0;display:flex;align-items:center;gap:12px;font-family:var(--f-mono);font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:rgba(238,241,243,.75)}
+.dh-eye i{width:28px;height:1px;background:#df2531}
+.dh-title{margin:0;font-family:var(--f-sans);font-weight:500;font-size:clamp(52px,7.6vw,136px);line-height:.9;letter-spacing:-.05em;color:#fff}
+.dh-title em{font-family:var(--font-cormorant),Georgia,serif;font-style:italic;font-weight:400;color:#df2531;letter-spacing:-.01em;padding-right:.04em}
+.dh-lead{margin:4px 0 0;max-width:46ch;font-size:clamp(16px,1.35vw,21px);line-height:1.55;color:rgba(238,241,243,.72)}
+.dh-hint{margin:6px 0 0;font-family:var(--f-mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:rgba(238,241,243,.55)}
+.dg-heroed .dg-cap{left:auto!important;right:clamp(16px,3vw,40px);bottom:clamp(84px,12vh,110px)!important;transform:translate(0,8px)}
+.dg-heroed .dg-cap.on{transform:translate(0,0)}
+@media (max-width:760px){
+  .dg-hero{gap:12px;padding-bottom:84px}
+  .dh-title{font-size:clamp(44px,13vw,64px)}
+  .dg-heroed .dg-cap{display:none}
+}
+.dg-heroed .dg-stage,.dg-heroed .dg-canvas{touch-action:pan-y}

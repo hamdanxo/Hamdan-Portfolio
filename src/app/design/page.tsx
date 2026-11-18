@@ -3,7 +3,7 @@ import SmoothScroll from '@/components/effects/SmoothScroll';
 import Reveal from '@/components/effects/Reveal';
 import Cursor from '@/components/effects/Cursor';
 import SiteHeader from '@/components/layout/SiteHeader';
-import DesignIntro from '@/components/design/DesignIntro';
+import DesignHero from '@/components/design/DesignHero';
 import DesignGallery from '@/components/work/DesignGallery';
 import WorkCta from '@/components/work/WorkCta';
 import ContactSpotlight from '@/components/effects/ContactSpotlight';
@@ -21,9 +21,8 @@ export default function DesignPage() {
       <div className="page-inner">
         <SiteHeader page="design" />
         <main id="work" className="design-page">
-          <DesignIntro />
-          <section className="design-gallery" aria-label="Design gallery">
-            <DesignGallery fullscreen />
+          <section className="design-gallery design-wall" aria-label="Design gallery">
+            <DesignGallery fullscreen hero={<DesignHero />} />
           </section>
           <WorkCta />
         </main>

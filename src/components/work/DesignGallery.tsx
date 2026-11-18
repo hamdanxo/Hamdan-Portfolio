@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import Image from 'next/image';
 import { useIdleEffect } from '@/lib/useIdleEffect';
 import { webglInfo } from '@/lib/motion';
@@ -13,8 +13,10 @@ type Dims = TileSize & { cols: number; rows: number };
 
 const mod = (a: number, b: number) => ((a % b) + b) % b;
 const pad = (n: number) => (n < 10 ? `0${n}` : `${n}`);
-const tileSize = (stageWidth: number): TileSize =>
-  stageWidth < 700 ? { W: 190, H: 240, G: 10 } : { W: 290, H: 350, G: 14 };
+const tileSize = (stageWidth: number, labels = false): TileSize =>
+  labels
+    ? (stageWidth < 700 ? { W: 200, H: 214, G: 12 } : { W: 300, H: 304, G: 18 })
+    : (stageWidth < 700 ? { W: 190, H: 240, G: 10 } : { W: 290, H: 350, G: 14 });
 
 /** DOM tile, only used when WebGL is not available. */
 function Tile({ d, i, w, h, refCb }: { d: Design; i: number; w: number; h: number; refCb: (el: HTMLDivElement | null) => void }) {
@@ -69,7 +71,8 @@ function ListPeek({ items, d, on }: { items: Design[]; d: Design | null; on: boo
  * Phantom-style endless, curved, draggable gallery with a list view.
  * Drawn with WebGL (Three.js) so it stays smooth on phones; falls back to DOM tiles without WebGL.
  */
-export default function DesignGallery({ fullscreen = false }: { fullscreen?: boolean }) {
+export default function DesignGallery({ fullscreen = false, hero }: { fullscreen?: boolean; hero?: ReactNode }) {
+  const labels = !!hero;
   const [view, setView] = useState<'grid' | 'list'>('grid');
   const [mode, setMode] = useState<'pending' | 'gl' | 'dom'>('pending');
   const [dims, setDims] = useState<Dims | null>(null);
@@ -116,7 +119,7 @@ export default function DesignGallery({ fullscreen = false }: { fullscreen?: boo
     bleed();
 
     const setupDom = () => {
-      const sw = stage.clientWidth, sh = stage.clientHeight, t = tileSize(sw);
+      const sw = stage.clientWidth, sh = stage.clientHeight, t = tileSize(sw, labels);
       setDims({ ...t, cols: Math.ceil(sw / (t.W + t.G)) + 6, rows: Math.ceil(sh / (t.H + t.G)) + 6 });
       setMode('dom');
     };
@@ -133,11 +136,12 @@ export default function DesignGallery({ fullscreen = false }: { fullscreen?: boo
         await document.fonts?.ready;
         const images = await loadImages(designs);
         if (cancelled) return;
-        const size = tileSize(stage.clientWidth);
-        const atlas = await buildAtlas(designs, images, size, Math.min(window.devicePixelRatio || 1, 2));
+        const size = tileSize(stage.clientWidth, labels);
+        const atlas = await buildAtlas(designs, images, size, Math.min(window.devicePixelRatio || 1, 2), labels);
         if (cancelled) return;
         await new Promise((r) => setTimeout(r, 0));
         glRef.current = createGalleryGL(canvas, atlas, designs.length, size);
+        if (labels && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) glRef.current.intro(1.55);
         setMode('gl');
       } catch {
         if (!cancelled) setupDom();
@@ -164,7 +168,7 @@ export default function DesignGallery({ fullscreen = false }: { fullscreen?: boo
       glRef.current?.dispose();
       glRef.current = null;
     };
-  }, [view, bleed]);
+  }, [view, bleed, labels]);
 
   // ---------- draw one frame at the current offset ----------
   const draw = useCallback(() => {
@@ -272,7 +276,9 @@ export default function DesignGallery({ fullscreen = false }: { fullscreen?: boo
       const dt = Math.min(3, (now - last) / 16.667);
       last = now;
       if (!visible || document.hidden) return;
-      if (!down && now < scrollingUntil && Math.abs(p.vx) < 0.05 && Math.abs(p.vy) < 0.05) { if (dirty) { dirty = false; draw(); } return; }
+      const busy = !!glRef.current?.busy();
+      if (busy) dirty = true;
+      if (!down && !busy && now < scrollingUntil && Math.abs(p.vx) < 0.05 && Math.abs(p.vy) < 0.05) { if (dirty) { dirty = false; draw(); } return; }
       if (!down) {
         if (Math.abs(p.vx) > 0.05 || Math.abs(p.vy) > 0.05) {
           p.ox += p.vx * dt; p.oy += p.vy * dt;
@@ -304,7 +310,8 @@ export default function DesignGallery({ fullscreen = false }: { fullscreen?: boo
 
   return (
     <div className="cat-list">
-      <div className={fullscreen ? 'dg dg-full' : 'dg'} ref={wrapRef}>
+      <div className={`${fullscreen ? 'dg dg-full' : 'dg'}${hero ? ' dg-heroed' : ''}`} ref={wrapRef}>
+        {hero && view === 'list' && <div className="dg-hero dg-hero-flat">{hero}</div>}
         <div className="dg-bar">
           <div className="dg-views" role="group" aria-label="View">
             {(['grid', 'list'] as const).map((v) => (
@@ -334,6 +341,7 @@ export default function DesignGallery({ fullscreen = false }: { fullscreen?: boo
               </div>
             )}
             <div className="dg-vig" aria-hidden="true" />
+            {hero && <><div className="dg-top" aria-hidden="true" /><div className="dg-hero">{hero}</div></>}
             <div className="dg-cap" ref={capRef} aria-hidden="true" />
             <ul className="sr-only">
               {work.map((d) => (

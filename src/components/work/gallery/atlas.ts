@@ -85,6 +85,14 @@ function letterSpaced(ctx: CanvasRenderingContext2D, text: string, x: number, y:
   ctx.letterSpacing = '0px';
 }
 
+/** Shortens text with an ellipsis so it fits the given width at the current font. */
+function fit(ctx: CanvasRenderingContext2D, text: string, max: number): string {
+  if (ctx.measureText(text).width <= max) return text;
+  let t = text;
+  while (t.length > 1 && ctx.measureText(`${t}…`).width > max) t = t.slice(0, -1);
+  return `${t.trimEnd()}…`;
+}
+
 /** Loads design images (if any) so they can be drawn into the atlas. */
 export async function loadImages(items: Design[]): Promise<(HTMLImageElement | null)[]> {
   return Promise.all(items.map((d) => new Promise<HTMLImageElement | null>((resolve) => {
@@ -101,7 +109,7 @@ export async function loadImages(items: Design[]): Promise<(HTMLImageElement | n
  * Draws every design card once into a single canvas (a texture atlas).
  * The WebGL gallery then shows hundreds of tiles from this one texture.
  */
-export async function buildAtlas(items: Design[], images: (HTMLImageElement | null)[], size: TileSize, scale: number) {
+export async function buildAtlas(items: Design[], images: (HTMLImageElement | null)[], size: TileSize, scale: number, labels = false) {
   const { W, H } = size;
   // Lay the cards out roughly square, then shrink the resolution only if the atlas would pass
   // 4096px (the safe texture limit on phones). 20 designs stay full quality; 100 still look sharp.
@@ -118,6 +126,7 @@ export async function buildAtlas(items: Design[], images: (HTMLImageElement | nu
   if (!ctx) throw new Error('2d context unavailable');
 
   const sans = fontFamily('--font-geist', 'system-ui, sans-serif');
+  const mono = fontFamily('--font-dm-mono', 'ui-monospace, monospace');
 
   for (let i = 0; i < items.length; i++) {
     const d = items[i];
@@ -128,6 +137,50 @@ export async function buildAtlas(items: Design[], images: (HTMLImageElement | nu
     ctx.translate(ox, oy);
     ctx.scale(cw / W, ch / H);
 
+    const img = images[i];
+    if (labels) {
+      // Labelled card: the design fills a rounded frame, with a small mono line and the title underneath.
+      const pad = 10, small = W < 240;
+      const ah = H - pad - (small ? 46 : 58);
+      const ax = pad, aw = W - 2 * pad, top = pad;
+      ctx.save();
+      roundRect(ctx, ax, top, aw, ah, 6);
+      ctx.clip();
+      ctx.fillStyle = '#120608';
+      ctx.fillRect(ax, top, aw, ah);
+      if (img) {
+        // fill the frame, keeping the top of the design (headlines, logos) in view
+        const s = Math.max(aw / img.naturalWidth, ah / img.naturalHeight);
+        const iw = img.naturalWidth * s, ih = img.naturalHeight * s;
+        ctx.drawImage(img, ax + (aw - iw) / 2, top + Math.min(0, (ah - ih) * 0.2), iw, ih);
+      } else {
+        drawArt(ctx, i, ax, top, aw, ah);
+      }
+      ctx.restore();
+      ctx.strokeStyle = 'rgba(255,255,255,0.08)';
+      ctx.lineWidth = 1;
+      roundRect(ctx, ax + 0.5, top + 0.5, aw - 1, ah - 1, 6);
+      ctx.stroke();
+
+      const y1 = top + ah + (small ? 15 : 19), y2 = y1 + (small ? 18 : 22);
+      ctx.textBaseline = 'middle';
+      const num = String(i + 1).padStart(2, '0');
+      ctx.font = `500 ${small ? 9.5 : 10.5}px ${mono}`;
+      ctx.fillStyle = '#df2531';
+      letterSpaced(ctx, num, ax + 2, y1, 1, 'left');
+      ctx.fillStyle = 'rgba(238,241,243,0.5)';
+      letterSpaced(ctx, d.year, ax + aw - 2, y1, 1, 'right');
+      const nx = ax + 2 + ctx.measureText(num).width + 14, yw = ctx.measureText(d.year).width + 16;
+      ctx.letterSpacing = '1px';
+      letterSpaced(ctx, fit(ctx, d.client.toUpperCase(), ax + aw - 2 - yw - nx), nx, y1, 1, 'left');
+      ctx.font = `500 ${small ? 12.5 : 15}px ${mono}`;
+      ctx.fillStyle = '#ffffff';
+      ctx.letterSpacing = '0px';
+      letterSpaced(ctx, fit(ctx, d.title, aw - 4), ax + 2, y2, 0, 'left');
+      ctx.restore();
+      continue;
+    }
+
     // card: no frame and no background, just the design floating with the client's name underneath
 
     const pad = 14, small = W < 240;
@@ -136,7 +189,6 @@ export async function buildAtlas(items: Design[], images: (HTMLImageElement | nu
     ctx.save();
     roundRect(ctx, ax, top, aw, ah, 4);
     ctx.clip();
-    const img = images[i];
     if (img) {
       // the whole design, centred, never cropped, with a soft shadow
       const s = Math.min((aw * 0.9) / img.naturalWidth, (ah * 0.92) / img.naturalHeight);
